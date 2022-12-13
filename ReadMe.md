@@ -108,11 +108,16 @@ And, the command written in this form produces the following execution result.
 ### Security notion.
 All `command` messages sent by protocols that do not operate based on SSL are divided into sensitive and general. `Sensitive` commands cannot be executed without SSL and a client-side certificate, the certificate specified must have appropriate permissions and private key. That is, it must not be a Leaf certificate. 
 
+### Connector Library (NIdentity.Connector)
+This library provides just wrapper that pre-written codes to execute command through `HTTP`, `HTTPS` and `WebSocket`. (See below)
+
+```
+1. .NET CLI: dotnet add package NIdentity.Connector
+2. Package Manager: NuGet\Install-Package NIdentity.Connector
+3. Package Reference: <PackageReference Include="NIdentity.Connector" Version="1.0.0" />
+```
+
 ### HTTP, HTTPS, WebSocket
 Basically, `NIdentity` provides a command processing endpoint mapped to the `api/infra/live` path. No other complex procedures are required, and no need to memorize different routes. Just disable server side certificate verification (HTTPS, WSS), set CA certificate with private key as SSL client certificate and send JSON formatted command.
 
 And, non-sensitive commands can be used without an SSL client certificate. Finally, running sensitive commands is prohibited in a Cleartext HTTP environment rather than HTTPS.
-
-### Connector Library (NIdentity.Connector)
-This library provides just wrapper that pre-written codes to execute command through `HTTP`, `HTTPS` and `WebSocket`.
-
