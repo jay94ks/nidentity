@@ -3,6 +3,7 @@ Env/db
 Example/db
 Example/data/*.pfx
 Example/data/caches
+Nuget
 NIdentity/bin
 NIdentity/obj
 NIdentity.*/bin
