@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "NIdentity.Core.X509.Server": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:58273;http://localhost:58274"
+    }
+  }
+}

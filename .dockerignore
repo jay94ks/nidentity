@@ -1,0 +1,4 @@
+Env/*
+Example/*
+NIdentity.Connector
+NIdentity.Core.X509.Browser

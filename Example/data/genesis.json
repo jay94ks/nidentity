@@ -1,0 +1,15 @@
+{
+	"required_keys": [
+		{
+			"cert_type": 0, 
+			"key_algorithm": "rsa-2048",
+			"key_purposes": 7,
+			"expiration_hrs": 876000,
+			"subject": "CN=NIdentity Root CA",
+			"issuer": "CN=NIdentity Root CA",
+			"with_ocsp": true,
+			"with_crl_dists": false,
+			"with_ca_issuers": false
+		}
+	]
+}

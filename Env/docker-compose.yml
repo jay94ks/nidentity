@@ -1,0 +1,19 @@
+version: '3.4'
+services:
+  nidentity-db:
+    image: 'mysql:latest'
+    container_name: 'nidentity-db'
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'nidentity'
+      MYSQL_USER: 'nidentity'
+      MYSQL_PASSWORD: 'nidentity1!'
+      MYSQL_ROOT_PASSWORD: 'nidentity1!'
+    volumes:
+      - './db:/var/lib/mysql'
+    ports:
+      - '3510:3306'
+    command:
+      - '--character-set-client-handshake=FALSE'
+      - '--character-set-server=utf8mb4'
+      - '--collation-server=utf8mb4_unicode_ci'

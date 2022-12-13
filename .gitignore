@@ -1,0 +1,9 @@
+Env/db
+Example/db
+Example/data/*.pfx
+Example/data/caches
+NIdentity/bin
+NIdentity/obj
+NIdentity.*/bin
+NIdentity.*/obj
+NIdentity.Core.X509.Browser/bin/Debug/*

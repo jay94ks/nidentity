@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Copyright>copyright (c) 2022 jay94ks</Copyright>
+    <PackageProjectUrl>https://github.com/jay94ks/nidentity</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NIdentity.Core.X509\NIdentity.Core.X509.csproj" />
+    <ProjectReference Include="..\NIdentity.Core\NIdentity.Core.csproj" />
+  </ItemGroup>
+
+</Project>

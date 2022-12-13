@@ -1,0 +1,51 @@
+version: '3.4'
+services:
+  nidentity:
+    image: 'jay94ks/nidentity:latest'
+    container_name: 'nidentity'
+    restart: always
+    environment:
+      MYSQL_DB: 'nidentity'
+      MYSQL_USER: 'nidentity'
+      MYSQL_PASS: 'nidentity1!'
+      MYSQL_HOST: 'nidentity-mysql'
+      MYSQL_PORT: 3306
+      SSL_CERT_FILE: 'data/https.pfx'
+      CRL_TERM: 30
+      CER_TERM: 30
+      MAX_CACHE_KEYS: 1024
+      RUN_AS_SUPER: 0
+      GENESIS_CMDS: 'data/genesis.json'
+      HTTP_BASE_URL: 'http://127.0.0.1:7000/'
+    volumes:
+      - './data:/app/data'
+    ports:
+      - '7000:7000'
+      - '7001:7001'
+    networks:
+      - 'nidentity-net'
+      
+  nidentity-mysql:
+    image: 'mysql:latest'
+    container_name: 'nidentity-mysql'
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'nidentity'
+      MYSQL_USER: 'nidentity'
+      MYSQL_PASSWORD: 'nidentity1!'
+      MYSQL_ROOT_PASSWORD: 'nidentity1!'
+    volumes:
+      - './db:/var/lib/mysql'
+    ports:
+      - '3359:3306'
+    command:
+      - '--character-set-client-handshake=FALSE'
+      - '--character-set-server=utf8mb4'
+      - '--collation-server=utf8mb4_unicode_ci'
+    networks:
+      - 'nidentity-net'
+
+networks:
+  nidentity-net:
+    driver: overlay
+    attachable: true
