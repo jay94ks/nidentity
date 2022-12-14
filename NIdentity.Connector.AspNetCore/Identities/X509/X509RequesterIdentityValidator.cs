@@ -129,6 +129,7 @@ namespace NIdentity.Connector.AspNetCore.Identities.X509
                     var CacheKey = MakeCacheKey(Identity);
                     var Cache = RestoreFromJson(JsonConvert.SerializeObject(Metadata));
 
+                    Identity.Metadata = Metadata;
                     Cache.CacheTime = DateTimeOffset.UtcNow;
                     await CacheRepository.SaveAsync(Identity, CacheKey, StoreIntoJson(Cache), Aborter);
                     return true;

@@ -12,7 +12,11 @@ namespace NIdentity.Connector.AspNetCore.Builders
         /// <summary>
         /// Hide constructor.
         /// </summary>
-        internal RequesterIdentitySystemBuilder(RequesterIdentitySystem System) => m_System = System;
+        internal RequesterIdentitySystemBuilder(IServiceProvider Services, RequesterIdentitySystem System)
+        {
+            ApplicationServices = Services;
+            m_System = System;
+        }
 
         /// <summary>
         /// Application Services.

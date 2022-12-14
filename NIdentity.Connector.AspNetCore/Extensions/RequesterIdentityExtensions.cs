@@ -78,7 +78,7 @@ namespace NIdentity.Connector.AspNetCore.Extensions
                 ?? throw new InvalidOperationException(
                     "the use requester recognition, add reequester identity service to service collection.");
 
-            RecognitionBuilder?.Invoke(new RequesterIdentitySystemBuilder(System));
+            RecognitionBuilder?.Invoke(new RequesterIdentitySystemBuilder(Builder.ApplicationServices, System));
 
             // --> configure the recognizer middleware.
             return Builder.UseMiddleware<RequesterRecognition>();
@@ -92,7 +92,7 @@ namespace NIdentity.Connector.AspNetCore.Extensions
         /// <returns></returns>
         public static IApplicationBuilder UseRequesterValidation(this IApplicationBuilder Builder)
         {
-            var System = Builder.ApplicationServices.GetService<RequesterIdentitySystem>()
+            _ = Builder.ApplicationServices.GetService<RequesterIdentitySystem>()
                 ?? throw new InvalidOperationException(
                     "the use requester recognition, add reequester identity service to service collection.");
 
