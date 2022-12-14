@@ -70,7 +70,6 @@ namespace NIdentity.Core.X509
         /// <returns></returns>
         public static Certificate Import(byte[] Data) => new Certificate(new X509Certificate(Data));
 
-
         /// <summary>
         /// Import PFX bytes.
         /// </summary>

@@ -218,7 +218,10 @@ namespace NIdentity.Core.X509
                     .Select(X => (X.KeyPair, Ski: string.Join("", X.Ski)))
                     .Select(X => (X.KeyPair, Cert: Certs.FirstOrDefault(Y => Y.GetKeyIdentifier() == X.Ski)))
                     .Where(X => X.Cert != null).Select(X => new Certificate(X.Cert, X.KeyPair.Private))
-                    .ToArray();
+                    .ToArray().AsEnumerable();
+
+                Certs.RemoveAll(X => Results.FirstOrDefault(Y => Y.X509 == X) != null);
+                Results = Results.Concat(Certs.Select(X => new Certificate(X)));
 
                 foreach (var Each in Results)
                     Store.Add(Each);
