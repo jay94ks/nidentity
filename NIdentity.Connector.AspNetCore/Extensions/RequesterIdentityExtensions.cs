@@ -72,8 +72,7 @@ namespace NIdentity.Connector.AspNetCore.Extensions
         /// <param name="RecognitionBuilder"></param>
         /// <returns></returns>
         public static IApplicationBuilder UseRequesterRecognition(
-            this IApplicationBuilder Builder,
-            Action<RequesterIdentitySystemBuilder> RecognitionBuilder = null)
+            this IApplicationBuilder Builder, Action<RequesterIdentitySystemBuilder> RecognitionBuilder = null)
         {
             var System = Builder.ApplicationServices.GetService<RequesterIdentitySystem>()
                 ?? throw new InvalidOperationException(
@@ -91,7 +90,7 @@ namespace NIdentity.Connector.AspNetCore.Extensions
         /// </summary>
         /// <param name="Builder"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseRequesterValidation(this ApplicationBuilder Builder)
+        public static IApplicationBuilder UseRequesterValidation(this IApplicationBuilder Builder)
         {
             var System = Builder.ApplicationServices.GetService<RequesterIdentitySystem>()
                 ?? throw new InvalidOperationException(
