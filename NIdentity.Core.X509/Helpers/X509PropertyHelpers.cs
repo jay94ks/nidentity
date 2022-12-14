@@ -2,6 +2,7 @@
 using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.X509;
+using System.Collections;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -128,6 +129,51 @@ namespace NIdentity.Core.X509.Helpers
             }
 
             return CertificateType.Leaf;
+        }
+
+        /// <summary>
+        /// Get all SANS properties from <see cref="X509Certificate"/> instance.
+        /// </summary>
+        /// <param name="Certificate"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> GetSans(this X509Certificate Certificate)
+        {
+            var Sans = Certificate.GetSubjectAlternativeNames();
+            if (Sans is null)
+                yield break;
+
+            foreach (var Each in Sans)
+            {
+                if (Each is not IEnumerable List)
+                    yield return Each.ToString();
+
+                else
+                {
+                    var Tv = List.Cast<object>();
+                    if (Tv.Count() != 2)
+                        continue;
+
+                    var Type = (int) Tv.First();
+                    var Value = Tv.Last().ToString();
+
+                    if (Type == 7 && Value.StartsWith("#"))
+                    {
+                        var Bytes = Value.ToLower()
+                            .Where(X => (X >= '0' && X <= '9') || (X >= 'a' && X <= 'f'))
+                            .Select(X => X >= '0' && X <= '9' ? X - '0' : (X - 'a') + 10)
+                            .Select((X, i) => (X: X, i: i)).Select(X => X.X << (4 - 4 * (X.i % 2)))
+                            .Select((X, i) => (X: X, i: i)).GroupBy(X => X.i / 2)
+                            .Select(X => (byte)(X.First().X | X.Last().X))
+                            .Select(X => X.ToString());
+
+                        yield return string.Join(".", Bytes);
+                        continue;
+                    }
+
+                    if (Type == 0 || Type == 2)
+                        yield return Value;
+                }
+            }
         }
     }
 }

@@ -27,6 +27,8 @@ namespace NIdentity.Core.X509
         private string m_CachedSubjectHash;
         private string m_CachedIssuerHash;
 
+        private string[] m_CachedSans;
+
         private CertificateType? m_CachedType;
         private CertificatePurposes? m_CachedPurposes;
         private CertificateIdentity? m_CachedIssuer;
@@ -141,6 +143,7 @@ namespace NIdentity.Core.X509
         /// </summary>
         public string Thumbprint => GetterHelpers.Cached(ref m_CachedThumbprint, () => X509.GetThumbprint().ToLower());
 
+
         /// <summary>
         /// Self.
         /// </summary>
@@ -155,6 +158,11 @@ namespace NIdentity.Core.X509
         /// Subject Hash.
         /// </summary>
         public string IssuerHash => GetterHelpers.Cached(ref m_CachedIssuerHash, () => MakeNameHash(X509.IssuerDN));
+
+        /// <summary>
+        /// SANS, aka, Subject Alternative Names.
+        /// </summary>
+        public string[] Sans => GetterHelpers.Cached(ref m_CachedSans, () => X509.GetSans().ToArray());
 
         /// <summary>
         /// Creation Time.
