@@ -4,14 +4,10 @@ using NIdentity.Core;
 using NIdentity.Core.Commands;
 using NIdentity.Core.Helpers;
 using NIdentity.Core.X509;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+using System.Net.Security;
 using System.Net.WebSockets;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace NIdentity.Connector.Internals
 {
@@ -113,11 +109,15 @@ namespace NIdentity.Connector.Internals
                 var WebSocket = new ClientWebSocket();
 
                 WebSocket.Options.KeepAliveInterval = m_Parameters.Timeout;
-                if (!m_Parameters.IsSuperMode)
+                if (!m_Parameters.DisableAuthorityCertificate)
                 {
-                    WebSocket.Options.RemoteCertificateValidationCallback = (_, _1, _2, _3) =>
+                    WebSocket.Options.RemoteCertificateValidationCallback = (_, ReceivedCertificate, _2, Error) =>
                     {
-                        return true;
+                        if (m_Parameters.ServerCertificate is null)
+                            return Error == SslPolicyErrors.None;
+
+                        return HttpRequestExecutor.Handler.ChcekServerCertificate(
+                            m_Parameters.ServerCertificate, ReceivedCertificate, Error);
                     };
                     WebSocket.Options.ClientCertificates.Add(m_Parameters.Certificate.ToDotNetCert());
                     WebSocket.Options.SetRequestHeader("X-NIdentity-KeySHA1", m_Parameters.Certificate.KeySHA1);

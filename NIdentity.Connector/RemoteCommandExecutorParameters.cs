@@ -11,14 +11,21 @@ namespace NIdentity.Connector
         public Uri ServerUri { get; set; }
 
         /// <summary>
-        /// Is Super Mode or not.
+        /// Disable authority certificate.
+        /// If this option set true, no authority operations are available.
+        /// But if the server is running as super mode, all operations will work.
         /// </summary>
-        public bool IsSuperMode { get; set; }
+        public bool DisableAuthorityCertificate { get; set; }
 
         /// <summary>
         /// Certificate to authorize to the server.
         /// </summary>
         public Certificate Certificate { get; set; }
+
+        /// <summary>
+        /// Server Certificate to validate the server's identity.
+        /// </summary>
+        public Certificate ServerCertificate { get; set; }
 
         /// <summary>
         /// Cache Repository.
@@ -46,7 +53,7 @@ namespace NIdentity.Connector
             if (ServerUri is null)
                 throw new ArgumentException("no server uri specified.");
 
-            if (!IsSuperMode)
+            if (!DisableAuthorityCertificate)
             {
                 if (string.IsNullOrWhiteSpace(ServerUri.Scheme) || (
                     ServerUri.Scheme.ToLower() != "https" && ServerUri.Scheme.ToLower() != "wss"))

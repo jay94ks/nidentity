@@ -1,9 +1,6 @@
 ﻿using NIdentity.Core.X509;
-using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Security;
-using System.Security.Cryptography;
+using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using DSslProtocols = System.Security.Authentication.SslProtocols;
 
 namespace NIdentity.Connector.Internals
 {
@@ -12,22 +9,59 @@ namespace NIdentity.Connector.Internals
         /// <summary>
         /// Message Handler.
         /// </summary>
-        private class Handler : HttpClientHandler
+        internal class Handler : HttpClientHandler
         {
             /// <summary>
             /// Initialize a new <see cref="Handler"/> instance.
             /// </summary>
             /// <param name="Certificate"></param>
-            public Handler(Certificate Certificate)
+            /// <param name="ServerCertificate"></param>
+            public Handler(Certificate Certificate, Certificate ServerCertificate)
             {
                 CheckCertificateRevocationList = false;
                 
                 ClientCertificateOptions = ClientCertificateOption.Manual;
                 ClientCertificates.Add(Certificate.ToDotNetCert());
-                ServerCertificateCustomValidationCallback = (_1, _2, _3, _4) =>
+                ServerCertificateCustomValidationCallback = (_1, ReceivedCertificate, _3, Error) =>
                 {
-                    return true;
+                    if (ServerCertificate is null)
+                        return Error == SslPolicyErrors.None;
+
+                    return ChcekServerCertificate(ServerCertificate, ReceivedCertificate, Error);
                 };
+            }
+
+            /// <summary>
+            /// Check the server certificate.
+            /// </summary>
+            /// <param name="ServerCertificate"></param>
+            /// <param name="ReceivedCertificate"></param>
+            /// <param name="Error"></param>
+            /// <returns></returns>
+            internal static bool ChcekServerCertificate(Certificate ServerCertificate, X509Certificate ReceivedCertificate, SslPolicyErrors Error)
+            {
+                if (Error == SslPolicyErrors.None)
+                    return true;
+
+                if (ReceivedCertificate is null)
+                    return false;
+
+                try
+                {
+                    var Converted = Certificate.Import(ReceivedCertificate.Export(X509ContentType.Cert));
+                    if (Converted is null)
+                        return false;
+
+                    return Converted.KeyIdentifier == ServerCertificate.KeyIdentifier
+                        && Converted.SerialNumber == ServerCertificate.SerialNumber
+                        && Converted.Issuer == ServerCertificate.Issuer
+                        && Converted.Thumbprint == ServerCertificate.Thumbprint;
+                }
+                catch
+                {
+                }
+
+                return false;
             }
         }
     }

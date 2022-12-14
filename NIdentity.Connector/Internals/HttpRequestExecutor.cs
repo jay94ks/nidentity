@@ -32,9 +32,9 @@ namespace NIdentity.Connector.Internals
 
             m_Parameters = Parameters;
 
-            if (!Parameters.IsSuperMode)
+            if (!Parameters.DisableAuthorityCertificate)
             {
-                m_HttpClient = new HttpClient(new Handler(Parameters.Certificate), true);
+                m_HttpClient = new HttpClient(new Handler(Parameters.Certificate, Parameter.ServerCertificate), true);
                 // --> for optimization. (optional behaviours)
                 m_HttpClient.DefaultRequestHeaders.Add("X-NIdentity-KeySHA1", Parameters.Certificate.KeySHA1);
                 m_HttpClient.DefaultRequestHeaders.Add("X-NIdentity-RefSHA1", Parameters.Certificate.RefSHA1);

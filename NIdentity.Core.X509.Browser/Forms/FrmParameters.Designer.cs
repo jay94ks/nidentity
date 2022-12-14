@@ -29,13 +29,14 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.m_ChkSuperMode = new System.Windows.Forms.CheckBox();
+            this.m_LblServer = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.m_ChkDisableAuthorityCertificate = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.m_Timeout = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.m_LstMode = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.m_BtnTest = new System.Windows.Forms.Button();
             this.m_LblAuthority = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -52,13 +53,14 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.m_ChkSuperMode);
+            this.groupBox1.Controls.Add(this.m_LblServer);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.m_ChkDisableAuthorityCertificate);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.m_Timeout);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.m_LstMode);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.progressBar1);
             this.groupBox1.Controls.Add(this.m_BtnTest);
             this.groupBox1.Controls.Add(this.m_LblAuthority);
             this.groupBox1.Controls.Add(this.label2);
@@ -66,34 +68,55 @@
             this.groupBox1.Controls.Add(this.m_EditServerUri);
             this.groupBox1.Location = new System.Drawing.Point(13, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(532, 299);
+            this.groupBox1.Size = new System.Drawing.Size(532, 327);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Server Settings";
             // 
-            // m_ChkSuperMode
+            // m_LblServer
             // 
-            this.m_ChkSuperMode.AutoSize = true;
-            this.m_ChkSuperMode.Location = new System.Drawing.Point(340, 195);
-            this.m_ChkSuperMode.Name = "m_ChkSuperMode";
-            this.m_ChkSuperMode.Size = new System.Drawing.Size(86, 24);
-            this.m_ChkSuperMode.TabIndex = 8;
-            this.m_ChkSuperMode.Text = "Enabled";
-            this.m_ChkSuperMode.UseVisualStyleBackColor = true;
-            this.m_ChkSuperMode.CheckedChanged += new System.EventHandler(this.OnCheckSuperMode);
+            this.m_LblServer.BackColor = System.Drawing.Color.White;
+            this.m_LblServer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.m_LblServer.Location = new System.Drawing.Point(171, 116);
+            this.m_LblServer.Name = "m_LblServer";
+            this.m_LblServer.Size = new System.Drawing.Size(337, 27);
+            this.m_LblServer.TabIndex = 10;
+            this.m_LblServer.Text = "(Nothing Selected, Optional)";
+            this.m_LblServer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.m_LblServer.Click += new System.EventHandler(this.OnSetServerCertificate);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(19, 119);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(124, 20);
+            this.label8.TabIndex = 9;
+            this.label8.Text = "Server Certificate";
+            // 
+            // m_ChkDisableAuthorityCertificate
+            // 
+            this.m_ChkDisableAuthorityCertificate.AutoSize = true;
+            this.m_ChkDisableAuthorityCertificate.Location = new System.Drawing.Point(340, 234);
+            this.m_ChkDisableAuthorityCertificate.Name = "m_ChkDisableAuthorityCertificate";
+            this.m_ChkDisableAuthorityCertificate.Size = new System.Drawing.Size(90, 24);
+            this.m_ChkDisableAuthorityCertificate.TabIndex = 8;
+            this.m_ChkDisableAuthorityCertificate.Text = "Disabled";
+            this.m_ChkDisableAuthorityCertificate.UseVisualStyleBackColor = true;
+            this.m_ChkDisableAuthorityCertificate.CheckedChanged += new System.EventHandler(this.OnCheckSuperMode);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 195);
+            this.label3.Location = new System.Drawing.Point(19, 234);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(97, 20);
+            this.label3.Size = new System.Drawing.Size(201, 20);
             this.label3.TabIndex = 7;
-            this.label3.Text = "Super Access";
+            this.label3.Text = "Disable Authority Certificate";
             // 
             // m_Timeout
             // 
-            this.m_Timeout.Location = new System.Drawing.Point(340, 157);
+            this.m_Timeout.Location = new System.Drawing.Point(340, 196);
             this.m_Timeout.Maximum = new decimal(new int[] {
             3600,
             0,
@@ -117,7 +140,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(19, 159);
+            this.label5.Location = new System.Drawing.Point(19, 198);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(154, 20);
             this.label5.TabIndex = 6;
@@ -130,7 +153,7 @@
             this.m_LstMode.Items.AddRange(new object[] {
             "Https",
             "WebSockets"});
-            this.m_LstMode.Location = new System.Drawing.Point(340, 115);
+            this.m_LstMode.Location = new System.Drawing.Point(340, 154);
             this.m_LstMode.Name = "m_LstMode";
             this.m_LstMode.Size = new System.Drawing.Size(168, 28);
             this.m_LstMode.TabIndex = 5;
@@ -139,22 +162,15 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(19, 118);
+            this.label4.Location = new System.Drawing.Point(19, 157);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(49, 20);
             this.label4.TabIndex = 4;
             this.label4.Text = "Mode";
             // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(19, 250);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(315, 27);
-            this.progressBar1.TabIndex = 1;
-            // 
             // m_BtnTest
             // 
-            this.m_BtnTest.Location = new System.Drawing.Point(340, 250);
+            this.m_BtnTest.Location = new System.Drawing.Point(340, 276);
             this.m_BtnTest.Name = "m_BtnTest";
             this.m_BtnTest.Size = new System.Drawing.Size(168, 27);
             this.m_BtnTest.TabIndex = 1;
@@ -204,7 +220,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Location = new System.Drawing.Point(13, 317);
+            this.groupBox2.Location = new System.Drawing.Point(13, 353);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(532, 80);
             this.groupBox2.TabIndex = 1;
@@ -222,7 +238,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(377, 414);
+            this.button2.Location = new System.Drawing.Point(377, 450);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(168, 27);
             this.button2.TabIndex = 7;
@@ -232,7 +248,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(13, 414);
+            this.button3.Location = new System.Drawing.Point(13, 450);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(168, 27);
             this.button3.TabIndex = 8;
@@ -244,7 +260,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(559, 460);
+            this.ClientSize = new System.Drawing.Size(559, 494);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox2);
@@ -271,7 +287,6 @@
         private Label label2;
         private Label m_LblAuthority;
         private Button m_BtnTest;
-        private ProgressBar progressBar1;
         private Label label4;
         private ComboBox m_LstMode;
         private NumericUpDown m_Timeout;
@@ -280,7 +295,9 @@
         private Label label6;
         private Button button2;
         private Button button3;
-        private CheckBox m_ChkSuperMode;
+        private CheckBox m_ChkDisableAuthorityCertificate;
         private Label label3;
+        private Label m_LblServer;
+        private Label label8;
     }
 }

@@ -36,13 +36,19 @@ namespace NIdentity.Core.X509.Browser.Forms
             /// Super Mode.
             /// </summary>
             [JsonProperty("super_mode")]
-            public bool SuperMode { get; set; }
+            public bool DisableAuthorityCertificate { get; set; }
 
             /// <summary>
             /// Authority Certificate.
             /// </summary>
             [JsonProperty("pfx_base64")]
             public string PfxBase64 { get; set; }
+
+            /// <summary>
+            /// Server Certificate.
+            /// </summary>
+            [JsonProperty("cer_base64")]
+            public string CerBase64 { get; set; }
 
             /// <summary>
             /// Timeout.
@@ -117,7 +123,12 @@ namespace NIdentity.Core.X509.Browser.Forms
                     ? Certificate.ImportPfx(Convert.FromBase64String(ParameterModel.PfxBase64))
                     : null,
 
-            CacheRepository = null, Mode = ParameterModel.Mode, IsSuperMode = ParameterModel.SuperMode,
+            ServerCertificate = !string.IsNullOrWhiteSpace(ParameterModel.CerBase64)
+                    ? Certificate.Import(Convert.FromBase64String(ParameterModel.CerBase64))
+                    : null,
+
+            CacheRepository = null, Mode = ParameterModel.Mode,
+            DisableAuthorityCertificate = ParameterModel.DisableAuthorityCertificate,
             Timeout = TimeSpan.FromSeconds((int)Math.Max(ParameterModel.Timeout.TotalSeconds, 1))
         };
 
@@ -140,6 +151,8 @@ namespace NIdentity.Core.X509.Browser.Forms
         {
             var Parameters = MakeParameters(ParameterModel);
             var Certificate = Parameters.Certificate;
+            var ServerCertificate = Parameters.ServerCertificate;
+
             if (Certificate is null || Certificate.HasPrivateKey == false)
             {
                 m_LblAuthority.Text = "(Nothing Selected)";
@@ -151,8 +164,19 @@ namespace NIdentity.Core.X509.Browser.Forms
                 m_LblAuthority.Text = $"{Certificate.Subject} ({Certificate.SerialNumber})";
             }
 
+            if (ServerCertificate is null || ServerCertificate.HasPublicKey == false)
+            {
+                m_LblServer.Text = "(Nothing Selected, Optional)";
+                ParameterModel.CerBase64 = null;
+            }
+
+            else
+            {
+                m_LblServer.Text = $"{ServerCertificate.Subject} ({ServerCertificate.SerialNumber})";
+            }
+
             m_EditServerUri.Text = Parameters.ServerUri.ToString().TrimEnd('/');
-            m_ChkSuperMode.Checked = Parameters.IsSuperMode;
+            m_ChkDisableAuthorityCertificate.Checked = Parameters.DisableAuthorityCertificate;
             m_LstMode.SelectedIndex = (int)Parameters.Mode;
             m_Timeout.Value = (int)Math.Max(Parameters.Timeout.TotalSeconds, 1);
         }
@@ -458,7 +482,66 @@ namespace NIdentity.Core.X509.Browser.Forms
 
         private void OnCheckSuperMode(object sender, EventArgs e)
         {
-            ParameterModel.SuperMode = m_ChkSuperMode.Checked;
+            ParameterModel.DisableAuthorityCertificate = m_ChkDisableAuthorityCertificate.Checked;
+        }
+
+        private void OnSetServerCertificate(object sender, EventArgs e)
+        {
+            while (true)
+            {
+                using var Ofd = new OpenFileDialog
+                {
+                    Title = "Select CER File for Server Certificate",
+                    Filter = "X.509 certificate (*.cer)|*.cer",
+                    CheckPathExists = true
+                };
+
+                if (Ofd.ShowDialog() != DialogResult.OK)
+                    return;
+
+                if (string.IsNullOrWhiteSpace(Ofd.FileName) || File.Exists(Ofd.FileName) == false)
+                {
+                    if (string.IsNullOrWhiteSpace(Ofd.FileName))
+                        continue;
+
+                    MessageBox.Show(
+                        $"Error: No file exists.\nPath: {Ofd.FileName}.",
+                        Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    continue;
+                }
+
+                try
+                {
+                    var CerBytes = File.ReadAllBytes(Ofd.FileName);
+                    if (CerBytes is null || CerBytes.Length <= 0)
+                        throw new Exception("reselect");
+
+                    var Cert = Certificate.ImportPfx(CerBytes);
+                    if (Cert is null)
+                        throw new Exception("reselect");
+
+                    if (Cert.HasPublicKey == false)
+                    {
+                        MessageBox.Show(
+                            "Error: the specified file has no public key, " +
+                            "please select other file.", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        continue;
+                    }
+
+                    ParameterModel.CerBase64 = Convert.ToBase64String(CerBytes);
+                    m_LblServer.Text = $"{Cert.Subject} ({Cert.SerialNumber})";
+                    break;
+                }
+                catch
+                {
+                    MessageBox.Show(
+                        "Error: the specified file is corrupted or not supported, " +
+                        "please select other file.", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    continue;
+                }
+            }
         }
     }
 }
