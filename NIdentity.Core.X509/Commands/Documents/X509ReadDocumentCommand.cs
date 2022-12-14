@@ -4,6 +4,9 @@ using NIdentity.Core.X509.Commands;
 
 namespace NIdentity.Core.X509.Commands.Documents
 {
+    /// <summary>
+    /// A command to receive document content.
+    /// </summary>
     [Command(Kind = "x509")]
     public class X509ReadDocumentCommand : X509DocumentAccessCommand
     {
@@ -14,6 +17,9 @@ namespace NIdentity.Core.X509.Commands.Documents
         {
         }
 
+        /// <summary>
+        /// Document data result.
+        /// </summary>
         public class Result : DocumentResult<Result>
         {
             /// <summary>

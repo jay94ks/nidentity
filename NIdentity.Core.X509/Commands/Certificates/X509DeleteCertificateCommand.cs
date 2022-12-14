@@ -3,6 +3,9 @@ using NIdentity.Core.X509.Commands;
 
 namespace NIdentity.Core.X509.Commands.Certificates
 {
+    /// <summary>
+    /// A command to delete a certificate.
+    /// </summary>
     [Command(Kind = "x509")]
     public class X509DeleteCertificateCommand : X509CertificateAccessCommand
     {
@@ -13,6 +16,9 @@ namespace NIdentity.Core.X509.Commands.Certificates
         {
         }
 
+        /// <summary>
+        /// Deletion result.
+        /// </summary>
         public class Result : CertificateResult<Result>
         {
 

@@ -1,5 +1,8 @@
 ﻿namespace NIdentity.Core.X509
 {
+    /// <summary>
+    /// Reason why the certificate revoked.
+    /// </summary>
     public enum CertificateRevokeReason
     {
         /// <summary>

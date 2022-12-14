@@ -46,7 +46,7 @@ namespace NIdentity.Connector.AspNetCore.Mvc
         /// <summary>
         /// Called to replace the action to 401 unauthorized.
         /// </summary>
-        /// <param name="Action"></param>
+        /// <param name="HttpContext"></param>
         /// <returns></returns>
         [NonAction]
         protected IActionResult ReplaceToUnauthorized(HttpContext HttpContext) => new StatusCodeResult(401);

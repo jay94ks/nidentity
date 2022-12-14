@@ -61,6 +61,7 @@ namespace NIdentity.Connector.AspNetCore
         /// Get <see cref="RequesterIdentity"/> instances by their kind.
         /// </summary>
         /// <param name="Kind"></param>
+        /// <param name="Snapshot"></param>
         /// <returns></returns>
         public IEnumerable<RequesterIdentity> ByKind(RequesterIdentityKind Kind, bool Snapshot = true)
         {

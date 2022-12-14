@@ -30,6 +30,9 @@ namespace NIdentity.Core.X509.Commands
         [JsonProperty("key_id")]
         public string KeyIdentifier { get; set; }
 
+        /// <summary>
+        /// Identity.
+        /// </summary>
         [JsonIgnore]
         public CertificateIdentity ByIdentity => new CertificateIdentity(Subject, KeyIdentifier);
 
@@ -47,6 +50,9 @@ namespace NIdentity.Core.X509.Commands
         [JsonProperty("issuer_key_id")]
         public string IssuerKeyIdentifier { get; set; }
 
+        /// <summary>
+        /// Reference.
+        /// </summary>
         [JsonIgnore]
         public CertificateReference ByReference => new CertificateReference(SerialNumber, IssuerKeyIdentifier);
 
@@ -87,7 +93,7 @@ namespace NIdentity.Core.X509.Commands
             }
 
             /// <summary>
-            /// Make a <typeparamref name="CertificateResult"/> result.
+            /// Make a <paramref name="Certificate"/> result.
             /// </summary>
             /// <param name="Certificate"></param>
             /// <returns></returns>
@@ -192,12 +198,15 @@ namespace NIdentity.Core.X509.Commands
             public Certificate Certificate { get; set; }
         }
 
+        /// <summary>
+        /// Certificate result (generic version)
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
         public class CertificateResult<TResult> : CertificateResult where TResult : CertificateResult, new()
         {
             /// <summary>
             /// Make a <typeparamref name="TResult"/> result.
             /// </summary>
-            /// <typeparam name="TResult"></typeparam>
             /// <param name="Certificate"></param>
             /// <param name="More"></param>
             /// <returns></returns>

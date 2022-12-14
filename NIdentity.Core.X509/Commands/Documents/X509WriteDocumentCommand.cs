@@ -5,6 +5,9 @@ using NIdentity.Core.X509.Documents;
 
 namespace NIdentity.Core.X509.Commands.Documents
 {
+    /// <summary>
+    /// A command to write a document.
+    /// </summary>
     [Command(Kind = "x509")]
     public class X509WriteDocumentCommand : X509DocumentAccessCommand
     {
@@ -15,6 +18,9 @@ namespace NIdentity.Core.X509.Commands.Documents
         {
         }
 
+        /// <summary>
+        /// Writting result.
+        /// </summary>
         public class Result : DocumentResult<Result>
         {
         }

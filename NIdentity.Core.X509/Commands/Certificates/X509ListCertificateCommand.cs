@@ -4,6 +4,9 @@ using NIdentity.Core.X509.Commands;
 
 namespace NIdentity.Core.X509.Commands.Certificates
 {
+    /// <summary>
+    /// A command for requesting list of authority.
+    /// </summary>
     [Command(Kind = "x509")]
     public class X509ListCertificateCommand : X509CertificateAccessCommand
     {

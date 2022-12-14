@@ -3,12 +3,8 @@ using Newtonsoft.Json.Linq;
 using NIdentity.Core;
 using NIdentity.Core.Commands;
 using NIdentity.Core.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace NIdentity.Connector.Internals
 {
@@ -34,7 +30,7 @@ namespace NIdentity.Connector.Internals
 
             if (!Parameters.DisableAuthorityCertificate)
             {
-                m_HttpClient = new HttpClient(new Handler(Parameters.Certificate, Parameter.ServerCertificate), true);
+                m_HttpClient = new HttpClient(new Handler(Parameters.Certificate, Parameters.ServerCertificate), true);
                 // --> for optimization. (optional behaviours)
                 m_HttpClient.DefaultRequestHeaders.Add("X-NIdentity-KeySHA1", Parameters.Certificate.KeySHA1);
                 m_HttpClient.DefaultRequestHeaders.Add("X-NIdentity-RefSHA1", Parameters.Certificate.RefSHA1);

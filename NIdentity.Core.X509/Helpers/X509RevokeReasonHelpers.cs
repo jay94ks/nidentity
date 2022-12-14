@@ -2,6 +2,9 @@
 
 namespace NIdentity.Core.X509.Helpers
 {
+    /// <summary>
+    /// Revoke reason to CRL/OCSP reason number conversion helpers.
+    /// </summary>
     public static class X509RevokeReasonHelpers
     {
         private static readonly Dictionary<CertificateRevokeReason, int> REVOKE_CODES

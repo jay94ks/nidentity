@@ -7,6 +7,9 @@ using System.Text;
 
 namespace NIdentity.Core.X509
 {
+    /// <summary>
+    /// Certificate conversion helpers.
+    /// </summary>
     public static class CertificateHelpers
     {
         /// <summary>

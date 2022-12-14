@@ -3,6 +3,9 @@ using System.Text;
 
 namespace NIdentity.Core.Helpers
 {
+    /// <summary>
+    /// AES256 encryption helpers.
+    /// </summary>
     public class Aes256Helpers
     {
         private const int KEY_LEN = 256 / 8;
@@ -63,6 +66,7 @@ namespace NIdentity.Core.Helpers
         /// Encrypt bytes using AES256/cbc algorithm.
         /// </summary>
         /// <param name="Data"></param>
+        /// <param name="Key"></param>
         /// <returns></returns>
         public static byte[] Encrypt(byte[] Data, string Key) => Transform(Data, false, Key);
 
@@ -70,6 +74,7 @@ namespace NIdentity.Core.Helpers
         /// Decrypt bytes using aES256/cbc algorithm.
         /// </summary>
         /// <param name="Data"></param>
+        /// <param name="Key"></param>
         /// <returns></returns>
         public static byte[] Decrypt(byte[] Data, string Key) => Transform(Data, true, Key);
 
@@ -91,6 +96,7 @@ namespace NIdentity.Core.Helpers
         /// Encrypt bytes using AES256/cbc algorithm.
         /// </summary>
         /// <param name="Data"></param>
+        /// <param name="Key"></param>
         /// <returns></returns>
         public static string EncryptB64(byte[] Data, string Key) => Convert.ToBase64String(Transform(Data, false, Key), Base64FormattingOptions.None);
 
@@ -98,6 +104,7 @@ namespace NIdentity.Core.Helpers
         /// Decrypt bytes using aES256/cbc algorithm.
         /// </summary>
         /// <param name="Data"></param>
+        /// <param name="Key"></param>
         /// <returns></returns>
         public static byte[] DecryptB64(string Data, string Key) => Transform(Convert.FromBase64String(Data), true, Key);
 
@@ -126,6 +133,7 @@ namespace NIdentity.Core.Helpers
         /// </summary>
         /// <param name="Data"></param>
         /// <param name="Decrypt"></param>
+        /// <param name="Key"></param>
         /// <returns></returns>
         private static byte[] Transform(byte[] Data, bool Decrypt, string Key)
         {

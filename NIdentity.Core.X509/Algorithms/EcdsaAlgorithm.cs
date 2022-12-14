@@ -6,6 +6,9 @@ using Org.BouncyCastle.Security;
 
 namespace NIdentity.Core.X509.Algorithms
 {
+    /// <summary>
+    /// ECDsa algorithm
+    /// </summary>
     public class EcdsaAlgorithm : Algorithm
     {
         /// <summary>

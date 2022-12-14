@@ -49,6 +49,7 @@ namespace NIdentity.Connector.Internals
         /// Convert the result to the expected result type.
         /// </summary>
         /// <param name="Result"></param>
+        /// <param name="Bulk"></param>
         /// <returns></returns>
         public static CommandResult ToExpectedResult(this CommandResult Result, Func<int, JObject, CommandResult> Bulk) 
         {

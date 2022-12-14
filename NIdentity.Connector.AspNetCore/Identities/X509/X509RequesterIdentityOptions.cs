@@ -1,5 +1,8 @@
 ﻿namespace NIdentity.Connector.AspNetCore.Identities.X509
 {
+    /// <summary>
+    /// Options to control X509 requester recognition.
+    /// </summary>
     public class X509RequesterIdentityOptions
     {
         /// <summary>

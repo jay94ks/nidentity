@@ -10,6 +10,7 @@
         /// And the validator can remove identities from requester.
         /// </summary>
         /// <param name="Requester"></param>
+        /// <param name="Input"></param>
         /// <returns></returns>
         Task<bool> ValidateAsync(Requester Requester, RequesterIdentity Input);
     }

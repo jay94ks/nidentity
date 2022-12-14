@@ -17,6 +17,9 @@ using System.Threading.Tasks;
 
 namespace NIdentity.Connector.X509
 {
+    /// <summary>
+    /// Wrapper to execute X509 command and convert their results to correct types.
+    /// </summary>
     public class X509CommandExecutor
     {
         /// <summary>
@@ -52,7 +55,6 @@ namespace NIdentity.Connector.X509
         /// <summary>
         /// Execute X509 bulk requests and returns execution result.
         /// </summary>
-        /// <param name="Executor"></param>
         /// <param name="Commands"></param>
         /// <param name="Token"></param>
         /// <returns></returns>

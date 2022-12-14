@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace NIdentity.Core.X509.Commands.Certificates
 {
+    /// <summary>
+    /// A command to revoke a certificate.
+    /// </summary>
     [Command(Kind = "x509")]
     public class X509RevokeCertificateCommand : X509CertificateAccessCommand
     {
@@ -25,6 +28,9 @@ namespace NIdentity.Core.X509.Commands.Certificates
         [JsonProperty("revoke_reason")]
         public CertificateRevokeReason RevokeReason { get; set; } = CertificateRevokeReason.PrivilegeWithdrawn;
 
+        /// <summary>
+        /// Revokation result.
+        /// </summary>
         public class Result : CertificateResult<Result>
         {
 

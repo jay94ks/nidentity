@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace NIdentity.Connector
 {
+    /// <summary>
+    /// Variation of <see cref="CommandResult"/>
+    /// to recognize the result generated from remote.
+    /// </summary>
     public class RemoteCommandResult : CommandResult
     {
         /// <summary>

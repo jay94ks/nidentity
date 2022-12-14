@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace NIdentity.Core.X509.Commands.Documents
 {
+    /// <summary>
+    /// A command to request document list of certificate.
+    /// </summary>
     [Command(Kind = "x509")]
     public class X509ListDocumentCommand : X509DocumentAccessCommand
     {
@@ -19,6 +22,9 @@ namespace NIdentity.Core.X509.Commands.Documents
         {
         }
 
+        /// <summary>
+        /// Listing result.
+        /// </summary>
         public class Result : DocumentResult<Result>
         {
             /// <summary>

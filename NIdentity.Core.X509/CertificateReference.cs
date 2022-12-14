@@ -82,6 +82,7 @@ namespace NIdentity.Core.X509
         /// </summary>
         /// <param name="SerialNumber"></param>
         /// <param name="IssuerKeyIdentifier"></param>
+        /// <param name="RefSHA1"></param>
         public CertificateReference(string SerialNumber, string IssuerKeyIdentifier, string RefSHA1)
         {
             this.SerialNumber = SerialNumber;
@@ -197,7 +198,20 @@ namespace NIdentity.Core.X509
         }
 
         // ----
+        /// <summary>
+        /// Eq
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static bool operator ==(CertificateReference L, CertificateReference R) => L.Equals(R);
+
+        /// <summary>
+        /// Neq
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static bool operator !=(CertificateReference L, CertificateReference R) => !(L == R);
     }
 }

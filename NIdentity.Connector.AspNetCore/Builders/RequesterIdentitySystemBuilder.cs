@@ -3,7 +3,7 @@
 namespace NIdentity.Connector.AspNetCore.Builders
 {
     /// <summary>
-    /// Builds <see cref="IRequest"/>
+    /// Builds <see cref="RequesterIdentitySystem"/>
     /// </summary>
     public class RequesterIdentitySystemBuilder
     {

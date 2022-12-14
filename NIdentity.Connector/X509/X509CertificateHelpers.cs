@@ -4,6 +4,9 @@ using NIdentity.Core.X509.Commands.Certificates;
 
 namespace NIdentity.Connector.X509
 {
+    /// <summary>
+    /// Certificate related command helpers.
+    /// </summary>
     public static class X509CertificateHelpers
     {
         /// <summary>
@@ -15,7 +18,7 @@ namespace NIdentity.Connector.X509
             CertificateType KeyType, TimeSpan Expiration, string Subject,
             CertificateIdentity Issuer = default, string[] DnsNames = null,
             CertificatePurposes Purposes = CertificatePurposes.Networking | CertificatePurposes.Protection,
-            string Algorithm = "secp384r1", CancellationToken Token = default)
+            string Algorithm = "rsa-2048", CancellationToken Token = default)
         {
             var Cmd = new X509GenerateCommand
             {

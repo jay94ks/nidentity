@@ -11,8 +11,7 @@ namespace NIdentity.Connector.AspNetCore.Identities.X509
         /// <summary>
         /// Initialize a new <see cref="X509RequesterIdentity"/> instance.
         /// </summary>
-        /// <param name="SerialNumber"></param>
-        /// <param name="IssuerKeyIdentifier"></param>
+        /// <param name="Recognized"></param>
         public X509RequesterIdentity(Certificate Recognized)
         {
             if (Recognized is null)

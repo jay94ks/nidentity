@@ -1,5 +1,5 @@
-﻿using NIdentity.Core.X509.Revokations;
-using NIdentity.Core.X509.Server.Helpers;
+﻿using NIdentity.Core.Server.Helpers;
+using NIdentity.Core.X509.Revokations;
 using NIdentity.Core.X509.Server.Repositories.Models;
 using NIdentity.Core.X509.Server.Revokations;
 

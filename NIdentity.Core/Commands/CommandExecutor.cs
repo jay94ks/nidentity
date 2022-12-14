@@ -21,6 +21,8 @@ namespace NIdentity.Core.Commands
         /// <summary>
         /// Initialize a new <see cref="CommandExecutor"/> instance.
         /// </summary>
+        /// <param name="Services"></param>
+        /// <param name="Aborter"></param>
         /// <param name="Registry"></param>
         private CommandExecutor(
             IServiceProvider Services, CancellationToken Aborter,
@@ -77,7 +79,8 @@ namespace NIdentity.Core.Commands
         /// <summary>
         /// Execute a <see cref="Command"/> instance and returns its execution result.
         /// </summary>
-        /// <param name="Command"></param>
+        /// <param name="Json"></param>
+        /// <param name="Token"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
@@ -108,6 +111,7 @@ namespace NIdentity.Core.Commands
         /// Execute a <see cref="Command"/> instance and returns its execution result.
         /// </summary>
         /// <param name="Command"></param>
+        /// <param name="Token"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="InvalidOperationException"></exception>

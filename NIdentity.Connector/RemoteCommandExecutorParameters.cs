@@ -3,6 +3,9 @@ using NIdentity.Core.X509;
 
 namespace NIdentity.Connector
 {
+    /// <summary>
+    /// Creation parameters for the remote command executor class.
+    /// </summary>
     public class RemoteCommandExecutorParameters
     {
         /// <summary>

@@ -4,6 +4,9 @@ using NIdentity.Core.Helpers;
 
 namespace NIdentity.Core.Commands.Internals
 {
+    /// <summary>
+    /// Bulk command.
+    /// </summary>
     public class BulkCommand : Command
     {
         /// <summary>

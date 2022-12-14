@@ -11,6 +11,9 @@ using System.Security.Cryptography;
 
 namespace NIdentity.Core.X509.Helpers
 {
+    /// <summary>
+    /// Cryptography helpers for X509 certificates
+    /// </summary>
     public static class X509CryptographyHelpers
     {
         /// <summary>

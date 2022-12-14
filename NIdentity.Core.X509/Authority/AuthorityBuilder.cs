@@ -1,5 +1,8 @@
 ﻿namespace NIdentity.Core.X509.Authority
 {
+    /// <summary>
+    /// Builds issuer (authority) information.
+    /// </summary>
     public class AuthorityBuilder
     {
         private readonly List<AuthorityAccess> m_AccessPoints = new();
@@ -20,7 +23,7 @@
         /// Set the certificate from <see cref="CertificateStore"/> with name.
         /// </summary>
         /// <param name="From"></param>
-        /// <param name="Issuer"></param>
+        /// <param name="KeyIdentifier"></param>
         /// <returns></returns>
         public AuthorityBuilder SetCertificate(CertificateStore From, string KeyIdentifier)
         {

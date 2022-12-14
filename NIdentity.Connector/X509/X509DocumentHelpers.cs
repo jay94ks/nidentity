@@ -4,6 +4,9 @@ using NIdentity.Core.X509.Documents;
 
 namespace NIdentity.Connector.X509
 {
+    /// <summary>
+    /// Certificate document related helpers.
+    /// </summary>
     public static class X509DocumentHelpers
     {
         /// <summary>
@@ -44,6 +47,7 @@ namespace NIdentity.Connector.X509
         /// </summary>
         /// <param name="Executor"></param>
         /// <param name="Identity"></param>
+        /// <param name="Revision"></param>
         /// <param name="Path"></param>
         /// <param name="Token"></param>
         /// <returns></returns>
@@ -82,8 +86,7 @@ namespace NIdentity.Connector.X509
         /// Write a document for the certificate on the specified path.
         /// </summary>
         /// <param name="Executor"></param>
-        /// <param name="Identity"></param>
-        /// <param name="Path"></param>
+        /// <param name="Document"></param>
         /// <param name="Token"></param>
         /// <returns></returns>
         public static async Task<Document> WriteDocumentAsync(this X509CommandExecutor Executor, Document Document, CancellationToken Token = default)
@@ -122,6 +125,7 @@ namespace NIdentity.Connector.X509
         /// <param name="Executor"></param>
         /// <param name="Identity"></param>
         /// <param name="Path"></param>
+        /// <param name="Revision"></param>
         /// <param name="Token"></param>
         /// <returns></returns>
         public static async Task<bool> RemoveDocumentAsync(this X509CommandExecutor Executor, CertificateIdentity Identity, string Path, long? Revision = null, CancellationToken Token = default)

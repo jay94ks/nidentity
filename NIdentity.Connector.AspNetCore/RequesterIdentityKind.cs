@@ -1,5 +1,8 @@
 ﻿namespace NIdentity.Connector.AspNetCore
 {
+    /// <summary>
+    /// Kinds of requester identities.
+    /// </summary>
     public enum RequesterIdentityKind
     {
         /// <summary>

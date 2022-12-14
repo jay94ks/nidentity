@@ -7,6 +7,9 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace NIdentity.Connector.AspNetCore.Extensions
 {
+    /// <summary>
+    /// Requester Identity Extensions.
+    /// </summary>
     public static class RequesterIdentityExtensions
     {
         /// <summary>
@@ -22,6 +25,7 @@ namespace NIdentity.Connector.AspNetCore.Extensions
         /// <b>I strongly recommends that this method should be called at last of last.</b>
         /// </summary>
         /// <param name="Kestrel"></param>
+        /// <param name="Mode"></param>
         /// <returns></returns>
         public static KestrelServerOptions EnableSslRequesterRecognition(
             this KestrelServerOptions Kestrel, ClientCertificateMode Mode = ClientCertificateMode.AllowCertificate)
@@ -64,7 +68,8 @@ namespace NIdentity.Connector.AspNetCore.Extensions
         /// Add the requester recognition to the application.
         /// This add <see cref="RequesterRecognition"/> middleware.
         /// </summary>
-        /// <param name="App"></param>
+        /// <param name="Builder"></param>
+        /// <param name="RecognitionBuilder"></param>
         /// <returns></returns>
         public static IApplicationBuilder UseRequesterRecognition(
             this IApplicationBuilder Builder,

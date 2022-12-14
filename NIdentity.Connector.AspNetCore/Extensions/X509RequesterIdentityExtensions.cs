@@ -32,7 +32,7 @@ namespace NIdentity.Connector.AspNetCore.Extensions
         /// Enable X509 identity for <see cref="RequesterIdentitySystem"/>.
         /// </summary>
         /// <param name="Builder"></param>
-        /// <param name="Options"></param>
+        /// <param name="Configure"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
         public static RequesterIdentitySystemBuilder EnableX509Identity(

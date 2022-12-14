@@ -1,5 +1,8 @@
 ﻿namespace NIdentity.Core.X509
 {
+    /// <summary>
+    /// Purposes of certificate.
+    /// </summary>
     public enum CertificatePurposes
     {
         /// <summary>

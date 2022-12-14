@@ -1,10 +1,33 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <OutputType>Library</OutputType>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Copyright>copyright (c) 2022 jay94ks</Copyright>
+    <PackageProjectUrl>https://github.com/jay94ks/nidentity</PackageProjectUrl>
+    <RepositoryType>github</RepositoryType>
+    <RepositoryUrl>https://github.com/jay94ks/nidentity</RepositoryUrl>
+    <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\ReadMe.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NIdentity.Connector\NIdentity.Connector.csproj" />

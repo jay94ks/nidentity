@@ -4,6 +4,9 @@ using Org.BouncyCastle.Security;
 
 namespace NIdentity.Core.X509.Algorithms
 {
+    /// <summary>
+    /// RSA algorithm,
+    /// </summary>
     public class RsaAlgorithm : Algorithm
     {
         /// <summary>

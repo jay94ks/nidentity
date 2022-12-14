@@ -11,7 +11,6 @@
         /// Initialize a new <see cref="RequesterRecognition"/> instance.
         /// </summary>
         /// <param name="Next"></param>
-        /// <param name="System"></param>
         public RequesterRecognition(RequestDelegate Next)
         {
             m_Next = Next;
@@ -47,6 +46,7 @@
         /// <summary>
         /// Override this method when the additional operations required.
         /// </summary>
+        /// <param name="Requester"></param>
         /// <param name="Next"></param>
         /// <returns></returns>
         protected virtual Task OnInvokeAsync(Requester Requester, Func<Task> Next)

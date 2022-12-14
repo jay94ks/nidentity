@@ -1,5 +1,8 @@
 ﻿namespace NIdentity.Core.X509
 {
+    /// <summary>
+    /// Certificate type.
+    /// </summary>
     public enum CertificateType
     {
         /// <summary>

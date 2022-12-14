@@ -3,6 +3,9 @@ using Newtonsoft.Json.Linq;
 
 namespace NIdentity.Core.Helpers
 {
+    /// <summary>
+    /// <see cref="JObject"/> easy manipulators.
+    /// </summary>
     public static class JObjectHelpers
     {
         /// <summary>
@@ -70,7 +73,7 @@ namespace NIdentity.Core.Helpers
         /// <typeparam name="TValue"></typeparam>
         /// <param name="Json"></param>
         /// <param name="Property"></param>
-        /// <param name="Default"></param>
+        /// <param name="OutValue"></param>
         /// <returns></returns>
         public static bool TryGet<TValue>(this JObject Json, string Property, out TValue OutValue)
         {

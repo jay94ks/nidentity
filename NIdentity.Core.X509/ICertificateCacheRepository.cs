@@ -1,5 +1,9 @@
 ﻿namespace NIdentity.Core.X509
 {
+    /// <summary>
+    /// Cache repository that stores certificate instances on memory.
+    /// To optimize certificate loading.
+    /// </summary>
     public interface ICertificateCacheRepository
     {
         /// <summary>
@@ -30,6 +34,7 @@
         /// Set the certificate to cache repository.
         /// </summary>
         /// <param name="Certificate"></param>
+        /// <param name="Action"></param>
         /// <param name="Token"></param>
         /// <returns></returns>
         Task SetAsync(Certificate Certificate, Action<Certificate> Action, CancellationToken Token = default);

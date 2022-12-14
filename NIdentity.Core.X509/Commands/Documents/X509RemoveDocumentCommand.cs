@@ -4,6 +4,9 @@ using NIdentity.Core.X509.Commands;
 
 namespace NIdentity.Core.X509.Commands.Documents
 {
+    /// <summary>
+    /// A command to remove document.
+    /// </summary>
     [Command(Kind = "x509")]
     public class X509RemoveDocumentCommand : X509DocumentAccessCommand
     {
@@ -14,6 +17,9 @@ namespace NIdentity.Core.X509.Commands.Documents
         {
         }
 
+        /// <summary>
+        /// Result.
+        /// </summary>
         public class Result : DocumentResult<Result>
         {
         }

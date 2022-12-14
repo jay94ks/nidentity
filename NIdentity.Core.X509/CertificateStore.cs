@@ -30,7 +30,7 @@ namespace NIdentity.Core.X509
         /// <summary>
         /// Get the certificate by its key identifier.
         /// </summary>
-        /// <param name="KeyIdentifier"></param>
+        /// <param name="SerialNumber"></param>
         /// <returns></returns>
         public Certificate GetBySerialNumber(string SerialNumber) => m_Certificates.FirstOrDefault(X => X.SerialNumber == SerialNumber);
 

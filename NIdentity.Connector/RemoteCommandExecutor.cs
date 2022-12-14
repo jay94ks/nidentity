@@ -8,6 +8,9 @@ using NIdentity.Core.X509;
 
 namespace NIdentity.Connector
 {
+    /// <summary>
+    /// Executes command on the remote server.
+    /// </summary>
     public class RemoteCommandExecutor : ICommandExecutor, IDisposable
     {
         private readonly RemoteCommandExecutorParameters m_Parameters;
@@ -140,7 +143,6 @@ namespace NIdentity.Connector
         /// Execute the command by.
         /// </summary>
         /// <param name="Executor"></param>
-        /// <param name="Token"></param>
         /// <returns></returns>
         private Task<CommandResult> ExecuteUsingRemoter(Func<ICommandExecutor, Task<CommandResult>> Executor)
         {

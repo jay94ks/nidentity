@@ -9,6 +9,9 @@ using System.Text;
 
 namespace NIdentity.Core.X509.Revokations
 {
+    /// <summary>
+    /// Builds CRL files.
+    /// </summary>
     public class CRLBuilder
     {
         /// <summary>

@@ -19,6 +19,7 @@ namespace NIdentity.Core.Commands
             /// Map a type as its type name.
             /// </summary>
             /// <param name="Type"></param>
+            /// <param name="Handler"></param>
             /// <returns></returns>
             /// <exception cref="ArgumentNullException"></exception>
             /// <exception cref="ArgumentException"></exception>
@@ -248,6 +249,7 @@ namespace NIdentity.Core.Commands
             /// Filter Handler Method.
             /// </summary>
             /// <param name="Method"></param>
+            /// <param name="ContextType"></param>
             /// <returns></returns>
             private static bool FilterHandlerMethod(MethodInfo Method, Type ContextType)
             {

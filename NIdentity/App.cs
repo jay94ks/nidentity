@@ -2,16 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using Newtonsoft.Json;
-using NIdentity.Core;
 using NIdentity.Core.Server;
 using NIdentity.Core.X509;
 using NIdentity.Core.X509.Commands.Certificates;
 using NIdentity.Core.X509.Server;
 using NIdentity.Core.X509.Server.Commands;
-using NIdentity.Core.X509.Server.Commands.Certificates;
 using System.Diagnostics;
-using System.Net.Security;
-using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 

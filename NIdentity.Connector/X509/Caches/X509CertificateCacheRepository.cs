@@ -2,6 +2,9 @@
 
 namespace NIdentity.Connector.X509.Caches
 {
+    /// <summary>
+    /// Memory cache repository to optimize certificate loading.
+    /// </summary>
     public class X509CertificateCacheRepository : IDisposable, ICertificateCacheRepository
     {
         private readonly SemaphoreSlim m_Semaphore = new(1);
@@ -10,7 +13,7 @@ namespace NIdentity.Connector.X509.Caches
         /// <summary>
         /// Initialize a new <see cref="X509CertificateCacheRepository"/> instance.
         /// </summary>
-        /// <param name="ServerSettings"></param>
+        /// <param name="MaxCachedCerts"></param>
         public X509CertificateCacheRepository(int MaxCachedCerts)
         {
             m_Caches = new X509CertificateCache[MaxCachedCerts];

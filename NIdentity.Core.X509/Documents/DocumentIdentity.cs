@@ -2,6 +2,9 @@
 
 namespace NIdentity.Core.X509.Documents
 {
+    /// <summary>
+    /// Document identity.
+    /// </summary>
     public struct DocumentIdentity : IEquatable<DocumentIdentity>
     {
         /// <summary>
@@ -74,7 +77,20 @@ namespace NIdentity.Core.X509.Documents
         public override int GetHashCode() => $"{Owner}:{NormalizePathName(PathName)}".GetHashCode();
 
         // --------
+        /// <summary>
+        /// Eq
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static bool operator ==(DocumentIdentity L, DocumentIdentity R) => L.Equals(R);
+
+        /// <summary>
+        /// Neq
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static bool operator !=(DocumentIdentity L, DocumentIdentity R) => !(L == R);
     }
 }

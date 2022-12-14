@@ -4,13 +4,15 @@ using NIdentity.Core.X509.Commands;
 
 namespace NIdentity.Core.X509.Commands.Certificates
 {
+    /// <summary>
+    /// A command to get metadatas of certificate.
+    /// </summary>
     [Command(Kind = "x509")]
     public class X509GetCertificateMetaCommand : X509CertificateAccessCommand
     {
         /// <summary>
         /// Initialize a new <see cref="X509GetCertificateMetaCommand"/> instance.
         /// </summary>
-        /// <param name="Type"></param>
         public X509GetCertificateMetaCommand() : base("cert_get_meta")
         {
         }

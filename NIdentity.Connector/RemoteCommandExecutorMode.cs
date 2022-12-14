@@ -1,5 +1,8 @@
 ﻿namespace NIdentity.Connector
 {
+    /// <summary>
+    /// Protocol to use.
+    /// </summary>
     public enum RemoteCommandExecutorMode
     {
         /// <summary>

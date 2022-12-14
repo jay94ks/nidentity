@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace NIdentity.Connector.X509
 {
+    /// <summary>
+    /// Certificate collection that is read only.
+    /// </summary>
     public class X509CertificateCollection : IReadOnlyCollection<Certificate>
     {
         private readonly Certificate[] m_Certificates;
@@ -16,6 +19,7 @@ namespace NIdentity.Connector.X509
         /// Initialize a new <see cref="X509CertificateCollection"/> instance.
         /// </summary>
         /// <param name="Certificates"></param>
+        /// <param name="TotalCount"></param>
         internal X509CertificateCollection(IEnumerable<Certificate> Certificates, int TotalCount )
         {
             this.TotalCount = TotalCount;

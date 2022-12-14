@@ -7,6 +7,9 @@ using System.Text;
 
 namespace NIdentity.Core.X509
 {
+    /// <summary>
+    /// Identity of certificate.
+    /// </summary>
     public struct CertificateIdentity : IEquatable<CertificateIdentity>
     {
         private readonly string m_KeySHA1;
@@ -55,6 +58,7 @@ namespace NIdentity.Core.X509
         /// </summary>
         /// <param name="Subject"></param>
         /// <param name="KeyIdentifier"></param>
+        /// <param name="KeySHA1"></param>
         public CertificateIdentity(string Subject, string KeyIdentifier, string KeySHA1)
         {
             this.Subject = Subject;
@@ -70,10 +74,9 @@ namespace NIdentity.Core.X509
         }
 
         /// <summary>
-        /// Initialize <see cref="CertificateIdentity"/> using <paramref name="Subject"/>> and <paramref name="KeyIdentifier"/>.
+        /// Initialize <see cref="CertificateIdentity"/> for <see cref="Certificate"/>.
         /// </summary>
-        /// <param name="Subject"></param>
-        /// <param name="KeyIdentifier"></param>
+        /// <param name="Certificate"></param>
         public CertificateIdentity(Certificate Certificate)
         {
             Subject = Certificate.Subject;
@@ -205,7 +208,21 @@ namespace NIdentity.Core.X509
         }
 
         // ----
+
+        /// <summary>
+        /// Eq
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static bool operator ==(CertificateIdentity L, CertificateIdentity R) => L.Equals(R);
+
+        /// <summary>
+        /// Neq
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static bool operator !=(CertificateIdentity L, CertificateIdentity R) => !(L == R);
     }
 }

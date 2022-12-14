@@ -1,5 +1,8 @@
 ﻿namespace NIdentity.Core.Helpers
 {
+    /// <summary>
+    /// <see cref="Task{TResult}"/> to Task&lt;object&gt; conversion utility.
+    /// </summary>
     public static class TaskHelpers
     {
         /// <summary>

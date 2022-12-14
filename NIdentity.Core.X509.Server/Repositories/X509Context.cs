@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NIdentity.Core.Server.Helpers;
 using NIdentity.Core.X509.Documents;
 using NIdentity.Core.X509.Server.Helpers;
 using NIdentity.Core.X509.Server.Repositories.Models;

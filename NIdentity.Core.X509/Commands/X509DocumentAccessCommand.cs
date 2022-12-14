@@ -17,6 +17,9 @@ namespace NIdentity.Core.X509.Commands
         {
         }
 
+        /// <summary>
+        /// Document result.
+        /// </summary>
         public class DocumentResult : CommandResult
         {
             /// <summary>
@@ -106,12 +109,17 @@ namespace NIdentity.Core.X509.Commands
             public bool HasChildren { get; set; }
         }
 
+        /// <summary>
+        /// Document result (generic version)
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
         public class DocumentResult<TResult> : DocumentResult where TResult : DocumentResult, new()
         {
             /// <summary>
             /// Make a document result.
             /// </summary>
             /// <param name="Document"></param>
+            /// <param name="More"></param>
             /// <returns></returns>
             public static TResult Make(Document Document, Action<TResult> More = null) => Make<TResult>(Document, More);
         }
@@ -136,9 +144,15 @@ namespace NIdentity.Core.X509.Commands
         [JsonProperty("path")]
         public string PathName { get; set; }
 
+        /// <summary>
+        /// Owner identity.
+        /// </summary>
         [JsonIgnore]
         public CertificateIdentity Owner => new CertificateIdentity(Subject, KeyIdentifier);
 
+        /// <summary>
+        /// Document identity.
+        /// </summary>
         [JsonIgnore]
         public DocumentIdentity Identity => new DocumentIdentity(Owner, PathName);
 

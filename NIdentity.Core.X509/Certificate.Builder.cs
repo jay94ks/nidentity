@@ -12,6 +12,9 @@ using System.Net;
 
 namespace NIdentity.Core.X509
 {
+    /// <summary>
+    /// X509 certificate wrapper.
+    /// </summary>
     public partial class Certificate
     {
         /// <summary>
@@ -19,6 +22,9 @@ namespace NIdentity.Core.X509
         /// </summary>
         public class Builder
         {
+            /// <summary>
+            /// Authority parameters.
+            /// </summary>
             public class AuthorityParameters
             {
                 /// <summary>
@@ -334,6 +340,7 @@ namespace NIdentity.Core.X509
             /// Set the CA's authority access points.
             /// </summary>
             /// <param name="Generator"></param>
+            /// <param name="Issuer"></param>
             private void SetAuthorityAccesPoints(X509V3CertificateGenerator Generator, AuthorityBuilder Issuer)
             {
                 var OcspServers = Issuer.AccessPoints
@@ -369,7 +376,11 @@ namespace NIdentity.Core.X509
             /// <summary>
             /// Invoke all <see cref="PostConfigure(Action{X509V3CertificateGenerator})"/> delegates.
             /// </summary>
-            /// <param name="Generator"></param>
+            /// <param name="Builder"></param>
+            /// <param name="Issuer"></param>
+            /// <param name="Aki"></param>
+            /// <param name="Ski"></param>
+            /// <param name="SN"></param>
             private void InvokePostAuthorityDelegates(AuthorityBuilder Builder, BigInteger SN, string Ski, string Issuer, string Aki)
             {
                 var Temp = m_Authorities.ToArray();

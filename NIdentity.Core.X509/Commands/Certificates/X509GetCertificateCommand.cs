@@ -4,13 +4,15 @@ using NIdentity.Core.X509.Commands;
 
 namespace NIdentity.Core.X509.Commands.Certificates
 {
+    /// <summary>
+    /// Get a certificate with base64 encoded CER datas.
+    /// </summary>
     [Command(Kind = "x509")]
     public class X509GetCertificateCommand : X509CertificateAccessCommand
     {
         /// <summary>
         /// Initialize a new <see cref="X509GetCertificateCommand"/> instance.
         /// </summary>
-        /// <param name="Type"></param>
         public X509GetCertificateCommand() : base("cert_get")
         {
         }

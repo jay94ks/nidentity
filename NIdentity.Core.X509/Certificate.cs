@@ -37,6 +37,7 @@ namespace NIdentity.Core.X509
         /// Initialize a new <see cref="Certificate"/> instance.
         /// </summary>
         /// <param name="X509"></param>
+        /// <param name="PrivateKey"></param>
         internal Certificate(X509Certificate X509, AsymmetricKeyParameter PrivateKey = null)
         {
             this.X509 = X509;
@@ -208,6 +209,9 @@ namespace NIdentity.Core.X509
         /// </summary>
         public bool HasPrivateKey => PrivateKey != null;
 
+        /// <summary>
+        /// User specific object tag.
+        /// </summary>
         public object UserTag { get; set; }
 
         /// <summary>
@@ -310,9 +314,36 @@ namespace NIdentity.Core.X509
         }
 
         // ----
+        /// <summary>
+        /// Eq
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static bool operator ==(Certificate L, Certificate R) => ReferenceEquals(L, null) ? ReferenceEquals(R, null) : L.Equals(R);
+
+        /// <summary>
+        /// Neq
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static bool operator !=(Certificate L, Certificate R) => ReferenceEquals(L, null) ? !ReferenceEquals(R, null) : !L.Equals(R);
+
+        /// <summary>
+        /// Eq
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static bool operator ==(Certificate L, CertificateReference R) => ReferenceEquals(L, null) ? !R.Validity : L.Equals(R);
+
+        /// <summary>
+        /// Neq
+        /// </summary>
+        /// <param name="L"></param>
+        /// <param name="R"></param>
+        /// <returns></returns>
         public static bool operator !=(Certificate L, CertificateReference R) => ReferenceEquals(L, null) ? R.Validity : !L.Equals(R);
     }
 }
