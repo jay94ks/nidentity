@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace NIdentity.Core.X509.Server.Helpers
+namespace NIdentity.Core.Server.Helpers
 {
-    internal static class DbContextHelpers
+    public static class DbContextHelpers
     {
         /// <summary>
         /// Create a row.
