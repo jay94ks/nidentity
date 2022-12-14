@@ -121,3 +121,76 @@ This library provides just wrapper that pre-written codes to execute command thr
 Basically, `NIdentity` provides a command processing endpoint mapped to the `api/infra/live` path. No other complex procedures are required, and no need to memorize different routes. Just disable server side certificate verification (HTTPS, WSS), set CA certificate with private key as SSL client certificate and send JSON formatted command.
 
 And, non-sensitive commands can be used without an SSL client certificate. Finally, running sensitive commands is prohibited in a Cleartext HTTP environment rather than HTTPS.
+
+## Server-side Framework.
+I started this project as a hobby, but (The detailed story is omitted). While applying, I researched what was necessary to identify the certificate, and thought about what kind of framework it would be good to have, and I came up with the `NIdentity.Connector.AspNetCore` project.
+
+```
+// (Reverse Proxy configuration)
+
+var Builder = WebApplication.CreateBuilder();
+Builder.WebHost.UseUrls("http://0.0.0.0:8000");
+Builder.Services
+	.AddRequesterIdentitySystem()
+	.AddX509RequesterIdentityService()
+	;
+
+// ............
+
+var Host = Builder.Build();
+
+// ............
+
+Host
+	.UseRequesterRecognition(Requester => {
+		Requester
+			.EnableX509Identity(X509Options => {
+				// --> Default values (with Apache2)
+				// X509Options.PemBase64Header = "SSL_CLIENT_CERT";
+				// X509Options.ResultHeader = "SSL_CLIENT_VERIFY";
+				// X509Options.ExpectedResultValue = "SUCCESS";
+			})
+			;
+	})
+	.UseCors()
+	// ... (insert something before requester validation if required) ...
+	.UseUseRequesterValidation()
+	.UseRouting()
+	.UseEndpoint(X => {
+		// ............
+	})
+
+```
+This configuration is an Apache2 reverse proxy configuration, and after deploying CA certificates, you need to go through a series of processes to create appropriate symbolic links.
+
+```
+# .......................
+
+SSLVerifyClient require
+SSLVerifyDepth 10
+
+SSLCACertificateFile
+SSLCACertificatePath /home/api-server/ca_certs/
+SSLOptions +StdEnvVars +ExportCertData
+
+ProxyRequests Off
+ProxyPreserveHost On
+
+# Initialize default header values to prevent header poisoning.
+RequestHeader set SSL_CLIENT_CERT ""
+RequestHeader set SSL_CLIENT_VERIFY ""
+
+# Pass required parameters to the api server.
+<Location />
+  RequestHeader set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"
+  RequestHeader set SSL_CLIENT_VERIFY "%{SSL_CLIENT_VERIFY}s"
+</Location>
+
+# --> These can be replaced with load balancing configurations.
+ProxyPass / http://localhost:8200/
+ProxyPassReverse / http://localhost:8200/
+
+# .......................
+```
+Finally, after configuring the Apache settings like this, the `NIdentity.Connector.AspNetCore` framework works correctly.
+
