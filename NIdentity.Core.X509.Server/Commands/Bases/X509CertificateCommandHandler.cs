@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NIdentity.Connector.AspNetCore.Extensions;
+using NIdentity.Connector.AspNetCore.Identities.X509;
 using NIdentity.Core.Commands;
 
 namespace NIdentity.Core.X509.Server.Commands.Bases
@@ -15,7 +17,8 @@ namespace NIdentity.Core.X509.Server.Commands.Bases
         /// Initialize a new <see cref="X509Command"/> instance.
         /// </summary>
         /// <param name="Type"></param>
-        protected X509CertificateCommandHandler(X509RequesterAccesor Requester) => m_Requester = Requester;
+        protected X509CertificateCommandHandler(X509RequesterAccesor Requester) 
+            => m_Requester = Requester;
 
         /// <summary>
         /// Requester's certificate.

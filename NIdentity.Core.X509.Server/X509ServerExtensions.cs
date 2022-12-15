@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using NIdentity.Connector.AspNetCore.Extensions;
+using NIdentity.Connector.AspNetCore.Identities.X509;
 using NIdentity.Core.Commands;
 using NIdentity.Core.Server.Commands;
 using NIdentity.Core.X509.Commands.Certificates;
@@ -123,59 +125,12 @@ namespace NIdentity.Core.X509.Server
                 var Http = Context.HttpContext;
                 var Accessor = Http.RequestServices.GetRequiredService<X509RequesterAccesor>();
                 var Settings = Http.RequestServices.GetRequiredService<X509ServerSettings>();
+                var Identity = Http.GetRequester().Get<X509RequesterIdentity>();
 
-                string Thumbprint = string.Empty;
-                CertificateReference Reference = default;
+                if (Identity.IsValidated)
+                    Accessor.Requester = Identity.Recognized;
 
-                var Logger = Http.RequestServices.GetService<ILogger<Certificate>>();
-
-                if (Http.Request.Headers.TryGetValue("X-ARR-ClientCert", out var Value))
-                {
-                    Logger?.LogInformation(
-                        $"Authentication: SN: {Value}.");
-
-                    return;
-                }
-
-                else if (Http.Connection.ClientCertificate is null)
-                {
-                    Accessor.Requester = null;
-                    Accessor.IsSuperAccess = Settings.IsSuperMode;// -- Debugger.IsAttached;
-
-                    await Next.Invoke();
-                    return;
-                }
-
-                else
-                {
-                    Reference = new CertificateReference(Http.Connection.ClientCertificate);
-                    Thumbprint = (Http.Connection.ClientCertificate.Thumbprint ?? string.Empty).ToLower();
-
-                    Logger?.LogInformation(
-                        $"Authentication: SN: {Reference.SerialNumber}, " +
-                        $"IK: {Reference.IssuerKeyIdentifier}, " +
-                        $"Thumbprint: {Thumbprint}.");
-                }
-
-                if (Reference.Validity && !string.IsNullOrWhiteSpace(Thumbprint))
-                {
-                    var Repository = Http.RequestServices.GetRequiredService<ICertificateRepository>();
-                    var StoredCert = await Repository.LoadAsync(Reference, Http.RequestAborted);
-                    if (StoredCert != null && StoredCert.Thumbprint != Thumbprint)
-                    {
-                        Context.Unauthorized = true;
-                        return;
-                    }
-
-                    Accessor.Requester = StoredCert;
-                    Accessor.IsSuperAccess = Settings.IsSuperMode;// Debugger.IsAttached;
-                }
-                else
-                {
-                    Accessor.Requester = null;
-                    Accessor.IsSuperAccess = Settings.IsSuperMode;// Debugger.IsAttached;
-                }
-
+                Accessor.IsSuperAccess = Settings.IsSuperMode;// -- Debugger.IsAttached;
                 await Next.Invoke();
             });
 
