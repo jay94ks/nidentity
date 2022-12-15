@@ -26,18 +26,17 @@ namespace NIdentity.Connector.X509
         /// Initialize a new <see cref="X509CommandExecutor"/> instance.
         /// </summary>
         /// <param name="Executor"></param>
-        /// <param name="Parameters"></param>
-        internal X509CommandExecutor(RemoteCommandExecutor Executor, RemoteCommandExecutorParameters Parameters)
+        /// <param name="CacheRepository"></param>
+        public X509CommandExecutor(ICommandExecutor Executor, ICertificateCacheRepository CacheRepository = null)
         {
             this.Executor = Executor;
-            CacheRepository = Parameters.CacheRepository
-                ?? new X509CertificateCacheRepository(100);
+            this.CacheRepository = CacheRepository ?? new X509CertificateCacheRepository(100);
         }
 
         /// <summary>
         /// Remote Executor.
         /// </summary>
-        public RemoteCommandExecutor Executor { get; }
+        public ICommandExecutor Executor { get; }
 
         /// <summary>
         /// Certificate Caches.

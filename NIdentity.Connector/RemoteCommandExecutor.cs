@@ -38,7 +38,7 @@ namespace NIdentity.Connector
             }
 
             m_Parameters = Parameters;
-            X509 = new X509CommandExecutor(this, Parameters);
+            X509 = new X509CommandExecutor(this);
         }
 
         /// <summary>

@@ -10,7 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <Compile Remove="Controllers\**" />
+    <Content Remove="Controllers\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <None Remove="Controllers\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +22,7 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NIdentity.Connector.AspNetCore\NIdentity.Connector.AspNetCore.csproj" />
     <ProjectReference Include="..\NIdentity.Core.Server\NIdentity.Core.Server.csproj" />
     <ProjectReference Include="..\NIdentity.Core.X509.Server\NIdentity.Core.X509.Server.csproj" />
     <ProjectReference Include="..\NIdentity.Core\NIdentity.Core.csproj" />

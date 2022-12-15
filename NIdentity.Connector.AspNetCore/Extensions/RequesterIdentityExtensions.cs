@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using NIdentity.Connector.AspNetCore.Builders;
 using NIdentity.Connector.AspNetCore.Middlewares;
+using NIdentity.Core;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 
@@ -62,6 +63,27 @@ namespace NIdentity.Connector.AspNetCore.Extensions
                 ;
 
             return Services;
+        }
+
+        /// <summary>
+        /// Add a remote command executor.
+        /// </summary>
+        /// <param name="Services"></param>
+        /// <param name="Configure"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static IServiceCollection AddRemoteCommandExecutor(this IServiceCollection Services,
+            Action<IServiceProvider, RemoteCommandExecutorParameters> Configure)
+        {
+            if (Configure is null)
+                throw new ArgumentNullException(nameof(Configure));
+
+            var Parameters = new RemoteCommandExecutorParameters();
+            return Services.AddScoped(Services =>
+            {
+                Configure.Invoke(Services, Parameters);
+                return new RemoteCommandExecutor(Parameters);
+            });
         }
 
         /// <summary>

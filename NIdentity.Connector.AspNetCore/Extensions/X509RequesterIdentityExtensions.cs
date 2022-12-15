@@ -1,5 +1,8 @@
 ﻿using NIdentity.Connector.AspNetCore.Builders;
 using NIdentity.Connector.AspNetCore.Identities.X509;
+using NIdentity.Connector.X509;
+using NIdentity.Core;
+using NIdentity.Core.X509;
 
 namespace NIdentity.Connector.AspNetCore.Extensions
 {
@@ -16,14 +19,41 @@ namespace NIdentity.Connector.AspNetCore.Extensions
         /// to the service collection.
         /// </summary>
         /// <param name="Services"></param>
+        /// <param name="Factory"></param>
         /// <returns></returns>
-        public static IServiceCollection AddX509RequesterIdentityService(this IServiceCollection Services)
+        public static IServiceCollection AddX509RequesterIdentityService(
+            this IServiceCollection Services, Func<IServiceProvider, X509CommandExecutor> Factory = null)
         {
             Services
                 .AddSingleton<X509RequesterIdentityRecognizer>()
                 .AddSingleton<X509RequesterIdentityValidator>()
                 .AddSingleton<X509RequesterIdentityOptions>()
                 ;
+
+            if (Factory is null)
+            {
+                Services.AddScoped(Services =>
+                {
+                    var Executor = Services.GetRequiredService<ICommandExecutor>();
+                    if (Executor is RemoteCommandExecutor Rce)
+                        return Rce.X509;
+
+                    var Caches = Services.GetService<ICertificateCacheRepository>();
+                    return new X509CommandExecutor(Executor, Caches);
+                });
+            }
+
+            else
+            {
+                Services.AddScoped(Services =>
+                {
+                    var Executor = Services.GetService<ICommandExecutor>();
+                    if (Executor is RemoteCommandExecutor Rce)
+                        return Rce.X509;
+
+                    return Factory.Invoke(Services);
+                });
+            }
 
             return Services;
         }
