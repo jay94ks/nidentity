@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using Newtonsoft.Json;
+using NIdentity.Connector.AspNetCore.Extensions;
 using NIdentity.Core.Server;
 using NIdentity.Core.X509;
 using NIdentity.Core.X509.Commands.Certificates;
@@ -45,24 +46,12 @@ namespace NIdentity
             Host.WebHost.UseUrls(Urls.ToArray());
             Host.WebHost.ConfigureKestrel(Kestrel =>
             {
-                Kestrel.ConfigureHttpsDefaults(Https =>
+                if (Cert != null)
                 {
-                    if (Cert != null)
-                    {
-                        Https.ServerCertificate = Cert.ToDotNetCert();
-                    }
-
-                    Https.CheckCertificateRevocation = false;
-                    Https.ClientCertificateMode = ClientCertificateMode.AllowCertificate;
-                    Https.ClientCertificateValidation = (_, _2, _3) => true;
-
-                    Https.OnAuthenticate = (A, B) =>
-                    {
-                        B.AllowRenegotiation = true;
-                        B.CertificateRevocationCheckMode = X509RevocationMode.NoCheck;
-                    };
-
-                });
+                    Kestrel
+                        .EnableSslRequesterRecognition(ClientCertificateMode.AllowCertificate)
+                        .ConfigureHttpsDefaults(Https => Https.ServerCertificate = Cert.ToDotNetCert());
+                }
             });
 
             Host.Services.AddCors();
@@ -92,9 +81,13 @@ namespace NIdentity
                 .MapX509ServerCommands()
                 ;
 
+            Host.Services
+                .AddRequesterIdentitySystem()
+                .AddX509RequesterIdentityService()
+                ;
 
-            var X509Settings = Host.Services.AddX509<AppContext>();
-            ConfigureX509Environment(X509Settings);
+            // --
+            ConfigureX509Environment(Host.Services.AddX509<AppContext>());
 
             return Host;
         }
@@ -157,7 +150,10 @@ namespace NIdentity
         {
             var Wapp = Host.Build();
 
-            Wapp.UseCors()
+            Wapp
+                .UseRequesterRecognition()
+                .UseRequesterValidation()
+                .UseCors()
                 .UseWebSockets();
 
             using (var Scope = Wapp.Services.CreateScope())
