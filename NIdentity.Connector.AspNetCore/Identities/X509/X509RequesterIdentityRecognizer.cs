@@ -3,6 +3,7 @@ using NIdentity.Core.X509;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.X509;
 using X509ContentType = System.Security.Cryptography.X509Certificates.X509ContentType;
+
 namespace NIdentity.Connector.AspNetCore.Identities.X509
 {
     /// <summary>

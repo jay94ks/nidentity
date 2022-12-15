@@ -4,6 +4,9 @@
     <Compile Update="Forms\Docs\FrmNewDocument.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\FrmChangePfxPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\FrmGenerator.cs">
       <SubType>Form</SubType>
     </Compile>

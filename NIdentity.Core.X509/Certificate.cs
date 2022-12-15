@@ -6,6 +6,7 @@ using Org.BouncyCastle.Asn1.X9;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Operators;
 using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.X509;
 using System.Security.Cryptography;
 using System.Text;
@@ -82,6 +83,49 @@ namespace NIdentity.Core.X509
             var Store = CertificateStore.Import(Data);
             return Store.Certificates.First();
         }
+
+        /// <summary>
+        /// Import PEM string.
+        /// Warning: this will not load private key.
+        /// To load private key, use <see cref="CertificateStore.ImportPem(string)"/>.
+        /// </summary>
+        /// <param name="PemText"></param>
+        /// <returns></returns>
+        public static Certificate ImportPem(string PemText)
+        {
+            // --> normalize sparators.
+            PemText = string.Join("\r\n", PemText.Split(' ', '\n', '\r')
+                .Where(X => !string.IsNullOrWhiteSpace(X)));
+
+            using var TextRd = new StringReader(PemText);
+            var Pem = new PemReader(TextRd);
+
+            while (true)
+            {
+                var Obj = Pem.ReadObject();
+                if (Obj is null)
+                    return null;
+
+                if (Obj is not X509Certificate Read)
+                    continue;
+
+                var Cert = Import(Read.GetEncoded());
+                if (Cert != null)
+                {
+                    return Cert;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Import PEM string.
+        /// Warning: this will not load private key.
+        /// To load private key, use <see cref="CertificateStore.ImportPem(byte[])"/>.
+        /// </summary>
+        /// <param name="PemBytes"></param>
+        /// <returns></returns>
+        public static Certificate ImportPem(byte[] PemBytes)
+            => ImportPem(Encoding.UTF8.GetString(PemBytes));
 
         /// <summary>
         /// Bouncy Castle X509.

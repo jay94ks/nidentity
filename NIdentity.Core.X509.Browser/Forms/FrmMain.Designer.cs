@@ -39,6 +39,8 @@
             this.m_MenuStatusDeactivate = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.keysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pFXToPEMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.m_TreeCerts = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -82,8 +84,8 @@
             this.m_BtnUnrevoke = new System.Windows.Forms.Button();
             this.m_BtnDelete = new System.Windows.Forms.Button();
             this.m_BtnRevoke = new System.Windows.Forms.Button();
-            this.keysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pFXToPEMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.pFXPasswordChangerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -193,6 +195,23 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(167, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.OnExitApp);
+            // 
+            // keysToolStripMenuItem
+            // 
+            this.keysToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pFXToPEMToolStripMenuItem,
+            this.toolStripMenuItem5,
+            this.pFXPasswordChangerToolStripMenuItem});
+            this.keysToolStripMenuItem.Name = "keysToolStripMenuItem";
+            this.keysToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
+            this.keysToolStripMenuItem.Text = "Keys";
+            // 
+            // pFXToPEMToolStripMenuItem
+            // 
+            this.pFXToPEMToolStripMenuItem.Name = "pFXToPEMToolStripMenuItem";
+            this.pFXToPEMToolStripMenuItem.Size = new System.Drawing.Size(248, 26);
+            this.pFXToPEMToolStripMenuItem.Text = "PFX to PEM";
+            this.pFXToPEMToolStripMenuItem.Click += new System.EventHandler(this.pFXToPEMToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -683,20 +702,17 @@
             this.m_BtnRevoke.UseVisualStyleBackColor = true;
             this.m_BtnRevoke.Click += new System.EventHandler(this.OnRevokeOrigin);
             // 
-            // keysToolStripMenuItem
+            // toolStripMenuItem5
             // 
-            this.keysToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.pFXToPEMToolStripMenuItem});
-            this.keysToolStripMenuItem.Name = "keysToolStripMenuItem";
-            this.keysToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
-            this.keysToolStripMenuItem.Text = "Keys";
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(245, 6);
             // 
-            // pFXToPEMToolStripMenuItem
+            // pFXPasswordChangerToolStripMenuItem
             // 
-            this.pFXToPEMToolStripMenuItem.Name = "pFXToPEMToolStripMenuItem";
-            this.pFXToPEMToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.pFXToPEMToolStripMenuItem.Text = "PFX to PEM";
-            this.pFXToPEMToolStripMenuItem.Click += new System.EventHandler(this.pFXToPEMToolStripMenuItem_Click);
+            this.pFXPasswordChangerToolStripMenuItem.Name = "pFXPasswordChangerToolStripMenuItem";
+            this.pFXPasswordChangerToolStripMenuItem.Size = new System.Drawing.Size(248, 26);
+            this.pFXPasswordChangerToolStripMenuItem.Text = "PFX Password Changer";
+            this.pFXPasswordChangerToolStripMenuItem.Click += new System.EventHandler(this.pFXPasswordChangerToolStripMenuItem_Click);
             // 
             // FrmMain
             // 
@@ -802,5 +818,7 @@
         private ToolStripMenuItem exportCERToolStripMenuItem;
         private ToolStripMenuItem keysToolStripMenuItem;
         private ToolStripMenuItem pFXToPEMToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem5;
+        private ToolStripMenuItem pFXPasswordChangerToolStripMenuItem;
     }
 }

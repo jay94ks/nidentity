@@ -186,15 +186,19 @@ namespace NIdentity.Core.X509
         }
 
         /// <summary>
-        /// Import the certificate store from pem bytes.
+        /// Import PEM text.
         /// </summary>
-        /// <param name="PemBytes"></param>
+        /// <param name="PemText"></param>
         /// <returns></returns>
-        public static CertificateStore ImportPem(byte[] PemBytes)
+        public static CertificateStore ImportPem(string PemText)
         {
             var Store = new CertificateStore();
-            using var Temp = new MemoryStream(PemBytes);
-            using (var TempReader = new StreamReader(Temp, Encoding.UTF8, true, 1024, true))
+
+            // --> normalize sparators.
+            PemText = string.Join("\r\n", PemText.Split(' ', '\n', '\r')
+                .Where(X => !string.IsNullOrWhiteSpace(X)));
+
+            using (var TempReader = new StringReader(PemText))
             {
                 var Pem = new PemReader(TempReader);
                 var Certs = new List<X509Certificate>();
@@ -229,6 +233,14 @@ namespace NIdentity.Core.X509
 
             return Store;
         }
+
+        /// <summary>
+        /// Import the certificate store from pem bytes.
+        /// </summary>
+        /// <param name="PemBytes"></param>
+        /// <returns></returns>
+        public static CertificateStore ImportPem(byte[] PemBytes)
+            => ImportPem(Encoding.UTF8.GetString(PemBytes));
 
         /// <summary>
         /// Export this certificate store to pkcs12 store bytes (pfx, p12).

@@ -999,7 +999,6 @@ namespace NIdentity.Core.X509.Browser.Forms
 
             var PemBytes = Cert.ExportPem();
             {
-
                 using var Sfd = new SaveFileDialog
                 {
                     Title = "Select PEM Save Location",
@@ -1022,6 +1021,12 @@ namespace NIdentity.Core.X509.Browser.Forms
                     Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
+        }
+
+        private void pFXPasswordChangerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using var Pfx = new FrmChangePfxPassword();
+            Pfx.ShowDialog();
         }
     }
 }
