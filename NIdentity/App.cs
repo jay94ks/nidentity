@@ -151,7 +151,10 @@ namespace NIdentity
             var Wapp = Host.Build();
 
             Wapp
-                .UseRequesterRecognition()
+                .UseRequesterRecognition(Recognition =>
+                {
+                    Recognition.EnableX509Identity();
+                })
                 .UseRequesterValidation()
                 .UseCors()
                 .UseWebSockets();
