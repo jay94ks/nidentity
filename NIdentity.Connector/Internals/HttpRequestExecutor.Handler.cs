@@ -40,7 +40,7 @@ namespace NIdentity.Connector.Internals
             /// <returns></returns>
             internal static bool ChcekServerCertificate(Certificate ServerCertificate, X509Certificate ReceivedCertificate, SslPolicyErrors Error)
             {
-                if (Error == SslPolicyErrors.None)
+                if (Error == SslPolicyErrors.None || ServerCertificate is null)
                     return true;
 
                 if (ReceivedCertificate is null)

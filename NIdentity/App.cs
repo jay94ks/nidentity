@@ -46,10 +46,11 @@ namespace NIdentity
             Host.WebHost.UseUrls(Urls.ToArray());
             Host.WebHost.ConfigureKestrel(Kestrel =>
             {
+                Kestrel
+                    .EnableSslRequesterRecognition(ClientCertificateMode.AllowCertificate);
                 if (Cert != null)
                 {
                     Kestrel
-                        .EnableSslRequesterRecognition(ClientCertificateMode.AllowCertificate)
                         .ConfigureHttpsDefaults(Https => Https.ServerCertificate = Cert.ToDotNetCert());
                 }
             });
