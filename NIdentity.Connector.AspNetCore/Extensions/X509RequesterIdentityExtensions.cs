@@ -45,14 +45,12 @@ namespace NIdentity.Connector.AspNetCore.Extensions
 
             else
             {
-                Services.AddScoped(Services =>
-                {
-                    var Executor = Services.GetService<ICommandExecutor>();
-                    if (Executor is RemoteCommandExecutor Rce)
-                        return Rce.X509;
-
-                    return Factory.Invoke(Services);
-                });
+                /**
+                 * A default implementation that goes beyond the Factory method's natural role can confuse
+                 * the Factory method's implementers, so we decided to remove the default behavior that 
+                 * was previously defined.
+                 */
+                Services.AddScoped(Services => Factory.Invoke(Services));
             }
 
             return Services;
