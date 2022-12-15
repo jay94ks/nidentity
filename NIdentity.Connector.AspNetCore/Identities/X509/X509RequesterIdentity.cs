@@ -33,7 +33,7 @@ namespace NIdentity.Connector.AspNetCore.Identities.X509
         /// <summary>
         /// Metadata of certificate that received from X509 endpoint.
         /// </summary>
-        public X509GetCertificateMetaCommand.Result Metadata { get; internal set; }
+        internal X509GetCertificateMetaCommand.Result Metadata { get; set; }
 
         /// <summary>
         /// Serial Number.

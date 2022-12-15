@@ -83,6 +83,9 @@ namespace NIdentity.Connector.AspNetCore.Identities.X509
                         return await ValidateUsingExecutor(Requester, Identity, CacheRepository);
 
                     Identity.Metadata = Cache;
+                    Identity.Recognized.RevokeReason = Cache.RevokeReason;
+                    Identity.Recognized.RevokeTime = Cache.RevokeTime;
+
                     return true;
                 }
             }
@@ -130,6 +133,9 @@ namespace NIdentity.Connector.AspNetCore.Identities.X509
                     var Cache = RestoreFromJson(JsonConvert.SerializeObject(Metadata));
 
                     Identity.Metadata = Metadata;
+                    Identity.Recognized.RevokeReason = Cache.RevokeReason;
+                    Identity.Recognized.RevokeTime = Cache.RevokeTime;
+
                     Cache.CacheTime = DateTimeOffset.UtcNow;
                     await CacheRepository.SaveAsync(Identity, CacheKey, StoreIntoJson(Cache), Aborter);
                     return true;
