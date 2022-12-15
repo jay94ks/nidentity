@@ -59,6 +59,53 @@ namespace NIdentity.Connector.AspNetCore.Extensions
         }
 
         /// <summary>
+        /// Add <see cref="X509RequesterIdentityRecognizer"/>,
+        /// <see cref="X509RequesterIdentityValidator"/>,
+        /// <see cref="X509RequesterIdentityOptions"/>
+        /// to the service collection.
+        /// </summary>
+        /// <param name="Services"></param>
+        /// <param name="Resolver"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddX509RequesterIdentityService<TCommandExecutor>(
+            this IServiceCollection Services, Func<IServiceProvider, TCommandExecutor, X509CommandExecutor> Resolver = null)
+            where TCommandExecutor : ICommandExecutor
+        {
+            Services
+                .AddSingleton<X509RequesterIdentityRecognizer>()
+                .AddSingleton<X509RequesterIdentityValidator>()
+                .AddSingleton<X509RequesterIdentityOptions>()
+                ;
+
+            if (Resolver is null)
+            {
+                Services.AddScoped(Services =>
+                {
+                    var Executor = Services.GetRequiredService<TCommandExecutor>();
+                    if (Executor is RemoteCommandExecutor Rce)
+                        return Rce.X509;
+
+                    var Caches = Services.GetService<ICertificateCacheRepository>();
+                    return new X509CommandExecutor(Executor, Caches);
+                });
+            }
+
+            else
+            {
+                Services.AddScoped(Services =>
+                {
+                    var Executor = Services.GetService<TCommandExecutor>();
+                    if (Executor is RemoteCommandExecutor Rce)
+                        return Rce.X509;
+
+                    return Resolver.Invoke(Services, Executor);
+                });
+            }
+
+            return Services;
+        }
+
+        /// <summary>
         /// Enable X509 identity for <see cref="RequesterIdentitySystem"/>.
         /// </summary>
         /// <param name="Builder"></param>

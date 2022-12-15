@@ -27,8 +27,8 @@ namespace NIdentity.Connector.AspNetCore.Identities.X509
         /// <param name="Requester"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        private RemoteCommandExecutor GetExecutor(Requester Requester)
-            => Requester.HttpContext.RequestServices.GetService<RemoteCommandExecutor>()
+        private X509CommandExecutor GetExecutor(Requester Requester)
+            => Requester.HttpContext.RequestServices.GetService<X509CommandExecutor>()
             ?? throw new InvalidOperationException("to use X509 identity recognizer, add remote command executor services.");
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace NIdentity.Connector.AspNetCore.Identities.X509
 
             try
             {
-                var Metadata = await Executor.X509.GetCertificateMetaAsync(Identity.Recognized, Aborter);
+                var Metadata = await Executor.GetCertificateMetaAsync(Identity.Recognized, Aborter);
                 if (Metadata != null && Metadata.Thumbprint == Identity.Recognized.Thumbprint)
                 {
                     // --> identity verified.

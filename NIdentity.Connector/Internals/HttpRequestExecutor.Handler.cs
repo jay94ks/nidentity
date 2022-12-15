@@ -24,9 +24,6 @@ namespace NIdentity.Connector.Internals
                 ClientCertificates.Add(Certificate.ToDotNetCert());
                 ServerCertificateCustomValidationCallback = (_1, ReceivedCertificate, _3, Error) =>
                 {
-                    if (ServerCertificate is null)
-                        return Error == SslPolicyErrors.None;
-
                     return ChcekServerCertificate(ServerCertificate, ReceivedCertificate, Error);
                 };
             }
