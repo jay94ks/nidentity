@@ -48,11 +48,15 @@ namespace NIdentity.Connector.Internals
             if (!string.IsNullOrWhiteSpace(Kind))
                 Json.Set("type", $"{Kind}.{Type}".Trim('.'));
 
-            return Execute(Json, Token);
+            return Execute(Json, Attr != null ? Attr.ResultType : null, Token);
         }
 
         /// <inheritdoc/>
-        public async Task<CommandResult> Execute(JObject Json, CancellationToken Token = default)
+        public Task<CommandResult> Execute(JObject Json, CancellationToken Token = default)
+            => Execute(Json, null, Token);
+
+        /// <inheritdoc/>
+        private async Task<CommandResult> Execute(JObject Json, Type ExpectedType, CancellationToken Token = default)
         {
             using var Timeout = CancellationTokenSource.CreateLinkedTokenSource(Token);
 
@@ -67,7 +71,7 @@ namespace NIdentity.Connector.Internals
                     m_WebSocket = await ConnectAsync(Timeout.Token);
                 }
 
-                return await SendAndReceiveAsync(Json, Timeout);
+                return await SendAndReceiveAsync(Json, ExpectedType, Timeout);
             }
 
             catch (Exception Error)
@@ -142,7 +146,7 @@ namespace NIdentity.Connector.Internals
         /// <param name="Json"></param>
         /// <param name="Timeout"></param>
         /// <returns></returns>
-        private async Task<CommandResult> SendAndReceiveAsync(JObject Json, CancellationTokenSource Timeout)
+        private async Task<CommandResult> SendAndReceiveAsync(JObject Json, Type ExpectedType, CancellationTokenSource Timeout)
         {
             var Bytes = Encoding.UTF8.GetBytes(Json.ToString());
             await m_WebSocket.SendAsync(Bytes, WebSocketMessageType.Text, true, Timeout.Token);
@@ -182,6 +186,8 @@ namespace NIdentity.Connector.Internals
                     {
                         var Text = Encoding.UTF8.GetString(m_Buffer.ToArray());
                         var Response = JsonConvert.DeserializeObject<JObject>(Text);
+                        if (ExpectedType != null && Response.Get<bool>("success") == true)
+                            return (CommandResult)Response.ToObject(ExpectedType);
 
                         var Result = Response.ToObject<RemoteCommandResult>();
                         if (Result != null)

@@ -62,11 +62,15 @@ namespace NIdentity.Connector.Internals
             if (!string.IsNullOrWhiteSpace(Kind))
                 Json.Set("type", $"{Kind}.{Type}".Trim('.'));
 
-            return Execute(Json, Token);
+            return Execute(Json, Attr != null ? Attr.ResultType : null, Token);
         }
 
         /// <inheritdoc/>
-        public async Task<CommandResult> Execute(JObject Json, CancellationToken Token = default)
+        public Task<CommandResult> Execute(JObject Json, CancellationToken Token = default)
+            => Execute(Json, null, Token);
+
+        /// <inheritdoc/>
+        private async Task<CommandResult> Execute(JObject Json, Type ExpectedType, CancellationToken Token = default)
         {
             using var Content = new StringContent(Json.ToString(), Encoding.UTF8, "application/json");
             using var Timeout = CancellationTokenSource.CreateLinkedTokenSource(Token);
@@ -79,6 +83,9 @@ namespace NIdentity.Connector.Internals
                 {
                     var Text = await Message.Content.ReadAsStringAsync(Token);
                     var Response = JsonConvert.DeserializeObject<JObject>(Text);
+                    if (ExpectedType != null && Response.Get<bool>("success") == true)
+                        return (CommandResult)Response.ToObject(ExpectedType);
+
                     var Result = Response.ToObject<RemoteCommandResult>();
 
                     Interlocked.Exchange(ref m_Errors, 0);
