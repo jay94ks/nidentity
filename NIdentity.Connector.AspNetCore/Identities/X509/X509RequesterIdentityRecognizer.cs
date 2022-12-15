@@ -84,69 +84,18 @@ namespace NIdentity.Connector.AspNetCore.Identities.X509
                 return null; // --> no validation result passed.
 
             HttpContext.Request.Headers.TryGetValue(Options.PemBase64Header, out var PemRawText);
-            var PemText = TransformPemText(((string)PemRawText ?? string.Empty).Trim());
+            var PemText = ((string)PemRawText ?? string.Empty).Trim();
             if (string.IsNullOrWhiteSpace(PemText))
                 return null; // --> no PEM base64 passed.
 
             try
             {
-                var Recognition = LoadFromPem(PemText);
+                var Recognition = Certificate.ImportPem(PemText);
                 if (Recognition != null)
                     return new X509RequesterIdentity(Recognition);
             }
             catch { }
             return null; // --> failed to restore certificate from PEM passed.
         }
-
-        /// <summary>
-        /// Load the <see cref="Certificate"/> from PEM text.
-        /// </summary>
-        /// <param name="PemText"></param>
-        /// <returns></returns>
-        private Certificate LoadFromPem(string PemText)
-        {
-            using var TextRd = new StringReader(PemText);
-            var Pem = new PemReader(TextRd);
-
-            while (true)
-            {
-                var Obj = Pem.ReadObject();
-                if (Obj is null)
-                    return null;
-
-                if (Obj is not X509Certificate Read)
-                    continue;
-
-                var Cert = Certificate.Import(Read.GetEncoded());
-                if (Cert != null)
-                {
-                    return Cert;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Transform SPC splitted PEM lines to CRLF splitted.
-        /// </summary>
-        /// <param name="PemText"></param>
-        /// <returns></returns>
-        private static string TransformPemText(string PemText)
-        {
-            if (string.IsNullOrWhiteSpace(PemText))
-                return string.Empty;
-
-            PemText = string.Join("\r\n", PemText.Split(' ')
-                .Where(X => !string.IsNullOrWhiteSpace(X))
-                .Where(X => X.Contains("-----") == false)
-                .Select(X => X.Trim()));
-
-            PemText =
-                $"-----BEGIN CERTIFICATE-----\r\n" +
-                $"{PemText}\r\n" +
-                $"-----END CERTIFICATE-----\r\n";
-
-            return PemText;
-        }
-
     }
 }
