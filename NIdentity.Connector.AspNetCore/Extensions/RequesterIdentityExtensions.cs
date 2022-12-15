@@ -100,5 +100,13 @@ namespace NIdentity.Connector.AspNetCore.Extensions
             // --> configure the validator middleware.
             return Builder.UseMiddleware<RequesterValidation>();
         }
+
+        /// <summary>
+        /// Get the requester instance.
+        /// </summary>
+        /// <param name="HttpContext"></param>
+        /// <returns></returns>
+        public static Requester GetRequester(this HttpContext HttpContext)
+            => Requester.FromHttpContext(HttpContext);
     }
 }
