@@ -7,7 +7,6 @@ namespace NIdentity.Core.Commands
     /// </summary>
     public abstract class Command
     {
-        
         /// <summary>
         /// Initialize a new <see cref="Command"/> instance.
         /// </summary>

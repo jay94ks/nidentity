@@ -39,22 +39,34 @@ namespace NIdentity.Core.Commands
                 if (Ctor is null)
                     throw new InvalidOperationException($"the type, {Type.FullName} has no default constructor.");
 
-                var Attrs = Type.GetCustomAttributes<CommandAttribute>();
-                if (Attrs.Count() > 0)
+                var Attr = Type.GetCustomAttribute<CommandAttribute>();
+                if (Attr != null)
                 {
-                    foreach (var Attr in Attrs)
+                    var Temp = Ctor.Invoke(EMPTY_ARGS) as Command;
+                    if (m_Types.TryAdd($"{Attr.Kind}.{Temp.Type}", Type) == false)
                     {
-                        var Temp = Ctor.Invoke(EMPTY_ARGS) as Command;
-                        if (m_Types.TryAdd($"{Attr.Kind}.{Temp.Type}", Type))
-                        {
-                            m_Executor[Type] = Handler;
-                            continue;
-                        }
-
                         m_Types.TryGetValue(Temp.Type, out var Dup);
                         throw new InvalidOperationException(
                             $"the type name, {Temp.Type} is already registered by {Dup.FullName}.");
                     }
+
+                    if (Attr.ResultType != null)
+                    {
+                        if (Attr.ResultType.IsAssignableTo(typeof(CommandResult)) == false)
+                        {
+                            throw new InvalidOperationException(
+                                $"the type, {Type.FullName}'s result type marked its result-type to " +
+                                $"{Attr.ResultType.FullName}, but it is not inherited from CommandResult class.");
+                        }
+
+                        if (Attr.ResultType.IsAbstract == true)
+                        {
+                            throw new InvalidOperationException(
+                                $"the result type {Attr.ResultType.FullName} is abstract class.");
+                        }
+                    }
+
+                    m_Executor[Type] = Handler;
                 }
                 else
                 {
