@@ -80,8 +80,7 @@ namespace NIdentity.Connector.AspNetCore.Extensions
                 Services.AddScoped(Services =>
                 {
                     var Executor = Services.GetRequiredService<TCommandExecutor>();
-                    if (Executor is RemoteCommandExecutor Rce)
-                        return Rce.X509;
+                    if (Executor is RemoteCommandExecutor Rce) return Rce.X509;
 
                     var Caches = Services.GetService<ICertificateCacheRepository>();
                     return new X509CommandExecutor(Executor, Caches);
@@ -93,8 +92,7 @@ namespace NIdentity.Connector.AspNetCore.Extensions
                 Services.AddScoped(Services =>
                 {
                     var Executor = Services.GetService<TCommandExecutor>();
-                    if (Executor is RemoteCommandExecutor Rce)
-                        return Rce.X509;
+                    if (Executor is RemoteCommandExecutor Rce) return Rce.X509;
 
                     return Resolver.Invoke(Services, Executor);
                 });

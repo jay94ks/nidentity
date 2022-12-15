@@ -2,6 +2,9 @@
 {
     /// <summary>
     /// Kinds of requester identities.
+    /// Lower identity kinds cannot replace upper identity kinds.
+    /// Easily, endpoint itself can not be alternative of signature.
+    /// And signature can not be alternative of certificate.
     /// </summary>
     public enum RequesterIdentityKind
     {
@@ -14,6 +17,11 @@
         /// Token based identity like bearer authorization.
         /// </summary>
         Tokenized,
+
+        /// <summary>
+        /// Endpoint based identity that is recognized by the server.
+        /// </summary>
+        Endpoint,
 
         /// <summary>
         /// Digital signature based identity like bitcoin something else.
