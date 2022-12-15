@@ -56,6 +56,7 @@ namespace NIdentity.Core.X509.Server.Repositories
         /// <param name="Mb"></param>
         public void Configure(ModelBuilder Mb)
         {
+            Mb.ApplyNotations<X509Context>();
             DbCertificate.Configure(Mb);
             DbCertificateDocument.Configure(Mb);
             DbCertificateStore.Configure(Mb);

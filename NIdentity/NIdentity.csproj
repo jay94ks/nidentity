@@ -9,6 +9,14 @@
     <Version>$(AssemblyVersion)</Version>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Controllers\**" />
     <Content Remove="Controllers\**" />
@@ -26,6 +34,7 @@
     <ProjectReference Include="..\NIdentity.Core.Server\NIdentity.Core.Server.csproj" />
     <ProjectReference Include="..\NIdentity.Core.X509.Server\NIdentity.Core.X509.Server.csproj" />
     <ProjectReference Include="..\NIdentity.Core\NIdentity.Core.csproj" />
+    <ProjectReference Include="..\NIdentity.Endpoints.Server\NIdentity.Endpoints.Server.csproj" />
   </ItemGroup>
 
 </Project>

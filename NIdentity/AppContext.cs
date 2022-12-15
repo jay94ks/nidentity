@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NIdentity.Core.X509.Server.Repositories;
+using NIdentity.Endpoints.Server.Repositories;
 
 namespace NIdentity
 {
@@ -19,11 +20,17 @@ namespace NIdentity
         /// </summary>
         public X509Context X509 { get; }
 
+        /// <summary>
+        /// Endpoint context.
+        /// </summary>
+        public EndpointContext Endpoints { get; }
+
         /// <inheritdoc/>
         protected override void OnModelCreating(ModelBuilder Mb)
         {
             base.OnModelCreating(Mb);
             X509.Configure(Mb);
+            Endpoints.Configure(Mb);
         }
     }
 }

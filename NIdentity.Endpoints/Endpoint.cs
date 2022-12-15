@@ -18,12 +18,6 @@ namespace NIdentity.Endpoints
         public IPAddress Address { get; set; }
 
         /// <summary>
-        /// Proxies.
-        /// When the registration time about this endpoint, this property will be ignored.
-        /// </summary>
-        public IPAddress[] Proxies { get; set; }
-
-        /// <summary>
         /// Name of this endpoint.
         /// </summary>
         public string Name { get; set; }

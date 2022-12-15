@@ -19,8 +19,5 @@
     <Compile Update="Forms\FrmStatus.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\PfxTools\FrmPfxEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
 </Project>

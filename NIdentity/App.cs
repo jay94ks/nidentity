@@ -88,7 +88,7 @@ namespace NIdentity
                 ;
 
             // --
-            ConfigureX509Environment(Host.Services.AddX509<AppContext>());
+            ConfigureX509Environment(Host.Services.AddX509IdentityServer<AppContext>());
 
             return Host;
         }

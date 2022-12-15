@@ -23,11 +23,11 @@ namespace NIdentity.Core.X509.Server
     public static class X509ServerExtensions
     {
         /// <summary>
-        /// Add core services.
+        /// Add X509 identity services.
         /// </summary>
         /// <param name="Services"></param>
         /// <returns></returns>
-        public static X509ServerSettings AddX509<TDbContext>(this IServiceCollection Services) where TDbContext : DbContext
+        public static X509ServerSettings AddX509IdentityServer<TDbContext>(this IServiceCollection Services) where TDbContext : DbContext
         {
             var Settings = new X509ServerSettings();
 
