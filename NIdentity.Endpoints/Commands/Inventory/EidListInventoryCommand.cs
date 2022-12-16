@@ -2,13 +2,14 @@
 using NIdentity.Core.Commands;
 using NIdentity.Endpoints.Commands.Bases;
 using NIdentity.Endpoints.Commands.Networks;
+using NIdentity.Endpoints.Commands.Results;
 
 namespace NIdentity.Endpoints.Commands.Inventory
 {
     /// <summary>
     /// A command to get the inventory informations.
     /// </summary>
-    [Command(Kind = "eid")]
+    [Command(Kind = "eid", ResultType = typeof(EndpointInventoryListResult))]
     public class EidListInventoryCommand : EidSensitiveCommand
     {
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using NIdentity.Core.Commands;
 using NIdentity.Endpoints.Commands.Bases;
+using NIdentity.Endpoints.Commands.Results;
 using NIdentity.Endpoints.Metas;
 
 namespace NIdentity.Endpoints.Commands
@@ -8,7 +9,7 @@ namespace NIdentity.Endpoints.Commands
     /// <summary>
     /// A command to add the endpoint to inventory.
     /// </summary>
-    [Command(Kind = "eid")]
+    [Command(Kind = "eid", ResultType = typeof(EndpointResult))]
     public class EidAddEndpointCommand : EidInventoryCommand
     {
         /// <summary>

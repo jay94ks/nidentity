@@ -1,12 +1,13 @@
 ﻿using Newtonsoft.Json;
 using NIdentity.Core.Commands;
+using NIdentity.Endpoints.Commands.Results;
 
 namespace NIdentity.Endpoints.Commands
 {
     /// <summary>
     /// A command to get the endpoint informations.
     /// </summary>
-    [Command(Kind = "eid")]
+    [Command(Kind = "eid", ResultType = typeof(EndpointQueryResult))]
     public class EidQueryEndpointCommand : Command
     {
         /// <summary>
