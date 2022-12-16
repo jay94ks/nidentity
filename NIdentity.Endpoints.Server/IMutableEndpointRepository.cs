@@ -2,7 +2,7 @@
 
 namespace NIdentity.Endpoints.Server
 {
-    public interface IMutableEndpointRepository 
+    public interface IMutableEndpointRepository : IEndpointRepository
     { 
         /// <summary>
         /// Add an endpoint into inventory.

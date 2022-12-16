@@ -36,8 +36,8 @@ namespace NIdentity.Endpoints.Server.Repositories.Models
         /// <summary>
         /// (PK) IP Address.
         /// </summary>
-        [IPAddressAsString]
-        public IPAddress Address { get; set; }
+        [MaxLength(255)]
+        public string Address { get; set; }
 
         /// <summary>
         /// (PK) Subnet mask.
@@ -79,7 +79,7 @@ namespace NIdentity.Endpoints.Server.Repositories.Models
         /// <returns></returns>
         public static DbEndpointNetwork Make(EndpointNetwork Endpoint) => new DbEndpointNetwork
         {
-            Address = Endpoint.Address,
+            Address = Endpoint.Address.ToString(),
             SubnetMask = Endpoint.SubnetMask,
             Type = Endpoint.Type,
             Name = Endpoint.Name,
@@ -94,7 +94,7 @@ namespace NIdentity.Endpoints.Server.Repositories.Models
         /// <returns></returns>
         public EndpointNetwork Make() => new EndpointNetwork
         {
-            Address = Address,
+            Address = IPAddress.Parse(Address),
             SubnetMask = SubnetMask,
             Type = Type,
             Name = Name,

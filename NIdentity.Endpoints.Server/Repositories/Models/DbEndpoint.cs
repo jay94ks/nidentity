@@ -36,8 +36,8 @@ namespace NIdentity.Endpoints.Server.Repositories.Models
         /// <summary>
         /// (PK) IP Address.
         /// </summary>
-        [IPAddressAsString]
-        public IPAddress Address { get; set; }
+        [MaxLength(255)]
+        public string Address { get; set; }
 
         /// <summary>
         /// Type of endpoint.
@@ -75,7 +75,7 @@ namespace NIdentity.Endpoints.Server.Repositories.Models
         public static DbEndpoint Make(Endpoint Endpoint) => new DbEndpoint
         {
             Type = Endpoint.Type,
-            Address = Endpoint.Address,
+            Address = Endpoint.Address.ToString(),
             Name = Endpoint.Name,
             Description = Endpoint.Description,
             CautionTime = Endpoint.CautionTime,
@@ -89,7 +89,7 @@ namespace NIdentity.Endpoints.Server.Repositories.Models
         public Endpoint Make() => new Endpoint
         {
             Type = Type,
-            Address = Address,
+            Address = IPAddress.Parse(Address),
             Name = Name,
             Description = Description,
             CautionTime = CautionTime,
