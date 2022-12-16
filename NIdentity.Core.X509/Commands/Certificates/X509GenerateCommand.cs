@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NIdentity.Core.Commands;
+using NIdentity.Core.X509.Algorithms;
 using NIdentity.Core.X509.Commands;
 
 namespace NIdentity.Core.X509.Commands.Certificates
@@ -34,6 +35,12 @@ namespace NIdentity.Core.X509.Commands.Certificates
         /// </summary>
         [JsonProperty("cert_type")]
         public CertificateType KeyType { get; set; }
+
+        /// <summary>
+        /// Certificate Hash-algorithm type.
+        /// </summary>
+        [JsonProperty("cert_hash")]
+        public HashAlgorithmType HashType { get; set; } = HashAlgorithmType.Default;
 
         /// <summary>
         /// Key Algorithm.

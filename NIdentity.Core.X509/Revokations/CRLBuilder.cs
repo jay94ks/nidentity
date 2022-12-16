@@ -1,4 +1,5 @@
-﻿using NIdentity.Core.X509.Helpers;
+﻿using NIdentity.Core.X509.Algorithms;
+using NIdentity.Core.X509.Helpers;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
@@ -25,6 +26,11 @@ namespace NIdentity.Core.X509.Revokations
         public Certificate Issuer { get; set; }
 
         /// <summary>
+        /// Hash Algorithm.
+        /// </summary>
+        public HashAlgorithmType HashAlgorithm { get; set; } = HashAlgorithmType.Default;
+
+        /// <summary>
         /// This update time. (default: before 1 day)
         /// </summary>
         public DateTimeOffset ThisUpdate { get; set; } = DateTime.Now.Subtract(TimeSpan.FromDays(2));
@@ -44,6 +50,11 @@ namespace NIdentity.Core.X509.Revokations
         /// </summary>
         public List<Revokation> Revokations { get; } = new List<Revokation>();
 
+        /// <summary>
+        /// Hash as SHA1.
+        /// </summary>
+        /// <param name="Sha1"></param>
+        /// <returns></returns>
         private string HashSha1(string Sha1)
         {
             using var Sha = SHA1.Create();
@@ -87,7 +98,7 @@ namespace NIdentity.Core.X509.Revokations
             Generator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false,
                 new AuthorityKeyIdentifierStructure(Issuer.X509));
 
-            return Generator.Generate(Issuer.PrivateKey.CreateSignatureFactory()).GetEncoded();
+            return Generator.Generate(Issuer.PrivateKey.CreateSignatureFactory(HashAlgorithm)).GetEncoded();
         }
 
         private BigInteger MakeCrlNumber()

@@ -1,4 +1,5 @@
 ﻿using NIdentity.Core.Helpers;
+using NIdentity.Core.X509.Algorithms;
 using NIdentity.Core.X509.Helpers;
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
@@ -284,12 +285,12 @@ namespace NIdentity.Core.X509
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
         /// <exception cref="NotSupportedException"></exception>
-        public ISignatureFactory CreateSignatureFactory()
+        public ISignatureFactory CreateSignatureFactory(HashAlgorithmType HashAlgorithm = HashAlgorithmType.Default)
         {
             if (HasPrivateKey == false)
                 throw new InvalidOperationException("this certificate has no private key.");
 
-            var Factory = PrivateKey.CreateSignatureFactory();
+            var Factory = PrivateKey.CreateSignatureFactory(HashAlgorithm);
             if (Factory is null)
                 throw new NotSupportedException("this certificate's algorithm is not supported.");
 

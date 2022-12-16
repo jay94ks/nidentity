@@ -167,7 +167,7 @@ namespace NIdentity.Core.X509
                 var IssuerKey = Issuer.Certificate is null
                     ? KeyPair.Private : Issuer.Certificate.PrivateKey;
 
-                var Signer = IssuerKey.CreateSignatureFactory();
+                var Signer = IssuerKey.CreateSignatureFactory(Subject.HashAlgorithm);
                 if (Signer is null)
                 {
                     throw new InvalidOperationException(

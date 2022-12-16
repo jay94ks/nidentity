@@ -1,10 +1,10 @@
-﻿using Org.BouncyCastle.Asn1.Pkcs;
+﻿using NIdentity.Core.X509.Algorithms;
+using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X9;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Operators;
 using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Math;
-using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities;
 using System.Runtime.Versioning;
 using System.Security.Cryptography;
@@ -20,8 +20,9 @@ namespace NIdentity.Core.X509.Helpers
         /// Create an <see cref="ISignatureFactory"/> instance.
         /// </summary>
         /// <param name="PrivateKey"></param>
+        /// <param name="HashAlgorithm"></param>
         /// <returns></returns>
-        public static ISignatureFactory CreateSignatureFactory(this AsymmetricKeyParameter PrivateKey)
+        public static ISignatureFactory CreateSignatureFactory(this AsymmetricKeyParameter PrivateKey, HashAlgorithmType HashAlgorithm = HashAlgorithmType.Default)
         {
             if (PrivateKey is null)
                 throw new ArgumentNullException(nameof(PrivateKey));
@@ -29,18 +30,67 @@ namespace NIdentity.Core.X509.Helpers
             if (PrivateKey.IsPrivate == false)
                 throw new ArgumentException("the signature factory can only be created with private key.");
 
-            switch (PrivateKey)
+            var Identifier = HashAlgorithm.ToDer(PrivateKey);
+            if (Identifier != null)
+                return new Asn1SignatureFactory(Identifier.ToString(), PrivateKey);
+
+            return null;
+        }
+
+        /// <summary>
+        /// Get the <see cref="DerObjectIdentifier"/> for hash algorithm and specified private key.
+        /// </summary>
+        /// <param name="Algorithm"></param>
+        /// <param name="Private"></param>
+        /// <returns></returns>
+        private static DerObjectIdentifier ToDer(this HashAlgorithmType Algorithm, AsymmetricKeyParameter Private)
+        {
+            switch(Private)
             {
-                case ECPrivateKeyParameters EcPvt:
-                    return new Asn1SignatureFactory(
-                        X9ObjectIdentifiers.ECDsaWithSha256.ToString(),
-                        EcPvt);
+                case ECPrivateKeyParameters:
+                    {
+                        switch(Algorithm)
+                        {
+                            case HashAlgorithmType.Sha224:
+                                return X9ObjectIdentifiers.ECDsaWithSha224;
 
-                case RsaPrivateCrtKeyParameters RsaPvt:
-                    return new Asn1SignatureFactory(
-                        PkcsObjectIdentifiers.Sha256WithRsaEncryption.ToString(),
-                        RsaPvt);
+                            case HashAlgorithmType.Default:
+                            case HashAlgorithmType.Sha256:
+                                return X9ObjectIdentifiers.ECDsaWithSha256;
 
+                            case HashAlgorithmType.Sha384:
+                                return X9ObjectIdentifiers.ECDsaWithSha384;
+
+                            case HashAlgorithmType.Sha512:
+                                return X9ObjectIdentifiers.ECDsaWithSha512;
+
+                            default:
+                                break;
+                        }
+                        break;
+                    }
+                case RsaPrivateCrtKeyParameters:
+                    {
+                        switch (Algorithm)
+                        {
+                            case HashAlgorithmType.Sha224:
+                                return PkcsObjectIdentifiers.Sha224WithRsaEncryption;
+
+                            case HashAlgorithmType.Default:
+                            case HashAlgorithmType.Sha256:
+                                return PkcsObjectIdentifiers.Sha256WithRsaEncryption;
+
+                            case HashAlgorithmType.Sha384:
+                                return PkcsObjectIdentifiers.Sha384WithRsaEncryption;
+
+                            case HashAlgorithmType.Sha512:
+                                return PkcsObjectIdentifiers.Sha512WithRsaEncryption;
+
+                            default:
+                                break;
+                        }
+                        break;
+                    }
                 default:
                     break;
             }

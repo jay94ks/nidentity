@@ -23,6 +23,11 @@ namespace NIdentity.Core.X509
             public Algorithm Algorithm { get; set; } = DEFAULT_ALGORITHM;
 
             /// <summary>
+            /// Hash Algorithm to use.
+            /// </summary>
+            public HashAlgorithmType HashAlgorithm { get; set; } = HashAlgorithmType.Default;
+
+            /// <summary>
             /// Certificate purpose.
             /// </summary>
             public CertificatePurposes Purposes { get; set; } = CertificatePurposes.Networking;
