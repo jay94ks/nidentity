@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NIdentity.Core.Commands;
+using NIdentity.Endpoints.Commands.Bases;
 
 namespace NIdentity.Endpoints.Commands.Inventory
 {
@@ -7,7 +8,7 @@ namespace NIdentity.Endpoints.Commands.Inventory
     /// A command to update the inventory.
     /// </summary>
     [Command(Kind = "eid")]
-    public class EidUpdateInventoryCommand : Command
+    public class EidUpdateInventoryCommand : EidInventoryCommand
     {
         /// <summary>
         /// Initialize a new <see cref="EidUpdateInventoryCommand"/> instance
@@ -16,12 +17,6 @@ namespace NIdentity.Endpoints.Commands.Inventory
         public EidUpdateInventoryCommand() : base("inv_update")
         {
         }
-
-        /// <summary>
-        /// Inventory identity.
-        /// </summary>
-        [JsonProperty("identity")]
-        public Guid Identity { get; set; }
 
         /// <summary>
         /// Name of this inventory.

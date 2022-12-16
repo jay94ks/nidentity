@@ -1,4 +1,5 @@
 ﻿using NIdentity.Core.Server.Helpers;
+using NIdentity.Endpoints.Server.Helpers;
 using NIdentity.Endpoints.Server.Repositories.Models;
 using System.Net;
 
@@ -7,7 +8,7 @@ namespace NIdentity.Endpoints.Server.Repositories
     /// <summary>
     /// Endpoint repository.
     /// </summary>
-    public class EndpointRepository : IMutableEndpointRepository
+    public class EndpointRepository : IMutableEndpointRepository, IEndpointRepository
     {
         private readonly EndpointContext m_Context;
 
@@ -26,7 +27,7 @@ namespace NIdentity.Endpoints.Server.Repositories
             if (Address is null)
                 throw new ArgumentNullException(nameof(Address));
 
-            var AddressString = Address.ToString();
+            var AddressString = Address.ToDotBytes();
             var Item = m_Context.Endpoints
                 .Where(X => X.Inventory == Inventory)
                 .Where(X => X.Address == AddressString)
@@ -57,7 +58,7 @@ namespace NIdentity.Endpoints.Server.Repositories
             if (Address is null)
                 throw new ArgumentNullException(nameof(Address));
 
-            var AddressString = Address.ToString();
+            var AddressString = Address.ToDotBytes();
             var Item = m_Context.Endpoints
                 .Where(X => X.Inventory == Inventory)
                 .Where(X => X.Address == AddressString)
@@ -78,7 +79,7 @@ namespace NIdentity.Endpoints.Server.Repositories
             if (Address is null)
                 throw new ArgumentNullException(nameof(Address));
 
-            var AddressString = Address.ToString();
+            var AddressString = Address.ToDotBytes();
             var Item = m_Context.Endpoints
                 .Where(X => X.Inventory == Inventory)
                 .Where(X => X.Address == AddressString)
@@ -102,7 +103,7 @@ namespace NIdentity.Endpoints.Server.Repositories
             if (Endpoint is null)
                 throw new ArgumentNullException(nameof(Endpoint));
 
-            var AddressString = Endpoint.Address.ToString();
+            var AddressString = Endpoint.Address.ToDotBytes();
             var Item = m_Context.Endpoints
                 .Where(X => X.Inventory == Inventory)
                 .Where(X => X.Address == AddressString)
@@ -110,6 +111,7 @@ namespace NIdentity.Endpoints.Server.Repositories
 
             if (Item != null)
             {
+                Item.Type = Endpoint.Type;
                 Item.Name = Endpoint.Name ?? string.Empty;
                 Item.Description = Endpoint.Description ?? string.Empty;
 

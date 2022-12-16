@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NIdentity.Core.Commands;
+using NIdentity.Endpoints.Commands.Bases;
 
 namespace NIdentity.Endpoints.Commands.Networks
 {
@@ -7,7 +8,7 @@ namespace NIdentity.Endpoints.Commands.Networks
     /// A command to update the network.
     /// </summary>
     [Command(Kind = "eid")]
-    public class EidUpdateNetworkCommand : Command
+    public class EidUpdateNetworkCommand : EidInventoryCommand
     {
         /// <summary>
         /// Initialize a new <see cref="EidUpdateNetworkCommand"/> instance
@@ -16,12 +17,6 @@ namespace NIdentity.Endpoints.Commands.Networks
         public EidUpdateNetworkCommand() : base("ep_net_update")
         {
         }
-
-        /// <summary>
-        /// Inventory identity.
-        /// </summary>
-        [JsonProperty("identity")]
-        public Guid Identity { get; set; }
 
         /// <summary>
         /// Address to query database.
@@ -36,6 +31,12 @@ namespace NIdentity.Endpoints.Commands.Networks
         public int SubnetMask { get; set; }
 
         /// <summary>
+        /// Endpoint Type.
+        /// </summary>
+        [JsonProperty("net_type")]
+        public EndpointNetworkType NetworkType { get; set; }
+
+        /// <summary>
         /// Name of this network.
         /// </summary>
         [JsonProperty("name")]
@@ -46,12 +47,5 @@ namespace NIdentity.Endpoints.Commands.Networks
         /// </summary>
         [JsonProperty("description")]
         public string Description { get; set; }
-
-        /// <summary>
-        /// New Subnet Mask.
-        /// </summary>
-        [JsonProperty("new_subnet_mask")]
-        public int? NewSubnetMask { get; set; }
-
     }
 }

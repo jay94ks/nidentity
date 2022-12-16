@@ -117,9 +117,6 @@ namespace NIdentity.Connector.Internals
                 {
                     WebSocket.Options.RemoteCertificateValidationCallback = (_, ReceivedCertificate, _2, Error) =>
                     {
-                        if (m_Parameters.ServerCertificate is null)
-                            return Error == SslPolicyErrors.None;
-
                         return HttpRequestExecutor.Handler.ChcekServerCertificate(
                             m_Parameters.ServerCertificate, ReceivedCertificate, Error);
                     };

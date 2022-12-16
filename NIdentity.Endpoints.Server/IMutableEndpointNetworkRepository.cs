@@ -8,10 +8,10 @@ namespace NIdentity.Endpoints.Server
         /// Add an endpoint into inventory.
         /// </summary>
         /// <param name="Inventory"></param>
-        /// <param name="Endpoint"></param>
+        /// <param name="Network"></param>
         /// <param name="Token"></param>
         /// <returns></returns>
-        Task<bool> AddAsync(Guid Inventory, EndpointNetwork Endpoint, CancellationToken Token = default);
+        Task<bool> AddAsync(Guid Inventory, EndpointNetwork Network, CancellationToken Token = default);
 
         /// <summary>
         /// Remove an endpoint from inventory.
@@ -27,10 +27,10 @@ namespace NIdentity.Endpoints.Server
         /// Update an endpoint from inventory.
         /// </summary>
         /// <param name="Inventory"></param>
-        /// <param name="Endpoint"></param>
+        /// <param name="Network"></param>
         /// <param name="Token"></param>
         /// <returns></returns>
-        Task<bool> UpdateAsync(Guid Inventory, EndpointNetwork Endpoint, CancellationToken Token = default);
+        Task<bool> UpdateAsync(Guid Inventory, EndpointNetwork Network, CancellationToken Token = default);
 
         /// <summary>
         /// Set an endpoint as caution.

@@ -13,6 +13,7 @@ namespace NIdentity
         public AppContext(DbContextOptions<AppContext> Options) : base(Options)
         {
             X509 = new X509Context(this);
+            Endpoints = new EndpointContext(this);
         }
 
         /// <summary>

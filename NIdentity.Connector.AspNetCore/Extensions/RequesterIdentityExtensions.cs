@@ -60,6 +60,7 @@ namespace NIdentity.Connector.AspNetCore.Extensions
         {
             Services
                 .AddSingleton<RequesterIdentitySystem>()
+                .AddSingleton<RequesterAccessor>()
                 ;
 
             return Services;

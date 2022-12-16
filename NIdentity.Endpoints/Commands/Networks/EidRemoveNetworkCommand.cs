@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NIdentity.Core.Commands;
+using NIdentity.Endpoints.Commands.Bases;
 
 namespace NIdentity.Endpoints.Commands.Networks
 {
@@ -7,7 +8,7 @@ namespace NIdentity.Endpoints.Commands.Networks
     /// A command to remove the network to inventory.
     /// </summary>
     [Command(Kind = "eid")]
-    public class EidRemoveNetworkCommand : Command
+    public class EidRemoveNetworkCommand : EidInventoryCommand
     {
         /// <summary>
         /// Initialize a new <see cref="EidRemoveNetworkCommand"/> instance
@@ -16,12 +17,6 @@ namespace NIdentity.Endpoints.Commands.Networks
         public EidRemoveNetworkCommand() : base("ep_net_remove")
         {
         }
-
-        /// <summary>
-        /// Inventory identity.
-        /// </summary>
-        [JsonProperty("inventory")]
-        public Guid Inventory { get; set; }
 
         /// <summary>
         /// Address to query database.

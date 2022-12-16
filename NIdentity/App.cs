@@ -62,6 +62,7 @@ namespace NIdentity
                 ;
 
             Host.Services
+                .AddHttpContextAccessor()
                 .AddScoped(X => X.GetRequiredService<IDbContextFactory<AppContext>>().CreateDbContext())
                 .AddPooledDbContextFactory<AppContext>(X =>
                 {

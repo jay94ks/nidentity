@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NIdentity.Core.Commands;
+using NIdentity.Endpoints.Commands.Bases;
 
 namespace NIdentity.Endpoints.Commands.Inventory
 {
@@ -7,7 +8,7 @@ namespace NIdentity.Endpoints.Commands.Inventory
     /// A command to remove callback.
     /// </summary>
     [Command(Kind = "eid")]
-    public class EidRemoveInventoryCallbackCommand : Command
+    public class EidRemoveInventoryCallbackCommand : EidInventoryCommand
     {
         /// <summary>
         /// Initialize a new <see cref="EidRemoveInventoryCallbackCommand"/> instance
@@ -16,12 +17,6 @@ namespace NIdentity.Endpoints.Commands.Inventory
         public EidRemoveInventoryCallbackCommand() : base("inv_remove_cb")
         {
         }
-
-        /// <summary>
-        /// Inventory identity.
-        /// </summary>
-        [JsonProperty("identity")]
-        public Guid Identity { get; set; }
 
         /// <summary>
         /// Callback to remove.

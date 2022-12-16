@@ -5,10 +5,10 @@
         /// <summary>
         /// Get the inventory from repository.
         /// </summary>
-        /// <param name="Inventory"></param>
+        /// <param name="Identity"></param>
         /// <param name="Token"></param>
         /// <returns></returns>
-        Task<EndpointInventory> GetAsync(Guid Inventory, CancellationToken Token = default);
+        Task<EndpointInventory> GetAsync(Guid Identity, CancellationToken Token = default);
     }
 
 }

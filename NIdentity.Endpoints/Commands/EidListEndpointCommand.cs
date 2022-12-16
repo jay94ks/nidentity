@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NIdentity.Core.Commands;
+using NIdentity.Endpoints.Commands.Bases;
 
 namespace NIdentity.Endpoints.Commands
 {
@@ -7,7 +8,7 @@ namespace NIdentity.Endpoints.Commands
     /// A command to get the endpoint informations.
     /// </summary>
     [Command(Kind = "eid")]
-    public class EidListEndpointCommand : Command
+    public class EidListEndpointCommand : EidInventoryCommand
     {
         /// <summary>
         /// Initialize a new <see cref="EidListEndpointCommand"/> instance
@@ -16,12 +17,6 @@ namespace NIdentity.Endpoints.Commands
         public EidListEndpointCommand() : base("ep_list")
         {
         }
-
-        /// <summary>
-        /// Inventory identity.
-        /// </summary>
-        [JsonProperty("inventory")]
-        public Guid Inventory { get; set; }
 
         /// <summary>
         /// Offset.

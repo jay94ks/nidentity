@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NIdentity.Core.Commands;
+using NIdentity.Endpoints.Commands.Bases;
 
 namespace NIdentity.Endpoints.Commands
 {
@@ -7,7 +8,7 @@ namespace NIdentity.Endpoints.Commands
     /// A command to set caution level of the endpoint.
     /// </summary>
     [Command(Kind = "eid")]
-    public class EidSetEndpointCautionCommand : Command
+    public class EidSetEndpointCautionCommand : EidInventoryCommand
     {
         /// <summary>
         /// Initialize a new <see cref="EidSetEndpointCautionCommand"/> instance
@@ -16,12 +17,6 @@ namespace NIdentity.Endpoints.Commands
         public EidSetEndpointCautionCommand() : base("ep_set_caution")
         {
         }
-
-        /// <summary>
-        /// Inventory identity.
-        /// </summary>
-        [JsonProperty("inventory")]
-        public Guid Inventory { get; set; }
 
         /// <summary>
         /// Address to query database.

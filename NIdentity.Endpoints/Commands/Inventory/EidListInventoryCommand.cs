@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NIdentity.Core.Commands;
+using NIdentity.Endpoints.Commands.Bases;
 using NIdentity.Endpoints.Commands.Networks;
 
 namespace NIdentity.Endpoints.Commands.Inventory
@@ -8,10 +9,10 @@ namespace NIdentity.Endpoints.Commands.Inventory
     /// A command to get the inventory informations.
     /// </summary>
     [Command(Kind = "eid")]
-    public class EidListInventoryCommand : Command
+    public class EidListInventoryCommand : EidSensitiveCommand
     {
         /// <summary>
-        /// Initialize a new <see cref="EidQueryNetworkCommand"/> instance
+        /// Initialize a new <see cref="EidListInventoryCommand"/> instance
         /// </summary>
         /// <param name="Type"></param>
         public EidListInventoryCommand() : base("inv_list")

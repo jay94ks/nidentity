@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NIdentity.Core.Commands;
+using NIdentity.Endpoints.Commands.Bases;
 
 namespace NIdentity.Endpoints.Commands.Inventory
 {
@@ -7,7 +8,7 @@ namespace NIdentity.Endpoints.Commands.Inventory
     /// A command to delete the inventory.
     /// </summary>
     [Command(Kind = "eid")]
-    public class EidDeleteInventoryCommand : Command
+    public class EidDeleteInventoryCommand : EidInventoryCommand
     {
         /// <summary>
         /// Initialize a new <see cref="EidDeleteInventoryCommand"/> instance
@@ -16,11 +17,5 @@ namespace NIdentity.Endpoints.Commands.Inventory
         public EidDeleteInventoryCommand() : base("inv_delete")
         {
         }
-
-        /// <summary>
-        /// Inventory identity.
-        /// </summary>
-        [JsonProperty("identity")]
-        public Guid Identity { get; set; }
     }
 }

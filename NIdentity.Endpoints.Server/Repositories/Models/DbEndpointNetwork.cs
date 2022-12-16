@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NIdentity.Core.Server.Helpers.Efcores;
+using NIdentity.Endpoints.Server.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
@@ -79,7 +80,7 @@ namespace NIdentity.Endpoints.Server.Repositories.Models
         /// <returns></returns>
         public static DbEndpointNetwork Make(EndpointNetwork Endpoint) => new DbEndpointNetwork
         {
-            Address = Endpoint.Address.ToString(),
+            Address = Endpoint.Address.ToDotBytes(),
             SubnetMask = Endpoint.SubnetMask,
             Type = Endpoint.Type,
             Name = Endpoint.Name,
@@ -94,7 +95,7 @@ namespace NIdentity.Endpoints.Server.Repositories.Models
         /// <returns></returns>
         public EndpointNetwork Make() => new EndpointNetwork
         {
-            Address = IPAddress.Parse(Address),
+            Address = IPAddressHelper.ParseDotBytes(Address),
             SubnetMask = SubnetMask,
             Type = Type,
             Name = Name,

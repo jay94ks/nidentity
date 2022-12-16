@@ -127,7 +127,7 @@ namespace NIdentity.Core.X509.Server
                 var Settings = Http.RequestServices.GetRequiredService<X509ServerSettings>();
                 var Identity = Http.GetRequester().Get<X509RequesterIdentity>();
 
-                if (Identity.IsValidated)
+                if (Identity != null && Identity.IsValidated)
                     Accessor.Requester = Identity.Recognized;
 
                 Accessor.IsSuperAccess = Settings.IsSuperMode;// -- Debugger.IsAttached;

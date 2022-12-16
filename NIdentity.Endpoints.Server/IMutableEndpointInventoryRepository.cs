@@ -5,35 +5,35 @@
         /// <summary>
         /// Add an endpoint into inventory.
         /// </summary>
-        /// <param name="Inventory"></param>
+        /// <param name="Identity"></param>
         /// <param name="Token"></param>
         /// <returns></returns>
-        Task<bool> AddAsync(EndpointInventory Inventory, CancellationToken Token = default);
+        Task<bool> AddAsync(EndpointInventory Identity, CancellationToken Token = default);
 
         /// <summary>
         /// Remove an endpoint from inventory.
         /// </summary>
-        /// <param name="Inventory"></param>
+        /// <param name="Identity"></param>
         /// <param name="Token"></param>
         /// <returns></returns>
-        Task<bool> RemoveAsync(Guid Inventory, CancellationToken Token = default);
+        Task<bool> RemoveAsync(Guid Identity, CancellationToken Token = default);
 
         /// <summary>
         /// Update an endpoint from inventory.
         /// </summary>
-        /// <param name="Inventory"></param>
+        /// <param name="Identity"></param>
         /// <param name="Token"></param>
         /// <returns></returns>
-        Task<bool> UpdateAsync(EndpointInventory Inventory, CancellationToken Token = default);
+        Task<bool> UpdateAsync(EndpointInventory Identity, CancellationToken Token = default);
 
         /// <summary>
         /// Set an endpoint as caution.
         /// </summary>
-        /// <param name="Inventory"></param>
+        /// <param name="Identity"></param>
         /// <param name="Level"></param>
         /// <param name="Token"></param>
         /// <returns></returns>
-        Task<bool> SetCautionAsync(Guid Inventory, EndpointCautionLevel Level, CancellationToken Token = default);
+        Task<bool> SetCautionAsync(Guid Identity, EndpointCautionLevel Level, CancellationToken Token = default);
     }
 
 }

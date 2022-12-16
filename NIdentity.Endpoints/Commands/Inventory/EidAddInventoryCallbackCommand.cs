@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NIdentity.Core.Commands;
+using NIdentity.Endpoints.Commands.Bases;
 
 namespace NIdentity.Endpoints.Commands.Inventory
 {
@@ -7,7 +8,7 @@ namespace NIdentity.Endpoints.Commands.Inventory
     /// A command to add callback to get caution events.
     /// </summary>
     [Command(Kind = "eid")]
-    public class EidAddInventoryCallbackCommand : Command
+    public class EidAddInventoryCallbackCommand : EidInventoryCommand
     {
         /// <summary>
         /// Initialize a new <see cref="EidAddInventoryCallbackCommand"/> instance
@@ -16,12 +17,6 @@ namespace NIdentity.Endpoints.Commands.Inventory
         public EidAddInventoryCallbackCommand() : base("inv_add_cb")
         {
         }
-
-        /// <summary>
-        /// Inventory identity.
-        /// </summary>
-        [JsonProperty("identity")]
-        public Guid Identity { get; set; }
 
         /// <summary>
         /// Callback to get caution events.

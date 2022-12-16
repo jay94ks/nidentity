@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NIdentity.Core.Server.Helpers.Efcores;
+using NIdentity.Core.X509;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,10 +28,10 @@ namespace NIdentity.Endpoints.Server.Repositories.Models
         }
 
         /// <summary>
-        /// (PK) Inventory Guid.
+        /// (PK) Inventory Identity.
         /// </summary>
         [Key, GuidAsString]
-        public Guid Inventory { get; set; }
+        public Guid Identity { get; set; }
 
         /// <summary>
         /// Owner of the inventory.
@@ -43,6 +44,12 @@ namespace NIdentity.Endpoints.Server.Repositories.Models
         /// </summary>
         [MaxLength(41)]
         public string OwnerKeyIdentifier { get; set; }
+
+        /// <summary>
+        /// KeySHA1 value of owner.
+        /// </summary>
+        [MaxLength(255)]
+        public string OwnerKeySHA1 { get; set; }
 
         /// <summary>
         /// Name of this inventory.
@@ -89,5 +96,42 @@ namespace NIdentity.Endpoints.Server.Repositories.Models
         /// Caution level.
         /// </summary>
         public EndpointCautionLevel CautionLevel { get; set; }
+
+        /// <summary>
+        /// Make a database inventory instance.
+        /// </summary>
+        /// <param name="Inventory"></param>
+        /// <returns></returns>
+        public static DbEndpointInventory Make(EndpointInventory Inventory) => new DbEndpointInventory
+        {
+            Owner = Inventory.Owner.Subject,
+            OwnerKeyIdentifier = Inventory.Owner.KeyIdentifier,
+            OwnerKeySHA1 = Inventory.Owner.MakeKeySHA1(),
+            Name = Inventory.Name,
+            Description = Inventory.Description,
+            IsPublic = Inventory.IsPublic,
+            IsMetadataPublic = Inventory.IsMetadataPublic,
+            CreationTime = Inventory.CreationTime,
+            LastUpdateTime = Inventory.LastUpdateTime,
+            CautionTime = Inventory.CautionTime,
+            CautionLevel = Inventory.CautionLevel
+        };
+
+        /// <summary>
+        /// Make an inventory instance.
+        /// </summary>
+        /// <returns></returns>
+        public EndpointInventory Make() => new EndpointInventory
+        {
+            Owner = new CertificateIdentity(Owner, OwnerKeyIdentifier, OwnerKeySHA1),
+            Name = Name,
+            Description = Description,
+            IsPublic = IsPublic,
+            IsMetadataPublic = IsMetadataPublic,
+            CreationTime = CreationTime,
+            LastUpdateTime = LastUpdateTime,
+            CautionTime = CautionTime,
+            CautionLevel = CautionLevel
+        };
     }
 }

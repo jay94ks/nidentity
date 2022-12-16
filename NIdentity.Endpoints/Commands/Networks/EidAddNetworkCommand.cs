@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NIdentity.Core.Commands;
+using NIdentity.Endpoints.Commands.Bases;
 using NIdentity.Endpoints.Metas;
 
 namespace NIdentity.Endpoints.Commands.Networks
@@ -8,7 +9,7 @@ namespace NIdentity.Endpoints.Commands.Networks
     /// A command to add the network to inventory.
     /// </summary>
     [Command(Kind = "eid")]
-    public class EidAddNetworkCommand : Command
+    public class EidAddNetworkCommand : EidInventoryCommand
     {
         /// <summary>
         /// Initialize a new <see cref="EidAddNetworkCommand"/> instance
@@ -17,12 +18,6 @@ namespace NIdentity.Endpoints.Commands.Networks
         public EidAddNetworkCommand() : base("ep_net_add")
         {
         }
-
-        /// <summary>
-        /// Inventory identity.
-        /// </summary>
-        [JsonProperty("inventory")]
-        public Guid Inventory { get; set; }
 
         /// <summary>
         /// Endpoint informations to add.

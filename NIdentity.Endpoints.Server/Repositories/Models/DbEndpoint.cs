@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NIdentity.Core.Server.Helpers.Efcores;
+using NIdentity.Endpoints.Server.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
@@ -75,7 +76,7 @@ namespace NIdentity.Endpoints.Server.Repositories.Models
         public static DbEndpoint Make(Endpoint Endpoint) => new DbEndpoint
         {
             Type = Endpoint.Type,
-            Address = Endpoint.Address.ToString(),
+            Address = Endpoint.Address.ToDotBytes(),
             Name = Endpoint.Name,
             Description = Endpoint.Description,
             CautionTime = Endpoint.CautionTime,
@@ -89,7 +90,7 @@ namespace NIdentity.Endpoints.Server.Repositories.Models
         public Endpoint Make() => new Endpoint
         {
             Type = Type,
-            Address = IPAddress.Parse(Address),
+            Address = IPAddressHelper.ParseDotBytes(Address),
             Name = Name,
             Description = Description,
             CautionTime = CautionTime,
