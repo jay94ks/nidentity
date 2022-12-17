@@ -45,6 +45,7 @@ namespace NIdentity.Core.X509
 
         /// <summary>
         /// Indicates whether the certificate of <see cref="Accessor"/> can generate intermediate or leafs or not.
+        /// (Leafs can never generate root or intermediates)
         /// </summary>
         /// <returns></returns>
         public bool CanGenerate { get; set; } = true;

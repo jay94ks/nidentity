@@ -36,7 +36,10 @@ namespace NIdentity.Core.X509.Server.Commands.Bases
         public class X509CommandContext : CommandContext<TCommand>
         {
             private ICertificateRepository m_Repository;
+            private ICertificatePermissionManager m_Permissions;
+
             private IMutableCertificateRepository m_MutableRepository;
+            private IMutableCertificatePermissionManager m_MutablePermissions;
 
             /// <summary>
             /// Get the required service with cache.
@@ -61,6 +64,16 @@ namespace NIdentity.Core.X509.Server.Commands.Bases
             /// Mutable Repository.
             /// </summary>
             public IMutableCertificateRepository MutableRepository => Cached(ref m_MutableRepository);
+
+            /// <summary>
+            /// Permissions.
+            /// </summary>
+            public ICertificatePermissionManager Permissions => Cached(ref m_Permissions);
+
+            /// <summary>
+            /// Mutable Permissions.
+            /// </summary>
+            public IMutableCertificatePermissionManager MutablePermissions => Cached(ref m_MutablePermissions);
         }
 
         /// <summary>

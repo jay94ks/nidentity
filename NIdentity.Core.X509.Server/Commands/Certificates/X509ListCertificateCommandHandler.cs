@@ -51,8 +51,7 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
             if (Authority.Type == CertificateType.Leaf)
                 throw new ArgumentException("the specified certificate is not authority.");
 
-            if (!IsSuperAccess && !await Context.Repository.IsIssuerAsync(Requester, Authority, Aborter))
-                throw new AccessViolationException("no permission to list certificates of the specified authority.");
+            await CheckPermission(Context, Authority, Aborter);
 
             var Count = Math.Min(m_Settings.MaxCountPerListRequest, Request.Count);
             var Result = new X509ListCertificateCommand.Result();
@@ -76,6 +75,34 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
             }
 
             return Result;
+        }
+
+        /// <summary>
+        /// Check permission to list certificates.
+        /// </summary>
+        /// <param name="Context"></param>
+        /// <param name="Authority"></param>
+        /// <param name="Aborter"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="AccessViolationException"></exception>
+        private async Task CheckPermission(X509CommandContext Context, Certificate Authority, CancellationToken Aborter)
+        {
+            // --> check `list` permission granted or not.
+            var IsIssuer = await Context.Repository.IsIssuerAsync(Requester, Authority, Aborter);
+            var Perms = await Context.Permissions.QueryAsync(Requester.Self, Authority.Self, Aborter);
+            if (Perms != null)
+            {
+                if (IsIssuer == false && Perms.CanList == false)
+                    throw new ArgumentException("no permission granted to list certificates.");
+
+                if (IsIssuer == true && Perms.CanAuthorityInterfere == true)
+                    throw new ArgumentException("no interfere allowed to the sub authority.");
+            }
+
+            // --> if no permission exists, this refers certificate tree.
+            else if (!IsSuperAccess && IsIssuer == false)
+                throw new AccessViolationException("no permission to list certificates of the specified authority.");
         }
     }
 }

@@ -30,6 +30,9 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
             var Aborter = Context.CommandAborted;
             var Certificate = null as Certificate;
 
+            if (Requester is null && !IsSuperAccess)
+                throw new AccessViolationException("no `revoke` permission granted for unauthorized accesses.");
+
             if (Request.ByReference.Validity)
                 Certificate = await Context.Repository.LoadAsync(Request.ByReference, Aborter);
 
@@ -39,6 +42,9 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
             if (Certificate is null)
                 throw new ArgumentException("no such certificate exists.");
 
+            await CheckPermission(Context, Certificate, Aborter);
+
+            // ----
             if (Certificate.RevokeReason.HasValue)
                 throw new InvalidOperationException("the certificate is already revoked.");
 
@@ -70,6 +76,33 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
                 Certificate = await Context.Repository.LoadAsync(Request.ByIdentity, Aborter);
 
             return X509RevokeCertificateCommand.Result.Make(Certificate);
+        }
+
+        /// <summary>
+        /// Check permission to revoke certificates.
+        /// </summary>
+        /// <param name="Context"></param>
+        /// <param name="Certificate"></param>
+        /// <param name="Aborter"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="AccessViolationException"></exception>
+        private async Task CheckPermission(X509CommandContext Context, Certificate Certificate, CancellationToken Aborter)
+        {
+            // --> check revoke permission granted or not.
+            var IsIssuer = await Context.Repository.IsIssuerAsync(Requester, Certificate, Aborter);
+            var Perms = await Context.Permissions.QueryAsync(Requester.Self, Certificate.Self, Aborter);
+            if (Perms != null)
+            {
+                if (IsIssuer == false && Perms.CanRevoke == false)
+                    throw new ArgumentException("no permission granted to revoke certificates.");
+
+                if (IsIssuer == true && Perms.CanAuthorityInterfere == true)
+                    throw new ArgumentException("no interfere allowed to the sub authority.");
+            }
+
+            else if (!IsSuperAccess && IsIssuer == false)
+                throw new AccessViolationException("no permission to revoke the specified certificate.");
         }
     }
 }

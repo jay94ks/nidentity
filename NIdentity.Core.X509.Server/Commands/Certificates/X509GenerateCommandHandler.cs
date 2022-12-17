@@ -33,16 +33,19 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
             {
                 if (Requester is null)
                     throw new AccessViolationException("no `generate` permission granted for unauthorized accesses.");
+
+                // --> if requester is not authority. (== non leafs)
+                if (Requester.IsAuthority == false)
+                    throw new AccessViolationException("no permission to generate a new certificate.");
             }
 
             await AssertDuplication(Context, Request);
 
             SetSubjectBuilder(Request, Builder);
-            await SetAuthorityBuilder(Request, Builder, Context.Repository, Context.CommandAborted);
+            await SetAuthorityBuilder(Context, Request, Builder, Context.Repository, Context.CommandAborted);
             SetExpiration(Request, Builder);
 
             var Certificate = Builder.Build();
-
             var ExcludePrivateKey
                 = Certificate.Type == CertificateType.Leaf
                 && m_Settings.ExcludeLeafPrivateKeys;
@@ -69,7 +72,6 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
                         continue;
                     }
 
-                    
                     Store.Add(Certificate.ImportPfx(Each.ExportPfx(true)));
                 }
 
@@ -157,7 +159,7 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
         private async Task SetAuthorityBuilder(
-            X509GenerateCommand Request, Certificate.Builder Builder,
+            X509CommandContext Context, X509GenerateCommand Request, Certificate.Builder Builder,
             ICertificateRepository Repository, CancellationToken Aborter)
         {
             var Issuer = Builder.Issuer;
@@ -166,16 +168,13 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
             if (Request.KeyType != CertificateType.Root)
             {
                 var Cert = await Repository.LoadAsync(Request.IssuerIdentity, Aborter);
-                if (Cert is null || Cert.HasPrivateKey == false)
-                    throw new ArgumentException("the specified issuer is missing or no private key exists.");
-
-                if (Cert.Type == CertificateType.Leaf)
-                    throw new InvalidOperationException("leaf certificate can not be issuer.");
+                if (Cert is null)
+                    throw new ArgumentException("the specified issuer is missing.");
 
                 Issuer.Certificate = Cert;
             }
 
-            await CheckPermissionsAsync(Request, Builder, Repository, Aborter);
+            await CheckPermissionsAsync(Context, Builder, Aborter);
 
             if (m_Settings.HttpBaseUri != null && (Request.WithOcsp || Request.WithCrlDists || Request.WithCAIssuers))
             {
@@ -261,17 +260,36 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
         /// <param name="Aborter"></param>
         /// <returns></returns>
         /// <exception cref="AccessViolationException"></exception>
-        private async Task CheckPermissionsAsync(X509GenerateCommand Request, Certificate.Builder Builder, ICertificateRepository Repository, CancellationToken Aborter)
+        private async Task CheckPermissionsAsync(X509CommandContext Context, Certificate.Builder Builder,CancellationToken Aborter)
         {
+            var Request = Context.Command;
+            var Repository = Context.Repository;
             var Issuer = Builder.Issuer;
+            var PermExists = false; // --> about issuer certificate.
+
+
             if (Request.KeyType != CertificateType.Root)
             {
-                if (!IsSuperAccess && !await Repository.IsIssuerAsync(Requester, Issuer.Certificate, Aborter))
+                var Cert = Issuer.Certificate;
+                var IsAuthorityOfIssuer = await Context.Repository.IsIssuerAsync(Requester, Cert, Aborter);
+                if (!IsSuperAccess && Issuer.Certificate != null)
+                {
+                    // --> permission check.
+                    PermExists = await CheckPermission(Context, Cert, IsAuthorityOfIssuer, Aborter);
+                }
+
+                // --> if no permission exists and no super access,
+                //   : requires to check issuer's chain that requester is authority of issuer or not.
+
+                var RequiresIssuerChain = PermExists == false && IsSuperAccess == false;
+                if (RequiresIssuerChain && IsAuthorityOfIssuer == false)
                     throw new AccessViolationException("no permission to sign using the issuer certificate.");
             }
 
             else
             {
+                // --> check policies that defines Root CA certificate generation.
+
                 if (m_Settings.DisallowGenerateRootCA)
                     throw new AccessViolationException("Root CA certificate generation is disallowed by X509 command settings.");
 
@@ -292,6 +310,41 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Check permission to generate new certificate.
+        /// </summary>
+        /// <param name="Context"></param>
+        /// <param name="Cert"></param>
+        /// <param name="IsAuthorityOfIssuer"></param>
+        /// <param name="Aborter"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        private async Task<bool> CheckPermission(X509CommandContext Context, Certificate Cert, bool IsAuthorityOfIssuer, CancellationToken Aborter)
+        {
+            var PermExists = false;
+            var Perm = await Context.Permissions.QueryAsync(Requester.Self, Cert.Self, Aborter);
+            if (Perm != null)
+            {
+                // --> issuer granted permission to generate sub certificates?
+                if (IsAuthorityOfIssuer == false && Perm.CanGenerate == false)
+                    throw new ArgumentException("no permission granted to generate certificates.");
+
+                if (IsAuthorityOfIssuer == true && Perm.CanAuthorityInterfere == false)
+                    throw new ArgumentException("no interfere allowed to the sub authority.");
+
+                PermExists = true;
+            }
+
+            if (Cert.Type == CertificateType.Leaf)
+                throw new InvalidOperationException("leaf certificate can not be issuer.");
+
+            if (Cert.HasPrivateKey == false)
+                throw new ArgumentException("no private key exists.");
+
+            return PermExists;
         }
 
         /// <summary>

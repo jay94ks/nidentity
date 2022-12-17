@@ -37,7 +37,9 @@ namespace NIdentity.Core.X509.Server
                 .AddScoped(X => new X509Context(X.GetRequiredService<TDbContext>()))
                 .AddScoped<X509Repository>()
                 .AddScoped<X509DocumentRepository>()
-                .AddScoped<X509RevokationRepository>();
+                .AddScoped<X509RevokationRepository>()
+                .AddScoped<X509PermissionManager>()
+                ;
 
             Services
                 .AddSingleton<ICertificateCacheRepository, X509CacheRepository>()
@@ -46,11 +48,14 @@ namespace NIdentity.Core.X509.Server
 
             Services
                 .AddScoped<ICertificateRepository>(X => X.GetRequiredService<X509Repository>())
-                .AddScoped<IMutableCertificateRepository>(X => X.GetRequiredService<X509Repository>())
                 .AddScoped<IDocumentRepository>(X => X.GetRequiredService<X509DocumentRepository>())
-                .AddScoped<IMutableDocumentRepository>(X => X.GetRequiredService<X509DocumentRepository>())
                 .AddScoped<IRevocationRepository>(X => X.GetRequiredService<X509RevokationRepository>())
+                .AddScoped<ICertificatePermissionManager>(X => X.GetRequiredService<X509PermissionManager>())
+
+                .AddScoped<IMutableCertificateRepository>(X => X.GetRequiredService<X509Repository>())
+                .AddScoped<IMutableDocumentRepository>(X => X.GetRequiredService<X509DocumentRepository>())
                 .AddScoped<IMutableRevocationRepository>(X => X.GetRequiredService<X509RevokationRepository>())
+                .AddScoped<IMutableCertificatePermissionManager>(X => X.GetRequiredService<X509PermissionManager>())
                 ;
 
             return Settings;

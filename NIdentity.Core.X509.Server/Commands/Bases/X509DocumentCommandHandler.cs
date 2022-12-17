@@ -39,6 +39,8 @@ namespace NIdentity.Core.X509.Server.Commands.Bases
 
             private IDocumentRepository m_Repository;
             private IMutableDocumentRepository m_MutableRepository;
+            private ICertificatePermissionManager m_Permissions;
+            private IMutableCertificatePermissionManager m_MutablePermissions;
 
             /// <summary>
             /// Get the required service with cache.
@@ -68,6 +70,16 @@ namespace NIdentity.Core.X509.Server.Commands.Bases
             /// Mutable Repository.
             /// </summary>
             public IMutableDocumentRepository MutableRepository => Cached(ref m_MutableRepository);
+
+            /// <summary>
+            /// Permissions.
+            /// </summary>
+            public ICertificatePermissionManager Permissions => Cached(ref m_Permissions);
+
+            /// <summary>
+            /// Mutable Permissions.
+            /// </summary>
+            public IMutableCertificatePermissionManager MutablePermissions => Cached(ref m_MutablePermissions);
 
             /// <summary>
             /// Owner.
