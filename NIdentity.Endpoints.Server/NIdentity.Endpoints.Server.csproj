@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NIdentity.Connector.AspNetCore\NIdentity.Connector.AspNetCore.csproj" />
     <ProjectReference Include="..\NIdentity.Core.Server\NIdentity.Core.Server.csproj" />
+    <ProjectReference Include="..\NIdentity.Core.X509.Server\NIdentity.Core.X509.Server.csproj" />
     <ProjectReference Include="..\NIdentity.Core\NIdentity.Core.csproj" />
     <ProjectReference Include="..\NIdentity.Endpoints\NIdentity.Endpoints.csproj" />
   </ItemGroup>

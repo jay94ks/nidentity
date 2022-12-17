@@ -125,7 +125,7 @@ namespace NIdentity.Core.X509.Helpers
                     return CertificateType.Root;
                 }
 
-                return CertificateType.Immediate;
+                return CertificateType.Intermedidate;
             }
 
             return CertificateType.Leaf;

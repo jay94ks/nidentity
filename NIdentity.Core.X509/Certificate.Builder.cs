@@ -234,7 +234,7 @@ namespace NIdentity.Core.X509
                 switch (Subject.Type)
                 {
                     case CertificateType.Root:
-                    case CertificateType.Immediate:
+                    case CertificateType.Intermedidate:
                         Generator.AddExtension(X509Extensions.KeyUsage, false, new KeyUsage(
                             KeyUsage.DigitalSignature | KeyUsage.KeyCertSign | KeyUsage.CrlSign));
 

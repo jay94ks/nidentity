@@ -13,7 +13,7 @@
         /// <summary>
         /// DigitalSignature, KeyCertSign, CrlSign
         /// </summary>
-        Immediate,
+        Intermedidate,
 
         /// <summary>
         /// DigitalSignature, KeyEncipherment

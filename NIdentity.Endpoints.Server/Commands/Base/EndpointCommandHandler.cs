@@ -2,6 +2,7 @@
 using NIdentity.Connector.AspNetCore.Identities.X509;
 using NIdentity.Core.Commands;
 using NIdentity.Core.X509;
+using NIdentity.Core.X509.Server;
 using NIdentity.Endpoints.Commands.Bases;
 
 namespace NIdentity.Endpoints.Server.Commands.Base
@@ -133,11 +134,27 @@ namespace NIdentity.Endpoints.Server.Commands.Base
                 if (Requester is null || Requester.IsAuthority == false)
                     return false;
 
+                // --> test whether the requester is owner (or issuer, aka, authority) of inventory or not.
                 if (Context.Command is EidInventoryCommand Command)
                 {
-                    // --> test whether the requester is owner of inventory or not.
                     var Inventory = await Context.Inventories.GetAsync(Command.Identity, Context.CommandAborted);
-                    if (Inventory is null || Inventory.Owner.IsExact(Requester) == false)
+
+                    var IsAuthorityAccess = false;
+                    var IsOwnerAccess = Inventory.Owner.IsExact(Requester);
+                    if (IsOwnerAccess == false)
+                    {
+                        // --> try to load owner certificate and,
+                        var Certificates = Context.Services.GetRequiredService<ICertificateRepository>();
+                        var Owner = await Certificates.LoadAsync(Inventory.Owner, Context.CommandAborted);
+                        if (Owner is null)
+                            return false;
+
+                        // --> test whether the owner's certificate is issued by requester or not.
+                        IsAuthorityAccess = await Certificates.IsIssuerAsync(Requester, Owner, Context.CommandAborted);
+                    }
+
+                    // --> finally, decide whether the requester has access permission or not.
+                    if (Inventory is null || (IsOwnerAccess == false && IsAuthorityAccess == false))
                         return false;
                 }
             }

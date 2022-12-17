@@ -28,6 +28,11 @@ namespace NIdentity.Core.X509.Server.Repositories
         /// <summary>
         /// Certificates.
         /// </summary>
+        public DbSet<DbCertificatePermission> Permissions => DbContext.Set<DbCertificatePermission>();
+
+        /// <summary>
+        /// Certificates.
+        /// </summary>
         public DbSet<DbCertificate> Certificates => DbContext.Set<DbCertificate>();
 
         /// <summary>
@@ -57,6 +62,7 @@ namespace NIdentity.Core.X509.Server.Repositories
         public void Configure(ModelBuilder Mb)
         {
             Mb.ApplyNotations<X509Context>();
+            DbCertificatePermission.Configure(Mb);
             DbCertificate.Configure(Mb);
             DbCertificateDocument.Configure(Mb);
             DbCertificateStore.Configure(Mb);
