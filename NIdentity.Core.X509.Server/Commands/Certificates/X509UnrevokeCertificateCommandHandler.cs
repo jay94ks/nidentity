@@ -98,7 +98,8 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
                 if (IsIssuer == false && Perms.CanRevoke == false)
                     throw new ArgumentException("no permission granted to unrevoke certificates.");
 
-                if (IsIssuer == true && Perms.CanAuthorityInterfere == true)
+                var IsSelf = Requester.Self.IsExact(Certificate);
+                if (IsSelf == false && IsIssuer == true && Perms.CanAuthorityInterfere == true)
                     throw new ArgumentException("no interfere allowed to the sub authority.");
             }
 

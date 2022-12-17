@@ -332,7 +332,8 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
                 if (IsAuthorityOfIssuer == false && Perm.CanGenerate == false)
                     throw new ArgumentException("no permission granted to generate certificates.");
 
-                if (IsAuthorityOfIssuer == true && Perm.CanAuthorityInterfere == false)
+                var IsSelf = Requester.Self.IsExact(Cert);
+                if (IsSelf == false && IsAuthorityOfIssuer == true && Perm.CanAuthorityInterfere == false)
                     throw new ArgumentException("no interfere allowed to the sub authority.");
 
                 PermExists = true;
