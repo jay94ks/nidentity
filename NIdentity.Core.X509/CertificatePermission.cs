@@ -64,5 +64,10 @@ namespace NIdentity.Core.X509
         /// Indicates whether the certificate of <see cref="Accessor"/> can delete certificates or not.
         /// </summary>
         public bool CanDelete { get; set; } = true;
+
+        /// <summary>
+        /// Indicates whether the certificate of <see cref="Accessor"/> can alter permissions or not.
+        /// </summary>
+        public bool CanAlter { get; set; } = false;
     }
 }

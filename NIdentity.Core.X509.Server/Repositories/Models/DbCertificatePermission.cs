@@ -64,27 +64,32 @@ namespace NIdentity.Core.X509.Server.Repositories.Models
         /// If this option set true, all accesses from the authority of <see cref="KeySHA1"/> will be denied.
         /// And this option can only be altered by exact owner.
         /// </summary>
-        public bool CanAuthorityInterfere { get; set; } = true;
+        public bool CanAuthorityInterfere { get; set; } = false;
 
         /// <summary>
         /// Indicates whether the certificate of <see cref="AccessKeySHA1"/> can generate intermediate or leafs or not.
         /// </summary>
         /// <returns></returns>
-        public bool CanGenerate { get; set; } = true;
+        public bool CanGenerate { get; set; } = false;
 
         /// <summary>
         /// Indicates whether the certificate of <see cref="AccessKeySHA1"/> can list certificates or not.
         /// </summary>
-        public bool CanList { get; set; } = true;
+        public bool CanList { get; set; } = false;
 
         /// <summary>
         /// Indicates whether the certificate of <see cref="AccessKeySHA1"/> can revoke certificates or not.
         /// </summary>
-        public bool CanRevoke { get; set; } = true;
+        public bool CanRevoke { get; set; } = false;
 
         /// <summary>
         /// Indicates whether the certificate of <see cref="AccessKeySHA1"/> can delete certificates or not.
         /// </summary>
-        public bool CanDelete { get; set; } = true;
+        public bool CanDelete { get; set; } = false;
+
+        /// <summary>
+        /// Indicates whether the certificate of <see cref="AccessKeySHA1"/> can alter permissions or not.
+        /// </summary>
+        public bool CanAlter { get; set; } = false;
     }
 }

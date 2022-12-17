@@ -27,7 +27,13 @@ namespace NIdentity.Core.X509.Server.Commands.Documents
             var Aborter = Context.CommandAborted;
 
             var List = await Context.Repository.ListAsync(Context.Owner, Request.PathName, Aborter);
-            if (List is null) throw new AccessViolationException("access denied.");
+            if (List is null)
+            {
+                return new X509ListDocumentCommand.Result
+                {
+                    Children = new string[0]
+                };
+            }
 
             return X509ListDocumentCommand.Result.Make(Context.Document,
                 X => X.Children = List.Documents);
