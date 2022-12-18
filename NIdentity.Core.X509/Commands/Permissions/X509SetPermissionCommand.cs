@@ -18,15 +18,15 @@ namespace NIdentity.Core.X509.Commands.Permissions
         }
 
         /// <summary>
-        /// Indicates whether the authority of <see cref="Owner"/> can interfere this intermediate CA's certificates or not.
-        /// If this option set true, all accesses from the authority of <see cref="Owner"/> will be denied.
+        /// Indicates whether the authority of owner can interfere this intermediate CA's certificates or not.
+        /// If this option set true, all accesses from the authority of owner will be denied.
         /// And this option can only be altered by exact owner.
         /// </summary>
         [JsonProperty("can_interfere")]
         public bool? CanAuthorityInterfere { get; set; }
 
         /// <summary>
-        /// Indicates whether the certificate of <see cref="Accessor"/> can generate intermediate or leafs or not.
+        /// Indicates whether the certificate of accessor can generate intermediate or leafs or not.
         /// (Leafs can never generate root or intermediates)
         /// </summary>
         /// <returns></returns>
@@ -34,25 +34,25 @@ namespace NIdentity.Core.X509.Commands.Permissions
         public bool? CanGenerate { get; set; }
 
         /// <summary>
-        /// Indicates whether the certificate of <see cref="Accessor"/> can list certificates or not.
+        /// Indicates whether the certificate of accessor can list certificates or not.
         /// </summary>
         [JsonProperty("can_list")]
         public bool? CanList { get; set; }
 
         /// <summary>
-        /// Indicates whether the certificate of <see cref="Accessor"/> can revoke certificates or not.
+        /// Indicates whether the certificate of accessor can revoke certificates or not.
         /// </summary>
         [JsonProperty("can_revoke")]
         public bool? CanRevoke { get; set; }
 
         /// <summary>
-        /// Indicates whether the certificate of <see cref="Accessor"/> can delete certificates or not.
+        /// Indicates whether the certificate of accessor can delete certificates or not.
         /// </summary>
         [JsonProperty("can_delete")]
         public bool? CanDelete { get; set; }
 
         /// <summary>
-        /// Indicates whether the certificate of <see cref="Accessor"/> can alter permissions or not.
+        /// Indicates whether the certificate of accessor can alter permissions or not.
         /// </summary>
         [JsonProperty("can_alter")]
         public bool? CanAlter { get; set; }
