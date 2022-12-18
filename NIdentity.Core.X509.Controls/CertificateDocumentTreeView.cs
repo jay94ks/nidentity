@@ -223,15 +223,10 @@ namespace NIdentity.Core.X509.Controls
                             }
                         });
                     }
-                    catch
-                    {
-                    }
+                    catch { }
                 }
             }
-
-            catch
-            {
-            }
+            catch { }
 
             try
             {
@@ -241,9 +236,7 @@ namespace NIdentity.Core.X509.Controls
                     LoadEnded?.Invoke(this);
                 });
             }
-            catch
-            {
-            }
+            catch { }
         }
         
         /// <summary>

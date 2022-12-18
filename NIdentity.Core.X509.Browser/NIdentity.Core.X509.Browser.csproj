@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NIdentity.Connector\NIdentity.Connector.csproj" />
+    <ProjectReference Include="..\NIdentity.Core.X509.Controls\NIdentity.Core.X509.Controls.csproj" />
   </ItemGroup>
 
 </Project>

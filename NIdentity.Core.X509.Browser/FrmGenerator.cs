@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NIdentity.Core.X509.Browser.Forms
+namespace NIdentity.Core.X509.Browser
 {
     public partial class FrmGenerator : Form
     {

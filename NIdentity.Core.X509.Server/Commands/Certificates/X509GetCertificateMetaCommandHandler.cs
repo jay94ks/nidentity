@@ -37,7 +37,49 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
             if (Certificate is null)
                 throw new ArgumentException("no such certificate exists.");
 
+            if (Certificate.IsRevokeIdentified == false)
+                await CheckAuthorityRevokation(Context, Certificate, Aborter);
+
             return X509GetCertificateMetaCommand.Result.Make(Certificate);
+        }
+
+        /// <summary>
+        /// Checks authority's revokation.
+        /// </summary>
+        /// <param name="Context"></param>
+        /// <param name="Certificate"></param>
+        /// <param name="Aborter"></param>
+        /// <returns></returns>
+        private async Task CheckAuthorityRevokation(X509CommandContext Context, Certificate Certificate, CancellationToken Aborter)
+        {
+            if (Certificate.IsSelfSigned)
+                return;
+
+            var Issuer = Certificate.Issuer;
+            var LastIssuer = Issuer;
+
+            while (Issuer.Validity)
+            {
+                var Current = await Context.Repository.LoadAsync(Issuer, Aborter);
+                if (Current != null)
+                {
+                    if (Current.IsRevokeIdentified == true)
+                    {
+                        Certificate.RevokeReason = Current.RevokeReason;
+                        Certificate.RevokeTime = Current.RevokeTime;
+                        return;
+                    }
+
+                    LastIssuer = Issuer;
+                    Issuer = Current.Issuer;
+                }
+            }
+
+            if (Issuer.Validity == false && LastIssuer.Validity == true)
+            {
+                Certificate.RevokeReason = CertificateRevokeReason.CACompromised;
+                Certificate.RevokeTime = DateTimeOffset.UtcNow;
+            }
         }
     }
 }

@@ -7,16 +7,25 @@
     <Compile Update="Forms\FrmChangePfxPassword.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\FrmGenerator.cs">
+    <Compile Update="FrmGenerator.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\FrmParameters.cs">
+    <Compile Update="FrmMain.Lists.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmMain.Menus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmParameters.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\FrmStatus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

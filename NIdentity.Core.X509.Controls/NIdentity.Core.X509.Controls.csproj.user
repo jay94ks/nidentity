@@ -8,6 +8,9 @@
     <Compile Update="CertificateDocumentTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="CertificateListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="CertificatePermissionEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -17,8 +20,11 @@
     <Compile Update="CertificateTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="CertificateViewer.cs">
+    <Compile Update="CertificateView.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="CertificateViewer.cs">
+      <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
 </Project>

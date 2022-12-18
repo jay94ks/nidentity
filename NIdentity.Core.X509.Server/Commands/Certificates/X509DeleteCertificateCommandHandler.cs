@@ -37,11 +37,18 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
             if (Certificate is null)
                 throw new ArgumentException("no such certificate exists.");
 
-
             await CheckPermission(Context, Certificate, Aborter);
+
+            if (Certificate.Type != CertificateType.Leaf)
+            {
+                var List = await Context.Repository.FindAsync(Certificate, 0, 100, Aborter);
+                if (List != null && List.Length > 0)
+                    throw new InvalidOperationException("the authority certificate is not empty.");
+            }
 
             if (!await Context.MutableRepository.DeleteAsync(Certificate, Aborter))
                 throw new InvalidOperationException("the repository rejected to delete certificate.");
+
 
             return X509DeleteCertificateCommand.Result.Make(Certificate);
         }

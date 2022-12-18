@@ -48,7 +48,7 @@ namespace NIdentity.Core.X509.Controls.Internals
             {
                 m_Tasks.Enqueue(Item);
 
-                if (m_Task is null || m_Task.IsCompleted == false)
+                if (m_Task is null || m_Task.IsCompleted == true)
                     m_Task = RunWorker();
             }
 
@@ -83,9 +83,10 @@ namespace NIdentity.Core.X509.Controls.Internals
                 Func<CancellationToken, Task> Executor;
                 lock (this)
                 {
-                    if (m_Token.IsCancellationRequested == false ||
+                    if (m_Token.IsCancellationRequested == true ||
                         m_Tasks.TryDequeue(out Executor) == false)
                     {
+                        m_Tasks.Clear();
                         m_Task = Task.CompletedTask;
                         break;
                     }

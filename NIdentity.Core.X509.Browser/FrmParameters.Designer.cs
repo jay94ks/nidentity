@@ -1,4 +1,4 @@
-﻿namespace NIdentity.Core.X509.Browser.Forms
+﻿namespace NIdentity.Core.X509.Browser
 {
     partial class FrmParameters
     {

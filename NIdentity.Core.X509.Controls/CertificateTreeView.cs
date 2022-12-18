@@ -20,7 +20,7 @@ namespace NIdentity.Core.X509.Controls
         public CertificateTreeView()
         {
             FullRowSelect = true;
-            HideSelection = true;
+            HideSelection = false;
         }
 
         /// <summary>
@@ -32,6 +32,11 @@ namespace NIdentity.Core.X509.Controls
         /// Triggered when the loading ended.
         /// </summary>
         public event Action<CertificateTreeView> LoadEnded;
+
+        /// <summary>
+        /// Triggered when a certificate selected.
+        /// </summary>
+        public event Action<CertificateTreeView, Certificate> Selected;
 
         /// <summary>
         /// Authority certificate.
@@ -59,8 +64,8 @@ namespace NIdentity.Core.X509.Controls
         /// <returns></returns>
         public CertificateTreeView SetWorker(InstrusiveWorker Worker)
         {
-            if (m_Worker != Worker)
-                m_Worker.Dispose();
+            if (m_Worker != null)
+                m_Worker?.Dispose();
 
             m_Worker = Worker;
             return this;
@@ -138,12 +143,17 @@ namespace NIdentity.Core.X509.Controls
             if (m_X509 is null)
                 return;
 
+            Nodes.Clear();
+            m_Nodes.Clear();
             LoadMore(Authority);
         }
 
         /// <inheritdoc/>
         protected override void OnAfterSelect(TreeViewEventArgs e)
         {
+            if (Authority is null)
+                return;
+
             if (e.Node is null || e.Node.Tag is not Certificate Certificate)
             {
                 base.OnAfterSelect(e);
@@ -152,6 +162,8 @@ namespace NIdentity.Core.X509.Controls
 
             LoadMore(Certificate);
             base.OnAfterSelect(e);
+
+            Selected?.Invoke(this, Certificate);
         }
 
         /// <summary>
@@ -209,7 +221,7 @@ namespace NIdentity.Core.X509.Controls
                     Offset += Items.Count;
                     Invoke(() =>
                     {
-                        try { PutNodes(Certificate, Items); }
+                        try { PutNodes(Items); }
                         catch
                         {
                         }
@@ -218,6 +230,7 @@ namespace NIdentity.Core.X509.Controls
 
                 catch
                 {
+                    break;
                 }
             }
 
@@ -239,7 +252,7 @@ namespace NIdentity.Core.X509.Controls
         /// </summary>
         /// <param name="Cert"></param>
         /// <param name="Items"></param>
-        private void PutNodes(Certificate Cert, X509CertificateCollection Items)
+        private void PutNodes(X509CertificateCollection Items)
         {
             foreach (var Each in Items)
             {
@@ -257,7 +270,7 @@ namespace NIdentity.Core.X509.Controls
                 Node.Text = Each.Subject;
                 Node.Tag = Each;
 
-                m_Nodes[Cert.Self] = Node;
+                m_Nodes[Each.Self] = Node;
             }
         }
     }
