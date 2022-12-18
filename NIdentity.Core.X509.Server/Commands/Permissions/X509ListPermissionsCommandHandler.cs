@@ -52,6 +52,16 @@ namespace NIdentity.Core.X509.Server.Commands.Permissions
             // --> if no permission exists, this refers certificate tree.
             else if (!IsSuperAccess && IsIssuer == false)
                 throw new AccessViolationException("no permission to list certificates of the specified authority.");
+
+            var Items = await Context.Permissions.ListAsync(Certificate.Self, Request.Offset, Request.Count, Aborter);
+            if (Items is null || Items.Length <= 0)
+            {
+                return new X509ListPermissionsCommand.Result
+                { Permissions = new X509PermissionInfo[0] };
+            }
+
+            var Infos = Items.Select(X => X509PermissionInfo.Make(X)).ToArray();
+            return new X509ListPermissionsCommand.Result { Permissions = Infos };
         }
     }
 }
