@@ -235,5 +235,22 @@ namespace NIdentity.Core.X509.Server.Repositories
 
             return Task.FromResult(false);
         }
+
+        /// <inheritdoc/>
+        public Task<bool> UnsetAsync(CertificateIdentity Accessor, CertificateIdentity Target, CancellationToken Token = default)
+        {
+            var KeySHA1 = Target.MakeKeySHA1();
+            var AccSHA1 = Accessor.Validity == true ? Accessor.MakeKeySHA1() : string.Empty;
+
+            var Exact = m_X509Context.Permissions
+                .Where(X => X.KeySHA1 == KeySHA1 && X.AccessKeySHA1 == AccSHA1)
+                .FirstOrDefault();
+
+            if (Exact is null)
+                return Task.FromResult(false);
+
+            var Result = m_X509Context.DbContext.DbRemove(Exact);
+            return Task.FromResult(Result);
+        }
     }
 }

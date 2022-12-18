@@ -141,6 +141,7 @@ namespace NIdentity.Connector.Internals
         /// Send the <paramref name="Json"/> and receive the result message.
         /// </summary>
         /// <param name="Json"></param>
+        /// <param name="ExpectedType"></param>
         /// <param name="Timeout"></param>
         /// <returns></returns>
         private async Task<CommandResult> SendAndReceiveAsync(JObject Json, Type ExpectedType, CancellationTokenSource Timeout)

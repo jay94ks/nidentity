@@ -32,6 +32,5 @@ namespace NIdentity.Core.X509.Commands
         /// </summary>
         [JsonIgnore]
         public CertificateIdentity ByAccessorIdentity => new CertificateIdentity(Subject, KeyIdentifier);
-
     }
 }

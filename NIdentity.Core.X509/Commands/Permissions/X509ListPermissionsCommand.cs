@@ -2,12 +2,12 @@
 using NIdentity.Core.Commands;
 using NIdentity.Core.X509.Commands;
 
-namespace NIdentity.Core.X509.Server.Commands.Permissions
+namespace NIdentity.Core.X509.Commands.Permissions
 {
     /// <summary>
     /// A command to list permissions of certificate.
     /// </summary>
-    [Command(Kind = "x509")]
+    [Command(Kind = "x509", ResultType = typeof(Result))]
     public class X509ListPermissionsCommand : X509CertificateAccessCommand
     {
         /// <summary>
@@ -40,16 +40,5 @@ namespace NIdentity.Core.X509.Server.Commands.Permissions
             [JsonProperty("perms")]
             public X509PermissionInfo[] Permissions { get; set; }
         }
-    }
-
-    public class X509SetPermissionCommand : X509CertificateAccessCommand
-    {
-        /// <summary>
-        /// Initialize a new <see cref="X509SetPermissionCommand"/> instance.
-        /// </summary>
-        public X509SetPermissionCommand() : base("cert_set_perm")
-        {
-        }
-
     }
 }

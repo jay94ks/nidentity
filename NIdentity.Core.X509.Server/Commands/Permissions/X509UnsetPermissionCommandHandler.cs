@@ -5,16 +5,16 @@ using NIdentity.Core.X509.Server.Commands.Bases;
 namespace NIdentity.Core.X509.Server.Commands.Permissions
 {
     /// <summary>
-    /// List Permissions command.
+    /// Unset Permissions command.
     /// </summary>
-    [CommandHandler(typeof(X509ListPermissionsCommand), Kind = "x509")]
-    public class X509ListPermissionsCommandHandler : X509CertificateCommandHandler<X509ListPermissionsCommand>
+    [CommandHandler(typeof(X509UnsetPermissionCommand), Kind = "x509")]
+    public class X509UnsetPermissionCommandHandler : X509CertificateCommandHandler<X509UnsetPermissionCommand>
     {
         /// <summary>
-        /// Initialize a new <see cref="X509ListPermissionsCommandHandler"/> instance.
+        /// Initialize a new <see cref="X509SetPermissionCommandHandler"/> instance.
         /// </summary>
         /// <param name="Requester"></param>
-        public X509ListPermissionsCommandHandler(X509RequesterAccesor Requester) : base(Requester)
+        public X509UnsetPermissionCommandHandler(X509RequesterAccesor Requester) : base(Requester)
         {
         }
 
@@ -26,7 +26,7 @@ namespace NIdentity.Core.X509.Server.Commands.Permissions
             var Certificate = null as Certificate;
 
             if (Requester is null && !IsSuperAccess)
-                throw new AccessViolationException("no `list` permission granted for unauthorized accesses.");
+                throw new AccessViolationException("no `unset` permission granted for unauthorized accesses.");
 
             if (Request.ByReference.Validity)
                 Certificate = await Context.Repository.LoadAsync(Request.ByReference, Aborter);
@@ -37,32 +37,28 @@ namespace NIdentity.Core.X509.Server.Commands.Permissions
             if (Certificate is null)
                 throw new ArgumentException("no such certificate exists.");
 
-            // --> check `list` permission granted or not.
+            // --> check `set` permission granted or not.
+            var IsSelf = Requester.Self.IsExact(Certificate);
             var IsIssuer = await Context.Repository.IsIssuerAsync(Requester, Certificate, Aborter);
             var Perms = await Context.Permissions.QueryAsync(Requester.Self, Certificate.Self, Aborter);
             if (Perms != null)
             {
                 if (IsIssuer == false && Perms.CanAlter == false)
-                    throw new ArgumentException("no permission granted to list permissions.");
+                    throw new ArgumentException("no permission granted to alter permissions.");
 
-                var IsSelf = Requester.Self.IsExact(Certificate);
                 if (IsSelf == false && IsIssuer == true && Perms.CanAuthorityInterfere == false)
                     throw new ArgumentException("no interfere allowed to the sub authority.");
             }
 
             // --> if no permission exists, this refers certificate tree.
             else if (!IsSuperAccess && IsIssuer == false)
-                throw new AccessViolationException("no permission to list certificates of the specified authority.");
+                throw new AccessViolationException("no permission to alter certificates of the specified authority.");
 
-            var Items = await Context.Permissions.ListAsync(Certificate.Self, Request.Offset, Request.Count, Aborter);
-            if (Items is null || Items.Length <= 0)
-            {
-                return new X509ListPermissionsCommand.Result
-                { Permissions = new X509PermissionInfo[0] };
-            }
+            var Success = await Context.MutablePermissions.UnsetAsync(Request.ByAccessorIdentity, Request.ByIdentity, Aborter);
+            if (Success == false)
+                throw new InvalidOperationException("the repository denied to alter the permission.");
 
-            var Infos = Items.Select(X => X509PermissionInfo.Make(X)).ToArray();
-            return new X509ListPermissionsCommand.Result { Permissions = Infos };
+            return new CommandResult { Success = true };
         }
     }
 }

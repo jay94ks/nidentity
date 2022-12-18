@@ -66,7 +66,7 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
                     throw new ArgumentException("no permission granted to delete certificates.");
 
                 var IsSelf = Requester.Self.IsExact(Certificate);
-                if (IsSelf == false && IsIssuer == true && Perms.CanAuthorityInterfere == true)
+                if (IsSelf == false && IsIssuer == true && Perms.CanAuthorityInterfere == false)
                     throw new ArgumentException("no interfere allowed to the sub authority.");
             }
 
