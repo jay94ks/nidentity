@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NIdentity.Core.X509
+﻿namespace NIdentity.Core.X509
 {
     /// <summary>
     /// Permission of certificate.
