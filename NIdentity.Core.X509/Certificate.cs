@@ -188,7 +188,6 @@ namespace NIdentity.Core.X509
         /// </summary>
         public string Thumbprint => GetterHelpers.Cached(ref m_CachedThumbprint, () => X509.GetThumbprint().ToLower());
 
-
         /// <summary>
         /// Self.
         /// </summary>
