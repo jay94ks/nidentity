@@ -177,8 +177,11 @@ namespace NIdentity.Core.X509
                     Pkcs.Load(Temp, (Password ?? string.Empty).ToCharArray());
             }
 
-            catch
+            catch (Exception Error)
             {
+                if (string.IsNullOrWhiteSpace(Error.Message) == false && Error.Message.Contains("password"))
+                    throw new InvalidOperationException($"PFX password is not matched.");
+
                 throw new FormatException($"{nameof(PkcsBytes)} is not PKCS#12 store bytes.");
             }
 

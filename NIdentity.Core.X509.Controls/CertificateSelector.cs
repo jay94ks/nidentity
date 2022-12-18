@@ -23,7 +23,7 @@ namespace NIdentity.Core.X509.Controls
 
         private static readonly string FILTER_PUBLIC_FORMAT =
             FILTER_PRVATE_FORMAT + "|" +
-            "PKCS1 Certificate (*.cer, *.crt)|*.cer;*.crt|";
+            "PKCS1 Certificate (*.cer, *.crt)|*.cer;*.crt";
 
         private static readonly string TITLE_SAVE = "Select a location to store the certificate";
         private static readonly string TITLE_LOAD = "Select a location to load the certificate.";
@@ -172,32 +172,65 @@ namespace NIdentity.Core.X509.Controls
             }
 
             var Format = (Ofd.FileName.Split('.').LastOrDefault() ?? string.Empty).ToLower();
-            try
+            var Password = null as string;
+
+            while (true)
             {
-                var Bytes = File.ReadAllBytes(Ofd.FileName);
-                switch (Format)
+                try
                 {
-                    case "pfx":
-                        Certificate = Certificate.ImportPfx(Bytes);
-                        break;
+                    var Bytes = File.ReadAllBytes(Ofd.FileName);
+                    switch (Format)
+                    {
+                        case "pfx":
+                            Certificate = Certificate.ImportPfx(Bytes, Password);
+                            break;
 
-                    case "pem":
-                        Certificate = Certificate.ImportPem(Bytes);
-                        break;
+                        case "pem":
+                            Certificate = Certificate.ImportPem(Bytes);
+                            break;
 
-                    case "cer": case "crt":
-                        Certificate = Certificate.Import(Bytes);
-                        break;
+                        case "cer":
+                        case "crt":
+                            Certificate = Certificate.Import(Bytes);
+                            break;
 
-                    default:
-                        Certificate = null;
-                        break;
+                        default:
+                            Certificate = null;
+                            break;
+                    }
                 }
-            }
-            catch
-            {
-                ShowMessage("Error: failed to open the file.");
-                return;
+                catch (Exception Error)
+                {
+                    if (string.IsNullOrWhiteSpace(Error.Message) == false
+                        && Error.Message.Contains("password"))
+                    {
+                        if (string.IsNullOrWhiteSpace(Password) == false)
+                        {
+                            ShowMessage("Error: password mismatch.");
+                            return;
+                        }
+
+                        using var Prompt = new CertificatePasswordPrompt
+                        {
+                            IsRequired = true,
+                            IsInput = true
+                        };
+
+                        if (Prompt.ShowDialog() == DialogResult.OK)
+                        {
+                            Password = Prompt.Password;
+                            continue;
+                        }
+
+                        ShowMessage("Error: the certificate has password, failed to load.");
+                        return;
+                    }
+
+                    ShowMessage("Error: failed to open the file.");
+                    return;
+                }
+
+                break;
             }
 
             if (Certificate is null)

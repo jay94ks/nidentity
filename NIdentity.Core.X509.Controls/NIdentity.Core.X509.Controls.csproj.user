@@ -11,6 +11,9 @@
     <Compile Update="CertificateListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="CertificatePasswordPrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="CertificatePermissionEditor.cs">
       <SubType>Form</SubType>
     </Compile>

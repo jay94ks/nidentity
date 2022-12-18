@@ -78,11 +78,12 @@ namespace NIdentity.Core.X509
         /// Import PFX bytes.
         /// </summary>
         /// <param name="Data"></param>
+        /// <param name="Password"></param>
         /// <returns></returns>
-        public static Certificate ImportPfx(byte[] Data)
+        public static Certificate ImportPfx(byte[] Data, string Password = null)
         {
-            var Store = CertificateStore.Import(Data);
-            return Store.Certificates.First();
+            var Store = CertificateStore.Import(Data, Password);
+            return Store.Certificates.OrderByDescending(X => X.HasPrivateKey ? 1 : 0).First();
         }
 
         /// <summary>
@@ -311,7 +312,13 @@ namespace NIdentity.Core.X509
         /// Export this certificate as pkcs#12 bytes (pfx, p12).
         /// </summary>
         /// <returns></returns>
-        public byte[] ExportPfx(bool ExcludePrivateKey = false)
+        public byte[] ExportPfx(bool ExcludePrivateKey = false) => ExportPfx(null, ExcludePrivateKey);
+
+        /// <summary>
+        /// Export this certificate as pkcs#12 bytes (pfx, p12).
+        /// </summary>
+        /// <returns></returns>
+        public byte[] ExportPfx(string Password, bool ExcludePrivateKey = false)
         {
             var Store = new CertificateStore();
             Store.Add(this);
@@ -322,7 +329,7 @@ namespace NIdentity.Core.X509
                 try
                 {
                     this.PrivateKey = null;
-                    return Store.Export();
+                    return Store.Export(Password);
                 }
 
                 finally

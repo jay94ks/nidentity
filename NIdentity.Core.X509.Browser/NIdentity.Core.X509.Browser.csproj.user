@@ -28,5 +28,14 @@
     <Compile Update="FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FrmPfxToCrt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmPfxToPem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmPfxToPfx.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

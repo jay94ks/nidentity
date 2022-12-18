@@ -46,6 +46,27 @@ namespace NIdentity.Core.X509.Browser
         }
 
         /// <summary>
+        /// Convert PFX to PEM file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnConvertPfxToPem(object sender, EventArgs e) => new FrmPfxToPem().Show();
+
+        /// <summary>
+        /// Convert PFX to CRT file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnConvertPfxToCrt(object sender, EventArgs e) => new FrmPfxToCrt().Show();
+
+        /// <summary>
+        /// Convert PFX to PFX file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnConvertPfxToPfx(object sender, EventArgs e) => new FrmPfxToPfx().Show();
+
+        /// <summary>
         /// Called when the menu `Revoke` reason clicked.
         /// </summary>
         /// <param name="sender"></param>

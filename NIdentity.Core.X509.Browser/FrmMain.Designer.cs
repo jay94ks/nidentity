@@ -38,6 +38,9 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.keysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pFXToPEMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pFXToCERToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pFXToPFXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_WindowSplitter = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_CertTree = new NIdentity.Core.X509.Controls.CertificateTreeView();
@@ -76,7 +79,7 @@
             this.keysToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1070, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(906, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -134,9 +137,34 @@
             // 
             // keysToolStripMenuItem
             // 
+            this.keysToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pFXToPEMToolStripMenuItem,
+            this.pFXToCERToolStripMenuItem,
+            this.pFXToPFXToolStripMenuItem});
             this.keysToolStripMenuItem.Name = "keysToolStripMenuItem";
             this.keysToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
             this.keysToolStripMenuItem.Text = "Keys";
+            // 
+            // pFXToPEMToolStripMenuItem
+            // 
+            this.pFXToPEMToolStripMenuItem.Name = "pFXToPEMToolStripMenuItem";
+            this.pFXToPEMToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.pFXToPEMToolStripMenuItem.Text = "PFX to PEM";
+            this.pFXToPEMToolStripMenuItem.Click += new System.EventHandler(this.OnConvertPfxToPem);
+            // 
+            // pFXToCERToolStripMenuItem
+            // 
+            this.pFXToCERToolStripMenuItem.Name = "pFXToCERToolStripMenuItem";
+            this.pFXToCERToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.pFXToCERToolStripMenuItem.Text = "PFX to CER, CRT";
+            this.pFXToCERToolStripMenuItem.Click += new System.EventHandler(this.OnConvertPfxToCrt);
+            // 
+            // pFXToPFXToolStripMenuItem
+            // 
+            this.pFXToPFXToolStripMenuItem.Name = "pFXToPFXToolStripMenuItem";
+            this.pFXToPFXToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.pFXToPFXToolStripMenuItem.Text = "PFX to PFX";
+            this.pFXToPFXToolStripMenuItem.Click += new System.EventHandler(this.OnConvertPfxToPfx);
             // 
             // m_WindowSplitter
             // 
@@ -151,8 +179,8 @@
             // m_WindowSplitter.Panel2
             // 
             this.m_WindowSplitter.Panel2.Controls.Add(this.tabControl1);
-            this.m_WindowSplitter.Size = new System.Drawing.Size(1070, 560);
-            this.m_WindowSplitter.SplitterDistance = 207;
+            this.m_WindowSplitter.Size = new System.Drawing.Size(906, 548);
+            this.m_WindowSplitter.SplitterDistance = 185;
             this.m_WindowSplitter.TabIndex = 1;
             // 
             // splitContainer2
@@ -169,8 +197,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.m_PropGrid);
-            this.splitContainer2.Size = new System.Drawing.Size(207, 560);
-            this.splitContainer2.SplitterDistance = 274;
+            this.splitContainer2.Size = new System.Drawing.Size(185, 548);
+            this.splitContainer2.SplitterDistance = 268;
             this.splitContainer2.TabIndex = 0;
             // 
             // m_CertTree
@@ -182,7 +210,7 @@
             this.m_CertTree.HideSelection = false;
             this.m_CertTree.Location = new System.Drawing.Point(0, 0);
             this.m_CertTree.Name = "m_CertTree";
-            this.m_CertTree.Size = new System.Drawing.Size(207, 274);
+            this.m_CertTree.Size = new System.Drawing.Size(185, 268);
             this.m_CertTree.TabIndex = 0;
             // 
             // contextMenuStrip1
@@ -255,7 +283,7 @@
             this.m_PropGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_PropGrid.Location = new System.Drawing.Point(0, 0);
             this.m_PropGrid.Name = "m_PropGrid";
-            this.m_PropGrid.Size = new System.Drawing.Size(207, 282);
+            this.m_PropGrid.Size = new System.Drawing.Size(185, 276);
             this.m_PropGrid.TabIndex = 0;
             // 
             // tabControl1
@@ -265,7 +293,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(859, 560);
+            this.tabControl1.Size = new System.Drawing.Size(717, 548);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -274,7 +302,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(851, 527);
+            this.tabPage1.Size = new System.Drawing.Size(709, 515);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Certificates";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -287,7 +315,7 @@
             this.m_CertList.HideSelection = true;
             this.m_CertList.Location = new System.Drawing.Point(3, 3);
             this.m_CertList.Name = "m_CertList";
-            this.m_CertList.Size = new System.Drawing.Size(845, 521);
+            this.m_CertList.Size = new System.Drawing.Size(703, 509);
             this.m_CertList.TabIndex = 0;
             this.m_CertList.UseCompatibleStateImageBehavior = false;
             this.m_CertList.View = System.Windows.Forms.View.Details;
@@ -296,7 +324,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1070, 588);
+            this.ClientSize = new System.Drawing.Size(906, 576);
             this.Controls.Add(this.m_WindowSplitter);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -347,5 +375,8 @@
         private ToolStripMenuItem m_MenuDelete;
         private ToolStripMenuItem openInfoToolStripMenuItem;
         private ToolStripSeparator toolStripMenuItem5;
+        private ToolStripMenuItem pFXToPEMToolStripMenuItem;
+        private ToolStripMenuItem pFXToCERToolStripMenuItem;
+        private ToolStripMenuItem pFXToPFXToolStripMenuItem;
     }
 }
