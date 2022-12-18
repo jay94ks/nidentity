@@ -64,8 +64,8 @@ namespace NIdentity.Core.X509.Browser
         private void OnSelected(Control Control, Certificate Certificate)
         {
             m_MenuGenerate.Enabled = Certificate.Type != CertificateType.Leaf;
-            m_MenuRevoke.Enabled = true;
-            m_MenuUnrevoke.Enabled = true;
+            m_MenuRevoke.Enabled = Certificate.IsRevokeIdentified == false;
+            m_MenuUnrevoke.Enabled = Certificate.IsRevokeIdentified == true;
             m_MenuDelete.Enabled = true;
 
             m_CertList.Authority = Certificate;
@@ -96,8 +96,8 @@ namespace NIdentity.Core.X509.Browser
                 DeleteHandler = OnHandleDelete,
                 ReloadHandler = (Cert) =>
                 {
-                    m_CertTree.Reload();
-                    m_CertList.Reload();
+                    m_CertTree.Reload(Cert);
+                    m_CertList.Reload(Cert);
                 }
             };
 
@@ -109,7 +109,7 @@ namespace NIdentity.Core.X509.Browser
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnTreeDoubleClick(object sender, MouseEventArgs e)
+        private void OnTreeDoubleClick(object sender, EventArgs e)
         {
             if (m_CertTree.SelectedNode is null)
                 return;
@@ -125,8 +125,8 @@ namespace NIdentity.Core.X509.Browser
                 DeleteHandler = OnHandleDelete,
                 ReloadHandler = (Cert) =>
                 {
-                    m_CertTree.Reload();
-                    m_CertList.Reload();
+                    m_CertTree.Reload(Cert);
+                    m_CertList.Reload(Cert);
                 }
             };
 

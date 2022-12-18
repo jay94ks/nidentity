@@ -51,7 +51,12 @@ namespace NIdentity.Core.X509.Browser
                     }
                 }
 
-                catch { }
+                catch(Exception Error)
+                {
+                    Invoke(() => ShowError(Error));
+                    return;
+                }
+
                 Invoke(() => Callback?.Invoke(Cert));
             });
 
@@ -72,7 +77,12 @@ namespace NIdentity.Core.X509.Browser
                     }
                 }
 
-                catch { }
+                catch (Exception Error)
+                {
+                    Invoke(() => ShowError(Error));
+                    return;
+                }
+
                 Invoke(() => Callback?.Invoke(Cert));
             });
 
@@ -86,10 +96,24 @@ namespace NIdentity.Core.X509.Browser
             {
                 var State = false;
                 try { State = await m_X509.DeleteCertificateAsync(Cert, Token); }
-                catch { }
+                catch (Exception Error)
+                {
+                    Invoke(() => ShowError(Error));
+                    return;
+                }
 
                 Invoke(() => Callback?.Invoke(State));
             });
+
+        /// <summary>
+        /// Show an error.
+        /// </summary>
+        /// <param name="Error"></param>
+        private void ShowError(Exception Error)
+        {
+            MessageBox.Show($"Error: {Error.Message}.",
+                Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
 }

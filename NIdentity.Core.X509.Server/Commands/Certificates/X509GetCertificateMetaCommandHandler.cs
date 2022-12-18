@@ -61,18 +61,21 @@ namespace NIdentity.Core.X509.Server.Commands.Certificates
             while (Issuer.Validity)
             {
                 var Current = await Context.Repository.LoadAsync(Issuer, Aborter);
-                if (Current != null)
-                {
-                    if (Current.IsRevokeIdentified == true)
-                    {
-                        Certificate.RevokeReason = Current.RevokeReason;
-                        Certificate.RevokeTime = Current.RevokeTime;
-                        return;
-                    }
+                if (Current is null)
+                    break;
 
-                    LastIssuer = Issuer;
-                    Issuer = Current.Issuer;
+                if (Current.IsRevokeIdentified == true)
+                {
+                    Certificate.RevokeReason = Current.RevokeReason;
+                    Certificate.RevokeTime = Current.RevokeTime;
+                    return;
                 }
+
+                if (Current.IsSelfSigned == true)
+                    return;
+
+                LastIssuer = Issuer;
+                Issuer = Current.Issuer;
             }
 
             if (Issuer.Validity == false && LastIssuer.Validity == true)

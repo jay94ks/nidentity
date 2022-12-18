@@ -8,6 +8,19 @@ namespace NIdentity.Core.X509.Browser
     public partial class FrmMain
     {
         private InstrusiveWorker m_Worker = new();
+        private static readonly string[] REVOKE_REASONS = new[]
+        {
+            "Not revoked",
+            "Revoked, Key compromised",
+            "Revoked, CA compromised",
+            "Revoked, Affiliation changed",
+            "Revoked, Superseded",
+            "Revoked, Cassation of operation",
+            "Revoked, Certificate hold",
+            "Revoked, Removed from CRL",
+            "Revoked, Privilege withdrawn",
+            "Revoked, AA compromised"
+        };
 
         /// <summary>
         /// Initialize menus.
@@ -18,7 +31,100 @@ namespace NIdentity.Core.X509.Browser
             m_MenuRevoke.Enabled = false;
             m_MenuUnrevoke.Enabled = false;
             m_MenuDelete.Enabled = false;
+
+            var Items = REVOKE_REASONS.Skip(1)
+               .Select((X, i) => (Reason: X, Index: i));
+
+            foreach (var Each in Items)
+            {
+                var Menu = m_MenuRevoke
+                    .DropDownItems.Add(Each.Reason);
+
+                Menu.Click += OnRevokeFromNode;
+                Menu.Tag = Each.Index;
+            }
         }
+
+        /// <summary>
+        /// Called when the menu `Revoke` reason clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnRevokeFromNode(object sender, EventArgs e)
+        {
+            if (sender is not ToolStripItem Item)
+                return;
+
+            if (m_CertTree.SelectedNode is null ||
+                m_CertTree.SelectedNode.Tag is not Certificate Cert)
+                return;
+
+            var Reason = (CertificateRevokeReason)Item.Tag;
+            OnHandleRevoke(Cert, Reason, Cert =>
+            {
+                m_CertList.Reload(Cert);
+                m_CertTree.Reload(Cert);
+
+                m_MenuRevoke.Enabled = Cert.IsRevokeIdentified == false;
+                m_MenuUnrevoke.Enabled = Cert.IsRevokeIdentified == true;
+            });
+        }
+
+        /// <summary>
+        /// Called when the menu `Unrevoke` reason clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnUnrevokeFromNode(object sender, EventArgs e)
+        {
+            if (sender is not ToolStripItem Item)
+                return;
+
+            if (m_CertTree.SelectedNode is null ||
+                m_CertTree.SelectedNode.Tag is not Certificate Cert)
+                return;
+
+            OnHandleUnrevoke(Cert, Cert =>
+            {
+                m_CertList.Reload(Cert);
+                m_CertTree.Reload(Cert);
+
+                m_MenuRevoke.Enabled = Cert.IsRevokeIdentified == false;
+                m_MenuUnrevoke.Enabled = Cert.IsRevokeIdentified == true;
+            });
+        }
+
+        /// <summary>
+        /// Called when the menu `Delete` reason clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnDeleteFromNode(object sender, EventArgs e)
+        {
+            if (m_CertTree.SelectedNode is null ||
+                m_CertTree.SelectedNode.Tag is not Certificate Cert)
+                return;
+
+            var Confirm = MessageBox.Show(
+                "This behavior is irreversible. Would you like to proceed?",
+                Text, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+            if (Confirm != DialogResult.OK)
+                return;
+
+            OnHandleDelete(Cert, X =>
+            {
+                m_CertList.Reload(Cert);
+                m_CertTree.Reload(Cert);
+            });
+        }
+
+        /// <summary>
+        /// Called when open info menu clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnOpenInfo(object sender, EventArgs e) => OnTreeDoubleClick(sender, e);
 
         /// <summary>
         /// Called when "Settings" menu clicked.
@@ -170,7 +276,7 @@ namespace NIdentity.Core.X509.Browser
                 if (Certificate is null)
                     return;
 
-                Invoke(() => m_CertTree.Reload());
+                Invoke(() => m_CertTree.Reload(Certificate));
             });
         }
     }

@@ -148,6 +148,25 @@ namespace NIdentity.Core.X509.Controls
             LoadMore(Authority);
         }
 
+        /// <summary>
+        /// Reload about the certificate.
+        /// </summary>
+        /// <param name="Certificate"></param>
+        public void Reload(Certificate Certificate)
+        {
+            if (Authority is null)
+            {
+                Nodes.Clear();
+                m_Nodes.Clear();
+                return;
+            }
+
+            if (m_X509 is null)
+                return;
+
+            LoadMore(Certificate);
+        }
+
         /// <inheritdoc/>
         protected override void OnAfterSelect(TreeViewEventArgs e)
         {
@@ -211,6 +230,29 @@ namespace NIdentity.Core.X509.Controls
             {
                 if (Token.IsCancellationRequested)
                     break;
+
+                var RemoveFromList = false;
+                try
+                {
+                    var Info = await m_X509.GetCertificateMetaAsync(Certificate, Token);
+                    if (Info is null)
+                        RemoveFromList = true;
+                }
+                catch { RemoveFromList = true; }
+
+                if (RemoveFromList)
+                {
+                    Invoke(() =>
+                    {
+                        try
+                        {
+                            m_Nodes.TryGetValue(Certificate.Self, out var Target);
+                            Target?.Remove();
+                        }
+                        catch { }
+                    });
+                    break;
+                }
 
                 try
                 {

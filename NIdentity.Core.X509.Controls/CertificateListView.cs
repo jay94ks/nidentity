@@ -128,6 +128,24 @@ namespace NIdentity.Core.X509.Controls
         }
 
         /// <summary>
+        /// Reload about the certificate.
+        /// </summary>
+        /// <param name="Certificate"></param>
+        public void Reload(Certificate Certificate)
+        {
+            if (Authority is null)
+            {
+                Items.Clear();
+                return;
+            }
+
+            if (m_X509 is null)
+                return;
+
+            LoadMore(Certificate);
+        }
+
+        /// <summary>
         /// Set the worker who execute commands to load X509 certificates from NIdentity host.
         /// </summary>
         /// <param name="Worker"></param>
@@ -232,6 +250,38 @@ namespace NIdentity.Core.X509.Controls
             {
                 if (Token.IsCancellationRequested)
                     break;
+
+                var RemoveFromList = false;
+                try
+                {
+                    var Info = await m_X509.GetCertificateMetaAsync(Certificate, Token);
+                    if (Info is null)
+                        RemoveFromList = true;
+                }
+                catch { RemoveFromList = true; }
+
+                if (RemoveFromList)
+                {
+                    Invoke(() =>
+                    {
+                        try
+                        {
+                            for (int i = 0; i < Items.Count; ++i)
+                            {
+                                if (Items[i].Tag is Certificate Cert)
+                                {
+                                    if (Cert.Self.IsExact(Certificate) == false)
+                                        continue;
+
+                                    Items.RemoveAt(i);
+                                    break;
+                                }
+                            }
+                        }
+                        catch { }
+                    });
+                    break;
+                }
 
                 try
                 {

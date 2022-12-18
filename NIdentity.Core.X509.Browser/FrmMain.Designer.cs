@@ -41,17 +41,19 @@
             this.m_WindowSplitter = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_CertTree = new NIdentity.Core.X509.Controls.CertificateTreeView();
-            this.m_PropGrid = new System.Windows.Forms.PropertyGrid();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.m_CertList = new NIdentity.Core.X509.Controls.CertificateListView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.m_MenuGenerate = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.m_MenuRevoke = new System.Windows.Forms.ToolStripMenuItem();
             this.m_MenuUnrevoke = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.m_MenuDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_PropGrid = new System.Windows.Forms.PropertyGrid();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.m_CertList = new NIdentity.Core.X509.Controls.CertificateListView();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_WindowSplitter)).BeginInit();
             this.m_WindowSplitter.Panel1.SuspendLayout();
@@ -61,9 +63,9 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -183,6 +185,71 @@
             this.m_CertTree.Size = new System.Drawing.Size(207, 274);
             this.m_CertTree.TabIndex = 0;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openInfoToolStripMenuItem,
+            this.toolStripMenuItem5,
+            this.m_MenuGenerate,
+            this.toolStripMenuItem3,
+            this.m_MenuRevoke,
+            this.m_MenuUnrevoke,
+            this.toolStripMenuItem4,
+            this.m_MenuDelete});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 142);
+            // 
+            // openInfoToolStripMenuItem
+            // 
+            this.openInfoToolStripMenuItem.Name = "openInfoToolStripMenuItem";
+            this.openInfoToolStripMenuItem.Size = new System.Drawing.Size(148, 24);
+            this.openInfoToolStripMenuItem.Text = "Open Info";
+            this.openInfoToolStripMenuItem.Click += new System.EventHandler(this.OnOpenInfo);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(145, 6);
+            // 
+            // m_MenuGenerate
+            // 
+            this.m_MenuGenerate.Name = "m_MenuGenerate";
+            this.m_MenuGenerate.Size = new System.Drawing.Size(148, 24);
+            this.m_MenuGenerate.Text = "Generate";
+            this.m_MenuGenerate.Click += new System.EventHandler(this.OnMenuGenerate);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(145, 6);
+            // 
+            // m_MenuRevoke
+            // 
+            this.m_MenuRevoke.Name = "m_MenuRevoke";
+            this.m_MenuRevoke.Size = new System.Drawing.Size(148, 24);
+            this.m_MenuRevoke.Text = "Revoke";
+            // 
+            // m_MenuUnrevoke
+            // 
+            this.m_MenuUnrevoke.Name = "m_MenuUnrevoke";
+            this.m_MenuUnrevoke.Size = new System.Drawing.Size(148, 24);
+            this.m_MenuUnrevoke.Text = "Unrevoke";
+            this.m_MenuUnrevoke.Click += new System.EventHandler(this.OnUnrevokeFromNode);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(145, 6);
+            // 
+            // m_MenuDelete
+            // 
+            this.m_MenuDelete.ForeColor = System.Drawing.Color.Red;
+            this.m_MenuDelete.Name = "m_MenuDelete";
+            this.m_MenuDelete.Size = new System.Drawing.Size(148, 24);
+            this.m_MenuDelete.Text = "Delete";
+            this.m_MenuDelete.Click += new System.EventHandler(this.OnDeleteFromNode);
+            // 
             // m_PropGrid
             // 
             this.m_PropGrid.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -225,54 +292,6 @@
             this.m_CertList.UseCompatibleStateImageBehavior = false;
             this.m_CertList.View = System.Windows.Forms.View.Details;
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.m_MenuGenerate,
-            this.toolStripMenuItem3,
-            this.m_MenuRevoke,
-            this.m_MenuUnrevoke,
-            this.toolStripMenuItem4,
-            this.m_MenuDelete});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 140);
-            // 
-            // m_MenuGenerate
-            // 
-            this.m_MenuGenerate.Name = "m_MenuGenerate";
-            this.m_MenuGenerate.Size = new System.Drawing.Size(210, 24);
-            this.m_MenuGenerate.Text = "Generate";
-            this.m_MenuGenerate.Click += new System.EventHandler(this.OnMenuGenerate);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(207, 6);
-            // 
-            // m_MenuRevoke
-            // 
-            this.m_MenuRevoke.Name = "m_MenuRevoke";
-            this.m_MenuRevoke.Size = new System.Drawing.Size(210, 24);
-            this.m_MenuRevoke.Text = "Revoke";
-            // 
-            // m_MenuUnrevoke
-            // 
-            this.m_MenuUnrevoke.Name = "m_MenuUnrevoke";
-            this.m_MenuUnrevoke.Size = new System.Drawing.Size(210, 24);
-            this.m_MenuUnrevoke.Text = "Unrevoke";
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(207, 6);
-            // 
-            // m_MenuDelete
-            // 
-            this.m_MenuDelete.Name = "m_MenuDelete";
-            this.m_MenuDelete.Size = new System.Drawing.Size(210, 24);
-            this.m_MenuDelete.Text = "Delete";
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -293,9 +312,9 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -326,5 +345,7 @@
         private ToolStripMenuItem m_MenuUnrevoke;
         private ToolStripSeparator toolStripMenuItem4;
         private ToolStripMenuItem m_MenuDelete;
+        private ToolStripMenuItem openInfoToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem5;
     }
 }
